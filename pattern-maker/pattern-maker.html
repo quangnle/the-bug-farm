@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pattern Maker</title>
+    
+</head>
+<body>
+    <h1>Pattern Maker</h1>
+    <div name="left-column" style="float: left; width: 450px;">
+        <div>
+            <input id="pattern-size" type="number" value="9" min="9" max="16" style="width: 40px;">
+            <button onclick="generateDefaultPattern()">Refresh</button> 
+        </div>
+        <div id="sketch-holder">        
+            <canvas id="canvasArea"></canvas>
+        </div>  
+    </div>
+    <div name="right-column" style="float: left;"></div>
+        <input id="pattern-name" type="text" placeholder="pattern name">
+        <button onclick="exportArray()">Export</button></div>        
+        <textarea id="code" rows="10" cols="60"></textarea>
+        <p><i>Copy this code & paste into 'patterns.js' file of the main project</i></p>
+    </div>
+
+    <script src="sketch.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
+    <script>
+
+        let pattern = [];
+
+        function generateDefaultPattern(){
+            // get value of the pattern size
+            const size = document.getElementById("pattern-size").value * 1;
+            // generate 2d array with the size
+            pattern = new Array(size);
+            for (let i = 0; i < size; i++){
+                pattern[i] = new Array(size).fill(0);
+            }
+            
+            const cx = pattern[0].length >> 1;
+            const cy = pattern.length >> 1;
+            const r = (pattern.length >> 1);
+            for (let i = 0; i < pattern.length; i++){
+                for (let j = 0; j < pattern[i].length; j++){
+                    let d = Math.floor(dist(j, i, cx, cy));
+                    if (d >= r){
+                        pattern[i][j] = -1;
+                    }
+                }
+            }
+        }
+
+        function exportArray() {
+            var code = document.getElementById("code");
+            var patternName = document.getElementById("pattern-name").value;
+            const content = `const pattern_${patternName} = ${JSON.stringify(pattern)};`;
+            code.value = content;
+        }
+    </script>
+</body>
+</html>
