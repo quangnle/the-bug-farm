@@ -24,10 +24,12 @@ class Evolution {
             const newPattern = patterns[rp];
             // add new pattern to the genes if it's not already there
             if (!newAnt.genes.find(g => g.name === newPattern.name)) {
-                if (newPattern.name !== "default") newAnt.genes.push(newPattern);                
+                 newAnt.genes.push(newPattern);                
             } else {
-                // if the pattern is already in the genes, increase the score
-                newAnt.genes.find(g => g.name === newPattern.name).score += newPattern.score;
+                // if the pattern is already in the genes, increase the score                 
+                if (newPattern.name !== "default"){
+                    newAnt.genes.find(g => g.name === newPattern.name).score += newPattern.score;
+                }                
             }
         }
 

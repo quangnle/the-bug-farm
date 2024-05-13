@@ -9,7 +9,7 @@ class Ant{
         this.dy = Math.sin(this.angle);
         this.counter = 1;
         this.longevity = 100;
-        this.mutationRate = 0.1;
+        this.mutationRate = 0.5;
 
         this.appearance = {name: "default", pattern: pattern_default, "score": 90};
         this.genes  = [];
@@ -98,7 +98,7 @@ class Ant{
         // total score
         const totalScore = this.genes.reduce((acc, g) => acc + g.score, 0);
         this.genes.forEach(g => {
-            stGenes += `${g.name} : ${g.score} (${Math.round(g.score/totalScore*100)}%) \n`;
+            stGenes += `${g.name} : $(${Math.round(g.score/totalScore*100)}%) \n`;
         });
         return stGenes;
     }

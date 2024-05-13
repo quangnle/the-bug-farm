@@ -40,7 +40,7 @@
             <div style="background-color: aliceblue; width: 250px; padding-top: 0px;"> 
                 <h4 style="text-align: center; background-color: aquamarine;">Ant Info</h4>
                 <div style="float: left; width: 55px; padding:2px">
-                    <div id="ant-color-block" style="width: 50px; height: 50px; margin:2px; padding:0px; border:#000; background-color: white;"></div>
+                    <div id="ant-color-block" style="width: 50px; height: 50px; margin:2px; padding:-1px; border:#000; background-color: white; border-width: 2px;"></div>
                     <p id="ant-color-label" style="text-align:center"></p>
                 </div>
                 <textarea id="ant-genes-info" readonly rows="6"></textarea><br/>
@@ -57,6 +57,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
+
     function sellAnAnt() {
         if (colony.length > 1 && selectedAnt != -1) {
             colony.splice(selectedAnt, 1);

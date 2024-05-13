@@ -11,7 +11,6 @@ const foods = [];
 const antSize = 9;
 const firstAnt = new Ant("#000", 100, 100, antSize, 0);
 const maxPopulation = 50;
-const varationRateInc = 0.1;
 const distanceToReachFood = 5;
 
 let selectedAnt = -1;
