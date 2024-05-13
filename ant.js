@@ -94,7 +94,7 @@ class Ant{
     }
 
     genesInfoString(){
-        let stGenes = "";
+        let stGenes = `Appearance: ${this.appearance.name} \n\nList of genes: \n--------------\n`;
         // total score
         const totalScore = this.genes.reduce((acc, g) => acc + g.score, 0);
         this.genes.forEach(g => {
