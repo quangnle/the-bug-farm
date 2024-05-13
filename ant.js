@@ -9,8 +9,12 @@ class Ant{
         this.dy = Math.sin(this.angle);
         this.counter = 1;
         this.longevity = 100;
-        this.varationRate = 0.1;
-        this.pattern = pattern_null;
+        this.mutationRate = 0.1;
+        
+        this.pattern = pattern_default;
+        this.genes  = [];
+        // add the default pattern
+        this.genes.push({name: "default", pattern: pattern_default, "score": 90});
     }
 
     draw(){
@@ -26,6 +30,7 @@ class Ant{
                 minIndex = index;
             }
         });
+
         // if there is food, move towards it
         if(minIndex !== -1){
             const food = foods[minIndex];
@@ -34,7 +39,7 @@ class Ant{
             this.dx = cos(angle);
             this.dy = sin(angle);
         } else {
-            // make a random choice to change direction
+            // if there's no food, make a random choice to change direction
             if(random(1) < 0.05){       
                 const angle = random(PI/2) - PI/4;
                 this.angle += angle;

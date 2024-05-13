@@ -1,4 +1,4 @@
-const pattern_null = [[-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,0,0,0,0,0,-1,-1],[-1,0,0,0,0,0,0,0,-1],[-1,0,0,0,0,0,0,0,-1],[-1,0,0,0,0,0,0,0,-1],[-1,0,0,0,0,0,0,0,-1],[-1,0,0,0,0,0,0,0,-1],[-1,-1,0,0,0,0,0,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1]];
+const pattern_default = [[-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,0,0,0,0,0,-1,-1],[-1,0,0,0,0,0,0,0,-1],[-1,0,0,0,0,0,0,0,-1],[-1,0,0,0,0,0,0,0,-1],[-1,0,0,0,0,0,0,0,-1],[-1,0,0,0,0,0,0,0,-1],[-1,-1,0,0,0,0,0,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
 const pattern_line_1 = [[-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,0,0,0,0,0,-1,-1],[-1,1,1,1,1,1,1,1,-1],[-1,0,0,0,0,0,0,0,-1],[-1,1,1,1,1,1,1,1,-1],[-1,0,0,0,0,0,0,0,-1],[-1,1,1,1,1,1,1,1,-1],[-1,-1,0,0,0,0,0,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
@@ -16,4 +16,14 @@ const pattern_cross = [[-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,1,0,0,0,1,-1,-1],[-1,
 
 const pattern_Q = [[-1,-1,-1,-1,-1,-1,-1,-1,-1],[-1,-1,0,1,1,1,0,-1,-1],[-1,0,1,0,0,0,1,0,-1],[-1,1,0,0,0,0,0,1,-1],[-1,1,0,0,0,0,0,1,-1],[-1,0,1,0,0,0,1,0,-1],[-1,0,0,1,1,1,0,0,-1],[-1,-1,0,0,0,1,1,-1,-1],[-1,-1,-1,-1,-1,-1,-1,-1,-1]];
 
-const patterns = [pattern_null, pattern_line_1, pattern_line_2, pattern_star, pattern_heart, pattern_plus, pattern_cross, pattern_diamond, pattern_Q];
+const patterns = [
+    {name: "default", pattern: pattern_default, "score": 90},
+    {name: "line_1", pattern: pattern_line_1, "score": 40},
+    {name: "line_2", pattern: pattern_line_2, "score": 40},
+    {name: "star", pattern: pattern_star, "score": 15},
+    {name: "heart", pattern: pattern_heart, "score": 10},
+    {name: "plus", pattern: pattern_plus, "score": 30},
+    {name: "diamond", pattern: pattern_diamond, "score": 25},
+    {name: "cross", pattern: pattern_cross, "score": 30},
+    {name: "Q", pattern: pattern_Q, "score": 10}
+];
