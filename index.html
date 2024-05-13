@@ -3,19 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ant Nest</title>
+    <style>
+        body {
+            font-family: Calibri, sans-serif;
+            font-size: 12px;
+        }
+        h4 {
+            font-family: Calibri, sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p style="margin-bottom: 0; padding-bottom: 0;">Left click to add more food. Right click on an ant to remove it.</p>
+        <div id="sketch-holder"><canvas id="main-canvas"></canvas></div>
+    </div>
+    <div>
+        <div id="ant-info" style="border: 2px; border-color: black; background-color: aliceblue; width: 250px;"></div>
+    </div>
+
     <script src="patterns.js"></script>
-    <script src="evelution.js"></script>
+    <script src="evolution.js"></script>
     <script src="ant.js"></script>
     <script src="sketch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
+    function killAnAnt() {
+        if (colony.length > 1 && selectedAnt != -1) {
+            colony.splice(selectedAnt, 1);
+            selectedAnt = -1;
+        }
+    }
     </script>
-    <title>The Ant Nest</title>
-</head>
-<body>
-    <div>
-        <p>Left click to add more food. Right click on an ant to remove it.</p>
-    </div>
 </body>
 </html>

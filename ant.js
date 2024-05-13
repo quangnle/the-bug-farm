@@ -10,8 +10,8 @@ class Ant{
         this.counter = 1;
         this.longevity = 100;
         this.mutationRate = 0.1;
-        
-        this.pattern = pattern_default;
+
+        this.appearance = {name: "default", pattern: pattern_default, "score": 90};
         this.genes  = [];
         // add the default pattern
         this.genes.push({name: "default", pattern: pattern_default, "score": 90});
@@ -73,9 +73,9 @@ class Ant{
         // draw the pattern
         stroke(0);
         //strokeWeight(1.5);
-        for (let i = 0; i < this.pattern.length; i++) {
-            for (let j = 0; j < this.pattern.length; j++) {
-                if (this.pattern[j][i] === 1) {
+        for (let i = 0; i < this.appearance.pattern.length; i++) {
+            for (let j = 0; j < this.appearance.pattern.length; j++) {
+                if (this.appearance.pattern[j][i] === 1) {
                     point(i - this.size/2,j);
                 }
             }
@@ -91,5 +91,15 @@ class Ant{
             this.dx = cos(this.angle);
             this.dy = sin(this.angle);
         }
+    }
+
+    genesInfoString(){
+        let stGenes = "";
+        // total score
+        const totalScore = this.genes.reduce((acc, g) => acc + g.score, 0);
+        this.genes.forEach(g => {
+            stGenes += `${g.name} : ${g.score} (${Math.round(g.score/totalScore*100)}%) \n`;
+        });
+        return stGenes;
     }
 }

@@ -42,7 +42,7 @@ class Evolution {
         });
         // if there is a selected pattern, set it as the current pattern
         if (selectedPattern !== null) {
-            newAnt.pattern = selectedPattern.pattern;
+            newAnt.appearance = selectedPattern;
         }        
 
         return newAnt;
