@@ -9,7 +9,7 @@ class Ant{
         this.dy = Math.sin(this.angle);
         this.counter = 1;
         this.longevity = 100;
-        this.mutationRate = 0.5;
+        this.mutationRate = 0.1;
 
         this.appearance = {name: "default", pattern: pattern_default, "score": 90};
         this.genes  = [];
