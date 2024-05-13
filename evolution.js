@@ -11,6 +11,10 @@ class Evolution {
 
     static evolute(ant) {
         const newAnt = new Ant(ant.color, ant.x, ant.y, ant.size, ant.angle);
+        // copy all the genes from the parent
+        newAnt.genes = [...ant.genes];
+
+        // create a random value for mutation
         const randomValue = random(1);
 
         // proceed a chance for mutation
