@@ -1,6 +1,8 @@
-const mainCanvas = document.getElementById("main-canvas");
-const antInfo = document.getElementById("ant-info");
+const antColorBlock = document.getElementById("ant-color-block");
+const antColorLabel = document.getElementById("ant-color-label");
+const antGenesInfo = document.getElementById("ant-genes-info");
 
+const mainCanvas = document.getElementById("main-canvas");
 const width = 600;
 const height = 600;
 
@@ -21,7 +23,7 @@ function setup() {
 }
 
 function draw() {
-    background(color(80, 80, 0, 80));
+    background(color(140, 140, 0, 80));
     // draw the boundaries
     stroke("#000");
     strokeWeight(2);
@@ -82,12 +84,9 @@ function mousePressed() {
             const d = dist(mouseX, mouseY, ant.x, ant.y);
             if (d < ant.size) {
                 selectedAnt = index;
-                antInfo.innerHTML = `
-                <h4>Ant Info</h4>
-                <div style="float: left; width: 55px;"><div style="width: 50px; height: 50px; margin:2px; padding:0px; border:#f00; background-color: ${ant.color};"></div><p style="float:center">${ant.color}</p></div>
-                <textarea readonly rows="6">${ant.genesInfoString()}</textarea><br/>
-                <button id="killBtn" onclick="killAnAnt()">Kill it!</button>
-                `;
+                antColorBlock.style.backgroundColor = ant.color;
+                antColorLabel.innerHTML = ant.color;
+                antGenesInfo.innerHTML = ant.genesInfoString();
             }
         });
     }

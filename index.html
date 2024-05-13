@@ -13,15 +13,41 @@
             font-family: Calibri, sans-serif;
             font-size: 14px;
         }
+        h5 {
+            font-family: Calibri, sans-serif;
+            font-size: 12px;
+        }
+        button {
+            font-family: Calibri, sans-serif;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
-    <div>
-        <p style="margin-bottom: 0; padding-bottom: 0;">Left click to add more food. Right click on an ant to remove it.</p>
-        <div id="sketch-holder"><canvas id="main-canvas"></canvas></div>
-    </div>
-    <div>
-        <div id="ant-info" style="border: 2px; border-color: black; background-color: aliceblue; width: 250px;"></div>
+    <div style="display: flex;"></div>
+        <div name="game-area" style="float: left;">            
+            <div id="sketch-holder"><canvas id="main-canvas"></canvas></div>
+            <p style="margin-bottom: 0; padding-bottom: 0;">Left click on an ant to select it. Right click to add more food</p>
+        </div>
+        <div name="control-area" style="float: left;">
+            <div style="background-color: aliceblue; width: 250px; padding-top: 0px;"> 
+                <h4 style="text-align: center; background-color: aquamarine;">Player Info - Legos</h4>                
+                <p id="player-money">Money: $100</p>
+                <p id="capacity">Capacity: 100</p>
+                <p id="player-food">Food left: 10</p>
+                <p id="population">Population: 1</p>
+            </div>
+            <div style="background-color: aliceblue; width: 250px; padding-top: 0px;"> 
+                <h4 style="text-align: center; background-color: aquamarine;">Ant Info</h4>
+                <div style="float: left; width: 55px; padding:2px">
+                    <div id="ant-color-block" style="width: 50px; height: 50px; margin:2px; padding:0px; border:#000; background-color: white;"></div>
+                    <p id="ant-color-label" style="text-align:center"></p>
+                </div>
+                <textarea id="ant-genes-info" readonly rows="6"></textarea><br/>
+                <button id="kill-btn" style="margin-left: 2px;" onclick="sellAnAnt()">Sell it</button>
+                <button id="bring-to-market">Bring it the market</button>
+            </div>                        
+        </div>
     </div>
 
     <script src="patterns.js"></script>
@@ -31,7 +57,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
-    function killAnAnt() {
+    function sellAnAnt() {
         if (colony.length > 1 && selectedAnt != -1) {
             colony.splice(selectedAnt, 1);
             selectedAnt = -1;
