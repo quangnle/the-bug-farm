@@ -47,22 +47,37 @@
                 <button id="kill-btn" style="margin-left: 2px;" onclick="sellAnAnt()">Sell it</button>
                 <button id="bring-to-market">Bring it to the market</button>
             </div>                        
-        </div>
+            <div style="background-color: aliceblue; width: 250px; padding-top: 0px;">
+                <h4 style="text-align: center; background-color: aquamarine;">Flower Config</h4>
+                <p>Pistil Color: <input type="color" id="flower-color" value="#ff0000"></p>
+                <p>Petal Color: <input type="color" id="petal-color" value="#ffffff"></p>
+                <button id="plan-btn" onclick="plan()">Plan a flower</button>
+            </div>
+        </div>        
     </div>
 
     <script src="patterns.js"></script>
     <script src="evolution.js"></script>
     <script src="ant.js"></script>
+    <script src="flower.js"></script>
+    <script src="land.js"></script>    
     <script src="sketch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
 
     function sellAnAnt() {
-        if (colony.length > 1 && selectedAnt != -1) {
-            colony.splice(selectedAnt, 1);
+        if (land.colony.length > 1 && selectedAnt != -1) {
+            land.colony.splice(selectedAnt, 1);
             selectedAnt = -1;
         }
+    }
+
+    function plan() {        
+        const pistilColor = document.getElementById("flower-color").value;
+        const petalColor = document.getElementById("petal-color").value;
+        let flower = new Flower(land.x + Math.random() * land.width, land.y + Math.random()*land.height, 5, pistilColor, 8, petalColor, 5);
+        land.addObject(flower);
     }
     </script>
 </body>

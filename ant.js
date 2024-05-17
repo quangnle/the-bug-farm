@@ -17,9 +17,7 @@ class Ant{
         this.genes.push({name: "default", pattern: pattern_default, "score": 90});
     }
 
-    draw(){
-        push();
-        
+    move(foods, boundaries, obstacles){
         // make the ant move towards the nearest food
         let minDist = 150;
         let minIndex = -1;
@@ -52,6 +50,29 @@ class Ant{
         this.x += this.dx;
         this.y += this.dy;
 
+        //check hit the obstacle left or right or top or bottom
+        obstacles.forEach((obstacle) => {
+            if(this.x > obstacle.left && this.x < obstacle.right && this.y > obstacle.top && this.y < obstacle.bottom){
+                this.x = constrain(this.x, obstacle.left, obstacle.right);
+                this.y = constrain(this.y, obstacle.top, obstacle.bottom);
+                this.angle += PI;
+                this.dx = cos(this.angle);
+                this.dy = sin(this.angle);
+            }            
+        });
+
+        //check hit the walls
+        if(this.x < boundaries.left + this.size || this.x > boundaries.right - this.size || this.y < boundaries.top + this.size || this.y > boundaries.bottom - this.size){
+            this.x = constrain(this.x, 0, width);
+            this.y = constrain(this.y, 0, height);
+            this.angle += PI;
+            this.dx = cos(this.angle);
+            this.dy = sin(this.angle);
+        }        
+    }
+
+    draw(){
+        push();       
         // draw the ant
         translate(this.x, this.y);
         rotate(this.angle + PI/2);
@@ -82,15 +103,6 @@ class Ant{
         }
         
         pop();
-
-        //check hit the wall
-        if(this.x < 0 || this.x > width || this.y < 0 || this.y > height){
-            this.x = constrain(this.x, 0, width);
-            this.y = constrain(this.y, 0, height);
-            this.angle += PI;
-            this.dx = cos(this.angle);
-            this.dy = sin(this.angle);
-        }
     }
 
     genesInfoString(){
