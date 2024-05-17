@@ -104,7 +104,7 @@ class Land{
                 const petalSize = parseInt(document.getElementById("petal-size").value);
 
                 const flower = new Flower(mouseX, mouseY, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
-                this.objects.push(flower);
+                this.addObject(flower);
             }
         }
     
