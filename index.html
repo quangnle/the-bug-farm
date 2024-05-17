@@ -30,9 +30,9 @@
             <p style="margin-bottom: 0; padding-bottom: 0;">Left click on an ant to select it. Right click to add more food or to plant a flower.</p>
         </div>
         <div name="control-area" style="float: left;">
-            <ul>
-                <li style="display: block; background-color: aliceblue; width: 250px;">
-                    <h4 style="text-align: center; background-color: coral">Player Info - Legos</h4>                
+            <ul style="padding: 0px; margin:0px;">
+                <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
+                    <h4 style="text-align: center; background-color: coral; margin-top:0px; margin-bottom: 3px;">Player Info - Legos</h4>                
                     <ul style="list-style-type: none; padding-left: 10px;">
                         <li>Money: <span style="margin-right: 2px;">$100</span></li>
                         <li>Capacity: <span style="margin-right: 2px;">100</span></li>
@@ -40,23 +40,23 @@
                         <li>Population: <span style="margin-right: 2px;">1</span></li>
                     </ul>
                 </li>
-                <li style="display: block; background-color: aliceblue; width: 250px;">
-                    <h4 style="text-align: center; background-color: coral;">Ant Info</h4>
+                <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
+                    <h4 style="text-align: center; background-color: coral; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Ant Info</h4>
                     <div style="float: left; width: 55px; padding:2px">
-                        <div id="ant-color-block" style="width: 50px; height: 50px; margin:2px; padding:-1px; border:#000; background-color: white; border-width: 2px;"></div>
+                        <div id="ant-color-block" style="border-color: #000; width: 50px; height: 50px; margin:2px; padding:-1px; background-color: white; border-width: 2px;"></div>
                         <p id="ant-color-label" style="text-align:center"></p>
                     </div>
                     <div>
                         <ul style="list-style: none;">
-                            <li style="display: block;">Ant genes:</li>
+                            <li style="display: block; text-align: right; padding-right: 20px;">Ant genes</li>
                             <li style="display: block;"><textarea id="ant-genes-info" readonly rows="10" cols="20"></textarea>    </li>
                         </ul>
                     </div>
                     <button id="kill-btn" style="margin-left: 2px;" onclick="sellAnAnt()">Sell it</button>
                     <button id="bring-to-market">Bring it to the market</button>
                 </li>
-                <li style="display: block; background-color: aliceblue; width: 250px;">
-                    <h4 style="text-align: center; background-color: coral;">Flower Config</h4>
+                <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
+                    <h4 style="text-align: center; background-color: coral; margin-top:0px; margin-bottom: 3px;">Flower Config</h4>
                     <ul style="list-style-type: none; padding: 5px;">
                         <li>Number of petals: <input type="number" id="petal-number" value="5" min="5" max="8" style="width: 25px;"></li>
                         <li>
