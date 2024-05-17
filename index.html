@@ -27,7 +27,7 @@
     <div style="display: flex;"></div>
         <div name="game-area" style="float: left;">            
             <div id="sketch-holder"><canvas id="main-canvas"></canvas></div>
-            <p style="margin-bottom: 0; padding-bottom: 0;">Left click on an ant to select it. Right click to add more food</p>
+            <p style="margin-bottom: 0; padding-bottom: 0;">Left click on an ant to select it. Right click to add more food or to plant a flower.</p>
         </div>
         <div name="control-area" style="float: left;">
             <div style="background-color: aliceblue; width: 250px; padding-top: 0px;"> 
@@ -49,8 +49,15 @@
             </div>                        
             <div style="background-color: aliceblue; width: 250px; padding-top: 0px;">
                 <h4 style="text-align: center; background-color: aquamarine;">Flower Config</h4>
-                <p>Pistil Color: <input type="color" id="flower-color" value="#ff0000"></p>
-                <p>Petal Color: <input type="color" id="petal-color" value="#ffffff"></p>
+                <p style="margin: 1px;">Number of petals: <input type="number" id="petal-number" value="5" min="5" max="8" style="width: 25px;"></p>
+                <div style="display:flex; margin:0px;">
+                    <p style="float:left">Pistil Color: <input type="color" id="pistil-color" value="#ff0000"></p>
+                    <p style="float:left; margin-left: 10px;">Size: <input type="number" id="pistil-size" value="5" min="3" max="7" style="width: 25px;"></p>                
+                </div>
+                <div style="display:flex; margin:0px;">
+                    <p style="float:left">Petal Color: <input type="color" id="petal-color" value="#ffffff"></p>
+                    <p style="float:left; margin-left: 10px;">Size: <input type="number" id="petal-size" value="5" min="3" max="7" style="width: 25px;"></p>
+                </div>
                 <button id="plan-btn" onclick="plan()">Plan a flower</button>
             </div>
         </div>        
@@ -61,6 +68,7 @@
     <script src="ant.js"></script>
     <script src="flower.js"></script>
     <script src="land.js"></script>    
+    <script src="control-panel.js"></script>  
     <script src="sketch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script>
@@ -74,9 +82,15 @@
     }
 
     function plan() {        
-        const pistilColor = document.getElementById("flower-color").value;
+        const petalNumber = document.getElementById("petal-number").value;
+
+        const pistilColor = document.getElementById("pistil-color").value;
+        const pistilSize = document.getElementById("pistil-size").value;
+
         const petalColor = document.getElementById("petal-color").value;
-        let flower = new Flower(land.x + Math.random() * land.width, land.y + Math.random()*land.height, 5, pistilColor, 8, petalColor, 5);
+        const petalSize = document.getElementById("petal-size").value;
+
+        let flower = new Flower(land.x + Math.random() * land.width, land.y + Math.random()*land.height, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
         land.addObject(flower);
     }
     </script>

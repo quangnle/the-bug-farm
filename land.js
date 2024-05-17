@@ -12,7 +12,7 @@ class Land{
         this.foods = [];
         this.objects = [];
         this.obstacles = [];
-        this.mode = "playing";
+        this.mode = "feed";
     }
 
     addObject(obj){
@@ -25,10 +25,9 @@ class Land{
 
     draw(){        
         // draw the boundaries
-        background(this.color);
         stroke(0);
         strokeWeight(2);
-        noFill();
+        fill(this.color);
         rect(this.x, this.y, this.width, this.height);
         strokeWeight(1);
 
@@ -42,10 +41,8 @@ class Land{
         const colony = this.colony;
         // draw ants
         colony.forEach((ant, index) => {     
-            // update the ant
-            if(this.mode === "playing") {
-                ant.move(this.foods, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, this.obstacles); 
-            }            
+            // update the ant's position
+            ant.move(this.foods, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, this.obstacles); 
 
             // draw the selected ant
             ant.draw();
@@ -86,7 +83,29 @@ class Land{
         if (mouseButton === RIGHT) {
             // check if mouse position is out of the canvas
             if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return;
-            land.foods.push({x: mouseX, y: mouseY});
+            
+            // check if mouse position is on an obstacle
+            let isOnObstacle = false;
+            this.obstacles.forEach(obstacle => {
+                if (mouseX > obstacle.left && mouseX < obstacle.right && mouseY > obstacle.top && mouseY < obstacle.bottom) {
+                    isOnObstacle = true;
+                }
+            });
+            if (isOnObstacle) return;
+
+            if (this.mode === "feed") this.foods.push({x: mouseX, y: mouseY});
+            else if (this.mode === "plant") {
+                const petalNumber = parseInt(document.getElementById("petal-number").value);
+
+                const pistilColor = document.getElementById("pistil-color").value;
+                const pistilSize = parseInt(document.getElementById("pistil-size").value);
+
+                const petalColor = document.getElementById("petal-color").value;                
+                const petalSize = parseInt(document.getElementById("petal-size").value);
+
+                const flower = new Flower(mouseX, mouseY, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
+                this.objects.push(flower);
+            }
         }
     
         // left click on the ant to select it
