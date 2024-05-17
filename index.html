@@ -43,7 +43,7 @@
                 <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
                     <h4 style="text-align: center; background-color: coral; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Ant Info</h4>
                     <div style="float: left; width: 55px; padding:2px">
-                        <div id="ant-color-block" style="border-color: #000; width: 50px; height: 50px; margin:2px; padding:-1px; background-color: white; border-width: 2px;"></div>
+                        <canvas id="ant-pattern-canvas" width="50" height="50"></canvas>
                         <p id="ant-color-label" style="text-align:center"></p>
                     </div>
                     <div>
@@ -88,6 +88,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // draw the pattern of the selected ant on the ant-color-canvas
+    function drawAntPatternCanvas() {
+        let canvas = document.getElementById("ant-pattern-canvas");
+        let ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);        
+        let ant = land.colony[selectedAnt];
+        let pattern = ant.appearance.pattern;
+        let size = 50 / pattern.length;
+        for (let i = 0; i < pattern.length; i++) {
+            for (let j = 0; j < pattern[i].length; j++) {
+                if (pattern[i][j] === 0) {
+                    ctx.fillStyle = ant.color;
+                } else {
+                    ctx.fillStyle = "black";
+                }
+                ctx.fillRect(j*size, i*size, size, size);
+            }
+        }
+    }
 
     function sellAnAnt() {
         if (land.colony.length > 1 && selectedAnt != -1) {

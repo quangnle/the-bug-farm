@@ -1,4 +1,4 @@
-const antColorBlock = document.getElementById("ant-color-block");
+//const antColorBlock = document.getElementById("ant-color-block");
 const antColorLabel = document.getElementById("ant-color-label");
 const antGenesInfo = document.getElementById("ant-genes-info");
 
@@ -30,6 +30,9 @@ function mousePressed() {
     // check if the mouse is on the land
     if (mouseY < width) {
         land.mousePressed(mouseButton, mouseX, mouseY);
+        if (selectedAnt > -1) {
+            drawAntPatternCanvas();    
+        }
     }
 
     // check if the mouse is on the control panel

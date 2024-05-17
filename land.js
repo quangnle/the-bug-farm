@@ -114,7 +114,7 @@ class Land{
                 const d = dist(mouseX, mouseY, ant.x, ant.y);
                 if (d < ant.size) {
                     selectedAnt = index;
-                    antColorBlock.style.backgroundColor = ant.color;
+                    //antColorBlock.style.backgroundColor = ant.color;
                     antColorLabel.innerHTML = ant.color;
                     antGenesInfo.innerHTML = ant.genesInfoString();
                 }
