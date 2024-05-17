@@ -24,13 +24,13 @@
     </style>
 </head>
 <body>
-    <div style="display: flex;"></div>
-        <div name="game-area" style="float: left;">            
+    <ul style="list-style-type: none;">
+        <li name="game-area" style="display: inline-block;">
             <div id="sketch-holder"><canvas id="main-canvas"></canvas></div>
             <p style="margin-bottom: 0; padding-bottom: 0;">Left click on an ant to select it. Right click to add more food or to plant a flower.</p>
-        </div>
-        <div name="control-area" style="float: left;">
-            <ul>
+        </li>
+        <li name="control-area" style="display: inline-block;">
+            <ul style="margin-top: 0px;">
                 <li style="display: block; background-color: aliceblue; width: 250px;">
                     <h4 style="text-align: center; background-color: coral">Player Info - Legos</h4>                
                     <ul style="list-style-type: none; padding-left: 10px;">
@@ -75,8 +75,8 @@
                     <button id="plan-btn" style="margin-left: 2px;" onclick="plan()">Plan a flower at random spot</button>
                 </li>
             </ul>
-        </div>        
-    </div>
+        </li>        
+    </ul>
 
     <script src="patterns.js"></script>
     <script src="evolution.js"></script>

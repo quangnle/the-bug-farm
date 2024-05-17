@@ -3,8 +3,8 @@ const antColorLabel = document.getElementById("ant-color-label");
 const antGenesInfo = document.getElementById("ant-genes-info");
 
 const mainCanvas = document.getElementById("main-canvas");
-const width = 600;
-const height = 630;
+const width = 800;
+const height = 830;
 
 
 const antSize = 9;
