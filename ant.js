@@ -46,16 +46,12 @@ class Ant{
             }
         }
 
-        // update position
-        this.x += this.dx;
-        this.y += this.dy;
-
         //check hit the obstacle left or right or top or bottom
         obstacles.forEach((obstacle) => {
             if(this.x > obstacle.left && this.x < obstacle.right && this.y > obstacle.top && this.y < obstacle.bottom){
                 this.x = constrain(this.x, obstacle.left, obstacle.right);
                 this.y = constrain(this.y, obstacle.top, obstacle.bottom);
-                this.angle += PI;
+                this.angle += PI/2 + random(PI/2);
                 this.dx = cos(this.angle);
                 this.dy = sin(this.angle);
             }            
@@ -68,7 +64,11 @@ class Ant{
             this.angle += PI;
             this.dx = cos(this.angle);
             this.dy = sin(this.angle);
-        }        
+        }     
+
+        // update position
+        this.x += this.dx;
+        this.y += this.dy;   
     }
 
     draw(){
