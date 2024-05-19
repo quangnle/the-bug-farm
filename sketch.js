@@ -7,7 +7,7 @@ const width = 800;
 const height = 830;
 
 
-const antSize = 9;
+const antSize = 15;
 const firstAnt = new Ant("#000", 100, 100, antSize, 0);
 let selectedAnt = -1;
 

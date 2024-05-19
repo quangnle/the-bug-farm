@@ -10,7 +10,6 @@ class Ant{
         this.counter = 1;
         this.longevity = 100;
         this.mutationRate = 0.1;
-
         this.appearance = {name: "default", pattern: pattern_default, "score": 90};
         this.genes  = [];
         // add the default pattern
@@ -20,18 +19,11 @@ class Ant{
     move(foods, boundaries, obstacles){
         // make the ant move towards the nearest food
         let minDist = 150;
-        let minIndex = -1;
-        foods.forEach((food, index) => {
-            const d = dist(this.x, this.y, food.x, food.y);
-            if(d < minDist){
-                minDist = d;
-                minIndex = index;
-            }
-        });
+        const aroundFoods = foods.filter(food => dist(this.x, this.y, food.x, food.y) < minDist);        
 
-        // if there is food, move towards it
-        if(minIndex !== -1){
-            const food = foods[minIndex];
+        // if there is food, move towards to a random one
+        if(aroundFoods.length > 0){
+            const food = aroundFoods[0];
             const angle = atan2(food.y - this.y, food.x - this.x);
             this.angle = angle;
             this.dx = cos(angle);
@@ -79,7 +71,7 @@ class Ant{
         
         // draw the head
         fill(50);
-        ellipse(0, -this.size * 0.4, this.size * 0.75, this.size * 0.75);
+        ellipse(0, -this.size * 0.4, this.size * 0.7, this.size * 0.7);
 
         // draw 2 dots on the head to represent eyes
         stroke(150);        
@@ -100,9 +92,25 @@ class Ant{
                     point(i - this.size/2,j);
                 }
             }
-        }
-        
+        }        
         pop();
+
+        // draw moving legs
+        const legLength = this.size * 0.5;
+        push();
+        translate(this.x, this.y);
+        rotate(this.angle + PI/2);
+        stroke(0);
+        strokeWeight(1);
+        line(-legLength, this.counter1, legLength, -this.counter1);
+        line(-legLength, this.counter2, legLength, -this.counter2);
+        line(-legLength, this.counter3, legLength, -this.counter3);
+        pop();
+
+        this.counter1 = this.size * 0.5 * sin(frameCount * 0.1);
+        this.counter2 = this.size * 0.5 * sin(frameCount * 0.1 + PI/3);
+        this.counter3 = this.size * 0.5 * sin(frameCount * 0.1 + PI/3*2);
+
     }
 
     genesInfoString(){
