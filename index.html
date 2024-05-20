@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Ant Nest</title>
+    <title>The Bug Farm</title>
     <style>
         body {
             font-family: Calibri, sans-serif;
@@ -27,7 +27,7 @@
     <div style="display: flex; column-count: 2; column-gap: 0px;">
         <div name="game-area" style="float: left; width: auto;">            
             <div id="sketch-holder"><canvas id="main-canvas"></canvas></div>
-            <p style="margin-bottom: 0; padding-bottom: 0;">Left click on an ant to select it. Right click to add more food or to plant a flower.</p>
+            <p style="margin-bottom: 0; padding-bottom: 0;">Left click on a bug to select it. Right click to add more food or to plant a flower.</p>
         </div>
         <div name="control-area" style="float: left;">
             <ul style="padding: 0px; margin:0px;">
@@ -41,14 +41,14 @@
                     </ul>
                 </li>
                 <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
-                    <h4 style="text-align: center; background-color: coral; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Ant Info</h4>
+                    <h4 style="text-align: center; background-color: coral; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Bug Info</h4>
                     <div style="float: left; width: 55px; padding:2px">
                         <canvas id="ant-pattern-canvas" width="50" height="50"></canvas>
                         <p id="ant-color-label" style="text-align:center"></p>
                     </div>
                     <div>
                         <ul style="list-style: none;">
-                            <li style="display: block; text-align: right; padding-right: 20px;">Ant genes</li>
+                            <li style="display: block; text-align: right; padding-right: 20px;">Bug genes</li>
                             <li style="display: block;"><textarea id="ant-genes-info" readonly rows="10" cols="20"></textarea>    </li>
                         </ul>
                     </div>
