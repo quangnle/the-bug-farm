@@ -100,7 +100,8 @@ class Ant{
         //strokeWeight(1.5);
         for (let i = 0; i < this.appearance.pattern.length; i++) {
             for (let j = 0; j < this.appearance.pattern.length; j++) {
-                if (this.appearance.pattern[j][i] === 1) {
+                if (this.appearance.pattern[j][i] !== -1 && this.appearance.pattern[j][i] !== 0) {
+                    stroke(this.appearance.pattern[j][i]);
                     point(i - this.size/2, j - this.size/2);
                 }
             }

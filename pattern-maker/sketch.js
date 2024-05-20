@@ -28,10 +28,9 @@ function drawAnt(x, y, size, color){
     //strokeWeight(1.5);
     for (let i = 0; i < pattern.length; i++) {
         for (let j = 0; j < pattern.length; j++) {
-            if (pattern[j][i] === 1) {
-                fill(0);
+            if (pattern[j][i] !== 0 && pattern[j][i] !== -1) {
+                stroke(pattern[j][i]);
                 point(i - size/2, j - size/2);
-                //ellipse(i - size/2, j - size/2, 5, 5);
             }
         }
     }        
@@ -45,34 +44,44 @@ function draw(){
     for (let i = 0; i < pattern.length; i++){
         for (let j = 0; j < pattern[i].length; j++){
             if (pattern[i][j] === -1){
-                fill("#000");
+                fill("#f88");
+                rect(j * rectSize, i * rectSize, rectSize, rectSize);
+
+                //draw 2 cross lines
+                stroke(0);
+                line(j * rectSize, i * rectSize, (j + 1) * rectSize, (i + 1) * rectSize);
+                line((j + 1) * rectSize, i * rectSize, j * rectSize, (i + 1) * rectSize);
+                
             } else if (pattern[i][j] === 0){
                 fill(255);
+                rect(j * rectSize, i * rectSize, rectSize, rectSize);
             } else {
-                fill(0);
+                fill(pattern[i][j]);
+                rect(j * rectSize, i * rectSize, rectSize, rectSize);
             }
-            rect(j * rectSize, i * rectSize, rectSize, rectSize);
         }
     }
 
     // draw the ant
-    drawAnt(height + 10, 20, pattern[0].length, "#f00");    
+    drawAnt(height + pattern[0].length, pattern[0].length, pattern[0].length, "#f00");    
 }
 
-function mousePressed(){
-    if (pattern &&  pattern.length>0){
+function mouseDragged(){
+    if (mouseButton === LEFT){
         const rectSize = height / pattern[0].length;
         const i = Math.floor(mouseY / rectSize);
         const j = Math.floor(mouseX / rectSize);
         //boundary check
-        if (i < 0 || i >= pattern.length || j < 0 || j >= pattern[i].length){
-            return;
-        }
-    
-        if (pattern[i][j] === 0){
-            pattern[i][j] = 1;
-        } else if (pattern[i][j] === 1){
-            pattern[i][j] = 0;
-        }
+        if (i < 0 || i >= pattern.length || j < 0 || j >= pattern[i].length || pattern[i][j] === -1) return;
+
+        pattern[i][j] = selectedColor;
+    } else if (mouseButton === RIGHT){
+        const rectSize = height / pattern[0].length;
+        const i = Math.floor(mouseY / rectSize);
+        const j = Math.floor(mouseX / rectSize);
+        //boundary check
+        if (i < 0 || i >= pattern.length || j < 0 || j >= pattern[i].length || pattern[i][j] === -1) return;
+
+        pattern[i][j] = 0;
     }
 }

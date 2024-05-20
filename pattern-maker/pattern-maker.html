@@ -9,17 +9,21 @@
 <body>
     <h1>Pattern Maker</h1>
     <div name="left-column" style="float: left; width: 450px;">
-        <div>
-            <input id="pattern-size" type="number" value="9" min="9" max="20" style="width: 40px;">
+        <div style="margin-bottom: 10px;">
+            <input id="pattern-size" type="number" value="20" min="9" max="20" style="width: 40px;">
             <button onclick="generateDefaultPattern()">Refresh</button> 
         </div>
         <div id="sketch-holder">        
             <canvas id="canvasArea"></canvas>
+            <!-- color picker -->
+            <input type="color" id="color-picker" onchange="updateColor();" value="#000000">
         </div>  
     </div>
-    <div name="right-column" style="float: left;"></div>
-        <input id="pattern-name" type="text" placeholder="pattern name">
-        <button onclick="exportArray()">Export</button></div>        
+    <div name="right-column" style="float: left;">
+        <ul style="list-style-type: none; margin-left: 0px; padding-left: 0px;">
+            <li style="display: inline;"><input id="pattern-name" type="text" placeholder="pattern name"></li>
+            <li style="display: inline;"><button onclick="exportArray()">Export</button></li>
+        </ul>    
         <textarea id="code" rows="10" cols="60"></textarea>
         <p><i>Copy this code & paste into 'patterns.js' file of the main project</i></p>
     </div>
@@ -27,8 +31,14 @@
     <script src="sketch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
 
         let pattern = [];
+        let selectedColor = document.getElementById("color-picker").value;
+
+        function updateColor(){
+            selectedColor = document.getElementById("color-picker").value;
+        }
 
         function generateDefaultPattern(){
             // get value of the pattern size
