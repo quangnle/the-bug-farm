@@ -4,15 +4,14 @@
 Ant farming game in the Idle Game genre. Players will raise lady bugs  by feeding them and creating new, more beautiful species to sell.
 
 ## Features
-- Left click to select a bug
-- Right click to view info
-- Feed the bug
+- Left click to select a bug in normal mode
+- Right click to plant a flow in plant mode
 - Evolution with mutation applied
+- A flower will produce pollen to attract bugs after a period of time (spawning time)
+- The bug will change its color to the color of the flower it eats the pollen from
 
 ## TBD
-- A flower will produce honey spot to attract bugs affter a period of time
-- A flower has lifetime equals to the number of noey spawning times 
-- The bug will change its color to the color of the flower it eats the honey from
+- Left click to select a flower in plant mode, detele a selected flower
 - Update the pattern maker tool
 - Allow users to customize their own pattern and put into the gene of a bug (with a probability rate applied)
 

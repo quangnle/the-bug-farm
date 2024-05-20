@@ -1,5 +1,5 @@
-const maxPopulation = 50;
-const distanceToReachFood = 5;
+const maxPopulation = 30;
+const distanceToReachFood = 10;
 
 class Land{
     constructor(x, y, width, height, color){
