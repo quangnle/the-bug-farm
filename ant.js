@@ -7,27 +7,43 @@ class Ant{
         this.angle = angle;
         this.dx = Math.cos(this.angle);
         this.dy = Math.sin(this.angle);
-        this.counter = 1;
-        this.longevity = 100;
+        this.hunger = 500;
         this.mutationRate = 0.1;
         this.appearance = {name: "default", pattern: pattern_default, "score": 90};
         this.genes  = [];
         // add the default pattern
-        this.genes.push({name: "default", pattern: pattern_default, "score": 90});
+        this.genes.push({name: "default", pattern: pattern_default, "score": 90});        
+    }
+
+    getBoundingBox(){
+        return {left: this.x - this.size/2, right: this.x + this.size/2, top: this.y - this.size/2, bottom: this.y + this.size/2};
     }
 
     move(foods, boundaries, obstacles){
-        // make the ant move towards the nearest food
-        let minDist = 150;
-        const aroundFoods = foods.filter(food => dist(this.x, this.y, food.x, food.y) < minDist);        
+        // check colliding with the walls
+        const boundingBox = this.getBoundingBox();
+        if(boundingBox.left < boundaries.left || boundingBox.right > boundaries.right || boundingBox.top < boundaries.top || boundingBox.bottom > boundaries.bottom){
+            this.x = constrain(this.x, 0, width);
+            this.y = constrain(this.y, 0, height);
+            this.angle += PI/2 + random(0, PI/2);
+            this.dx = cos(this.angle);
+            this.dy = sin(this.angle);
+        }
 
-        // if there is food, move towards to a random one
-        if(aroundFoods.length > 0){
-            const food = aroundFoods[0];
-            const angle = atan2(food.y - this.y, food.x - this.x);
-            this.angle = angle;
-            this.dx = cos(angle);
-            this.dy = sin(angle);
+        // decrease the hungry counter
+        this.hunger --;
+        if(this.hunger <= 0){
+            // make the ant move towards the nearest food
+            let minDist = 150;
+            const aroundFoods = foods.filter(food => dist(this.x, this.y, food.x, food.y) < minDist);            
+            // if there is food, move towards to a random one
+            if(aroundFoods.length > 0){
+                const food = aroundFoods[0];
+                const angle = atan2(food.y - this.y, food.x - this.x);
+                this.angle = angle;
+                this.dx = cos(angle);
+                this.dy = sin(angle);
+            }
         } else {
             // if there's no food, make a random choice to change direction
             if(random(1) < 0.05){       
@@ -38,25 +54,15 @@ class Ant{
             }
         }
 
-        //check hit the obstacle left or right or top or bottom
-        obstacles.forEach((obstacle) => {
-            if(this.x > obstacle.left && this.x < obstacle.right && this.y > obstacle.top && this.y < obstacle.bottom){
-                this.x = constrain(this.x, obstacle.left, obstacle.right);
-                this.y = constrain(this.y, obstacle.top, obstacle.bottom);
-                this.angle += PI/2 + random(PI/2);
-                this.dx = cos(this.angle);
-                this.dy = sin(this.angle);
-            }            
-        });
-
-        //check hit the walls
-        if(this.x < boundaries.left + this.size || this.x > boundaries.right - this.size || this.y < boundaries.top + this.size || this.y > boundaries.bottom - this.size){
-            this.x = constrain(this.x, 0, width);
-            this.y = constrain(this.y, 0, height);
-            this.angle += PI;
-            this.dx = cos(this.angle);
-            this.dy = sin(this.angle);
-        }     
+        // // check hit the obstacle by boundingbox check
+        // const boundingBox = this.getBoundingBox();
+        // obstacles.forEach((obstacle) => {
+        //     if(boundingBox.right > obstacle.left && boundingBox.left < obstacle.right && boundingBox.bottom > obstacle.top && boundingBox.top < obstacle.bottom){
+        //         this.angle += PI;
+        //         this.dx = cos(this.angle);
+        //         this.dy = sin(this.angle);
+        //     }            
+        // });
 
         // update position
         this.x += this.dx;
@@ -82,7 +88,6 @@ class Ant{
         stroke(0);
         fill(this.color);
         ellipse(0, 0, this.size, this.size);
-        line(0, this.size*-0.5, 0, this.size * 0.5);
         
         // draw the pattern
         stroke(0);

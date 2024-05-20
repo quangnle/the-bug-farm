@@ -117,13 +117,13 @@
     }
 
     function plan() {        
-        const petalNumber = document.getElementById("petal-number").value;
+        const petalNumber = document.getElementById("petal-number").value * 1;
 
         const pistilColor = document.getElementById("pistil-color").value;
-        const pistilSize = document.getElementById("pistil-size").value;
+        const pistilSize = document.getElementById("pistil-size").value * 1;
 
         const petalColor = document.getElementById("petal-color").value;
-        const petalSize = document.getElementById("petal-size").value;
+        const petalSize = document.getElementById("petal-size").value * 1;
 
         let flower = new Flower(land.x + Math.random() * land.width, land.y + Math.random()*land.height, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
         land.addObject(flower);

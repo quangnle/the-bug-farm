@@ -9,10 +9,10 @@ class Land{
         this.height = height;
         this.color = color;
         this.colony = [];
-        this.foods = [];
         this.objects = [];
         this.obstacles = [];
         this.mode = "feed";
+        this.boundingBox = false;
     }
 
     addObject(obj){
@@ -31,24 +31,28 @@ class Land{
         rect(this.x, this.y, this.width, this.height);
         strokeWeight(1);
 
-        const foods = this.foods;
-        // draw food
-        foods.forEach(food => {
-            fill("#fff");
-            ellipse(food.x, food.y, 4, 4);
-        });
+        const flowers = this.objects.filter(obj => obj instanceof Flower);
+        const flowersWithPollens = flowers.filter(flower => flower.hasPollen);
 
         const colony = this.colony;
         // draw ants
         colony.forEach((ant, index) => {     
             // update the ant's position
-            ant.move(this.foods, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, this.obstacles); 
+            ant.move(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, this.obstacles); 
 
-            // draw the selected ant
+            // draw the ant's bounding box
+            if (this.boundingBox) {
+                noFill();
+                stroke("#f00");
+                rect(ant.x - ant.size/2, ant.y - ant.size/2, ant.size, ant.size);
+                stroke("#000");
+            }            
+
+            // draw the ant
             ant.draw();
+
             // draw a circle around the selected ant
-            const cursorSize = (ant.size * 1.5) + 3 * Math.sin(frameCount/10);
-    
+            const cursorSize = (ant.size * 1.5) + 3 * Math.sin(frameCount/10);    
             if (selectedAnt === index) {
                 noFill();
                 stroke("#000");
@@ -56,17 +60,19 @@ class Land{
             }
     
             // check if the ant is on a food item, then create new Ant and remove the food item
-            foods.forEach((food, index) => {
-                const d = dist(ant.x, ant.y, food.x, food.y);            
-                if (d <= distanceToReachFood) {
-                    // remove the food item
-                    foods.splice(index, 1);
+            flowersWithPollens.forEach(flower => {
+                const d = dist(ant.x, ant.y, flower.x, flower.y);            
+                if (d <= distanceToReachFood && flower.hasPollen) {
+                    // remove the pollen from the flower
+                    flower.hasPollen = false;
+                    ant.color = flower.pistilColor;
+                    ant.hunger = 500;
     
                     // check if the colony is full
                     if (colony.length >= maxPopulation) return;
     
                     // else, evolution to make a new ant
-                    const newAnt = Evolution.evolute(ant);                 
+                    const newAnt = Evolution.evolute(ant, flower.pistilColor);                 
                     colony.push(newAnt);
                 }
             });
@@ -74,6 +80,12 @@ class Land{
 
         // draw objects
         this.objects.forEach(object => {
+            if (this.boundingBox && object.boundaries) {
+                noFill();
+                stroke("#f00");                
+                rect(object.boundaries.left, object.boundaries.top, object.boundaries.right - object.boundaries.left, object.boundaries.bottom - object.boundaries.top);
+                stroke("#000");
+            }
             object.draw();
         });
     }
@@ -93,7 +105,9 @@ class Land{
             });
             if (isOnObstacle) return;
 
-            if (this.mode === "feed") this.foods.push({x: mouseX, y: mouseY});
+            if (this.mode === "feed") {
+                // does nothing
+            } 
             else if (this.mode === "plant") {
                 const petalNumber = parseInt(document.getElementById("petal-number").value);
 

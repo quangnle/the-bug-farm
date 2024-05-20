@@ -7,6 +7,14 @@ class ControlPanel {
         this.color = color;
         this.feedMode = true;
         this.plantMode = false;
+
+        const pistilSize = 5;
+        const pistilColor = "#ff0000";
+        const petalSize = 5;
+        const petalColor = "#ffff00";
+        const petalNumber = 5;
+        this.flowerIcon = new Flower(10, 15, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
+
     }
 
     drawFeedModeButton(){        
@@ -26,14 +34,9 @@ class ControlPanel {
         fill("#000");
         text("Plant Mode", 20, 20);
         fill("#fff");
+
         // draw a flower        
-        const pistilSize = 5;
-        const pistilColor = "#ff0000";
-        const petalSize = 5;
-        const petalColor = "#ffff00";
-        const petalNumber = 5;
-        const flower = new Flower(10, 15, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
-        flower.draw();
+        this.flowerIcon.draw();
     }
 
     draw(){
