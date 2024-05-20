@@ -43,7 +43,6 @@ class Flower {
         if (this.spawnningTime > 300) {
             this.hasPollen = true;
             this.spawnningTime = 0;
-            this.numberOfPollens --;
         }
     }
 }

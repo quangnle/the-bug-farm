@@ -10,6 +10,7 @@ const height = 830;
 const antSize = 20;
 const firstAnt = new Ant("#f00", 100, 100, antSize, 0);
 let selectedAnt = -1;
+let selectedFlower = -1;
 
 const land = new Land(0, 0, width, width, "#77dd22");
 
@@ -39,6 +40,6 @@ function mousePressed() {
     if (mouseY > width) {
         controlPanel.mousePressed(mouseButton, mouseX, mouseY);
         // update mode for land
-        land.mode = controlPanel.feedMode ? "feed" : "plant";
+        land.mode = controlPanel.playMode ? "play" : "plant";
     }
 }

@@ -11,7 +11,7 @@ class Land{
         this.colony = [];
         this.objects = [];
         this.obstacles = [];
-        this.mode = "feed";
+        this.mode = "play";
         this.boundingBox = false;
     }
 
@@ -23,14 +23,29 @@ class Land{
         }
     }
 
-    draw(){        
+    drawBoundaries(){
         // draw the boundaries
         stroke(0);
         strokeWeight(2);
         fill(this.color);
         rect(this.x, this.y, this.width, this.height);
         strokeWeight(1);
+    }
 
+    drawObjects(){
+        // draw objects
+        this.objects.forEach((object, index) => {
+            if ((this.boundingBox && object.boundaries) || index === selectedFlower) {
+                noFill();
+                stroke("#f00");                
+                rect(object.boundaries.left, object.boundaries.top, object.boundaries.right - object.boundaries.left, object.boundaries.bottom - object.boundaries.top);
+                stroke("#000");
+            }
+            object.draw();
+        });
+    }
+
+    drawColony(){
         const flowers = this.objects.filter(obj => obj instanceof Flower);
         const flowersWithPollens = flowers.filter(flower => flower.hasPollen);
 
@@ -65,11 +80,14 @@ class Land{
                 if (d <= distanceToReachFood && flower.hasPollen) {
                     // remove the pollen from the flower
                     flower.hasPollen = false;
+                    flower.numberOfPollens --;
+
+                    // change the ant's color and hunger
                     ant.color = flower.pistilColor;
                     ant.hunger = 500;
     
                     // check if the colony is full
-                    if (colony.length >= maxPopulation) return;
+                    if (colony.length >= maxPopulation || flower.numberOfPollens < 1 ) return;
     
                     // else, evolution to make a new ant
                     const newAnt = Evolution.evolute(ant, flower.pistilColor);                 
@@ -77,17 +95,13 @@ class Land{
                 }
             });
         });
+    }
 
-        // draw objects
-        this.objects.forEach(object => {
-            if (this.boundingBox && object.boundaries) {
-                noFill();
-                stroke("#f00");                
-                rect(object.boundaries.left, object.boundaries.top, object.boundaries.right - object.boundaries.left, object.boundaries.bottom - object.boundaries.top);
-                stroke("#000");
-            }
-            object.draw();
-        });
+    draw() {        
+        this.drawBoundaries();
+        this.drawObjects();
+
+        this.drawColony();
     }
 
     mousePressed(mouseButton, mouseX, mouseY) {
@@ -105,7 +119,7 @@ class Land{
             });
             if (isOnObstacle) return;
 
-            if (this.mode === "feed") {
+            if (this.mode === "play") {
                 // does nothing
             } 
             else if (this.mode === "plant") {
@@ -124,13 +138,23 @@ class Land{
     
         // left click on the ant to select it
         if (mouseButton === LEFT) {
+            // check if mouse position is on a bug
             land.colony.forEach((ant, index) => {
                 const d = dist(mouseX, mouseY, ant.x, ant.y);
                 if (d < ant.size) {
                     selectedAnt = index;
-                    //antColorBlock.style.backgroundColor = ant.color;
                     antColorLabel.innerHTML = ant.color;
                     antGenesInfo.innerHTML = ant.genesInfoString();
+                }
+            });
+            
+            // check if mouse position is on a flower
+            land.objects.forEach((obj, index) => {
+                if (obj instanceof Flower){
+                    const d = dist(mouseX, mouseY, obj.x, obj.y);
+                    if (d < obj.pistilSize + obj.petalSize/2){
+                        selectedFlower = index;
+                    } 
                 }
             });
         }

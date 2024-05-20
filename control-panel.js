@@ -1,11 +1,12 @@
 class ControlPanel {
     constructor(x, y, width, height, color){
         this.x = x;
-        this.y = y;
+        this.y = y;        
         this.width = width;
         this.height = height;
         this.color = color;
-        this.feedMode = true;
+
+        this.playMode = true;
         this.plantMode = false;
 
         const pistilSize = 5;
@@ -17,11 +18,11 @@ class ControlPanel {
 
     }
 
-    drawFeedModeButton(){        
+    drawPlayModeButton(){        
         fill("#fff");
         rect(10, 5, 90, 20);
         fill("#000");
-        text("Feed Mode", 30, 20);
+        text("Play Mode", 30, 20);
         fill("#fff");
         ellipse(20, 15, 4, 4);
         ellipse(15, 20, 4, 4);
@@ -45,8 +46,8 @@ class ControlPanel {
 
         push();
         translate(this.x, this.y);
-        // draw feed mode button
-        this.drawFeedModeButton();
+        // draw play mode button
+        this.drawPlayModeButton();
         pop();
 
         push();
@@ -56,7 +57,7 @@ class ControlPanel {
         pop();
         
         // draw a border around the selected mode
-        if(this.feedMode){
+        if(this.playMode){
             push();
             translate(this.x, this.y);
             noFill();
@@ -76,11 +77,11 @@ class ControlPanel {
     mousePressed(button, x, y){
         if (button === LEFT) {
             if (x > this.x && x < this.x + 90 && y > this.y && y < this.y + 30) {
-                this.feedMode = true;
+                this.playMode = true;
                 this.plantMode = false;
             }
             if (x > this.x + 110 && x < this.x + 200 && y > this.y && y < this.y + 30) {
-                this.feedMode = false;
+                this.playMode = false;
                 this.plantMode = true;
             }
         }

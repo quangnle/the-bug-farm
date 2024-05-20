@@ -20,14 +20,12 @@ class Ant{
     }
 
     move(foods, boundaries, obstacles){
-        // check colliding with the walls
+        // check colliding with the walls and try to avoid it
         const boundingBox = this.getBoundingBox();
         if(boundingBox.left < boundaries.left || boundingBox.right > boundaries.right || boundingBox.top < boundaries.top || boundingBox.bottom > boundaries.bottom){
-            this.x = constrain(this.x, 0, width);
-            this.y = constrain(this.y, 0, height);
-            this.angle += PI/2 + random(0, PI/2);
+            this.angle += PI;
             this.dx = cos(this.angle);
-            this.dy = sin(this.angle);
+            this.dy = sin(this.angle);        
         }
 
         // decrease the hungry counter

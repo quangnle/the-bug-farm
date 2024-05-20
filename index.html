@@ -72,7 +72,8 @@
                             </ul>
                         </li>
                     </ul>
-                    <button id="plan-btn" style="margin-left: 2px;" onclick="plan()">Plan a flower at random spot</button>
+                    <button id="remove-flower-btn" style="margin-left: 2px;" onclick="removeFlower()">Remove it</button>
+                    <button id="plan-btn" style="margin-left: 2px;" onclick="plan()">Random plan a flower</button>                    
                 </li>
             </ul>
         </div>        
@@ -128,6 +129,13 @@
         let flower = new Flower(land.x + Math.random() * land.width, land.y + Math.random()*land.height, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
         land.addObject(flower);
     }
+
+    function removeFlower() {
+        if (selectedFlower != -1) {
+            land.objects.splice(selectedFlower, 1);
+            selectedFlower = -1;
+        }
+    }   
     </script>
 </body>
 </html>
