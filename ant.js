@@ -43,6 +43,14 @@ class Ant{
                 this.angle = angle;
                 this.dx = cos(angle);
                 this.dy = sin(angle);
+            } else {
+                // if there's no food, make a random choice to change direction
+                if(random(1) < 0.05){       
+                    const angle = random(PI/2) - PI/4;
+                    this.angle += angle;
+                    this.dx = cos(this.angle);
+                    this.dy = sin(this.angle);
+                }
             }
         } else {
             // if there's no food, make a random choice to change direction
