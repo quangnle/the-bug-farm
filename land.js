@@ -47,7 +47,7 @@ class Land{
             // draw the selected ant
             ant.draw();
             // draw a circle around the selected ant
-            const cursorSize = (ant.size * 2 + 5) + 4 * Math.sin(frameCount/10);
+            const cursorSize = (ant.size * 1.5) + 3 * Math.sin(frameCount/10);
     
             if (selectedAnt === index) {
                 noFill();

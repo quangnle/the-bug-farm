@@ -71,17 +71,18 @@ class Ant{
         
         // draw the head
         fill(50);
-        ellipse(0, -this.size * 0.4, this.size * 0.7, this.size * 0.7);
+        ellipse(0, this.size * - 0.4, this.size * 0.5, this.size * 0.5);
 
         // draw 2 dots on the head to represent eyes
-        stroke(150);        
-        point(-this.size * 0.1, -this.size * 0.55);
-        point(this.size * 0.1, -this.size * 0.55);
+        stroke(255);        
+        point(-this.size * 0.1, -this.size * 0.6);
+        point(this.size * 0.1, -this.size * 0.6);
 
         // draw the lower body
         stroke(0);
         fill(this.color);
-        ellipse(0, this.size >> 1, this.size, this.size);
+        ellipse(0, 0, this.size, this.size);
+        line(0, this.size*-0.5, 0, this.size * 0.5);
         
         // draw the pattern
         stroke(0);
@@ -89,28 +90,11 @@ class Ant{
         for (let i = 0; i < this.appearance.pattern.length; i++) {
             for (let j = 0; j < this.appearance.pattern.length; j++) {
                 if (this.appearance.pattern[j][i] === 1) {
-                    point(i - this.size/2,j);
+                    point(i - this.size/2, j - this.size/2);
                 }
             }
         }        
         pop();
-
-        // draw moving legs
-        const legLength = this.size * 0.5;
-        push();
-        translate(this.x, this.y);
-        rotate(this.angle + PI/2);
-        stroke(0);
-        strokeWeight(1);
-        line(-legLength, this.counter1, legLength, -this.counter1);
-        line(-legLength, this.counter2, legLength, -this.counter2);
-        line(-legLength, this.counter3, legLength, -this.counter3);
-        pop();
-
-        this.counter1 = this.size * 0.5 * sin(frameCount * 0.1);
-        this.counter2 = this.size * 0.5 * sin(frameCount * 0.1 + PI/3);
-        this.counter3 = this.size * 0.5 * sin(frameCount * 0.1 + PI/3*2);
-
     }
 
     genesInfoString(){

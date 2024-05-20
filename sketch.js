@@ -8,10 +8,10 @@ const height = 830;
 
 
 const antSize = 15;
-const firstAnt = new Ant("#000", 100, 100, antSize, 0);
+const firstAnt = new Ant("#f00", 100, 100, antSize, 0);
 let selectedAnt = -1;
 
-const land = new Land(0, 0, width, width, "#dddd00");
+const land = new Land(0, 0, width, width, "#77dd22");
 
 const controlPanel = new ControlPanel(0, width, width, 30, "#ffffff");
 
