@@ -50,48 +50,48 @@ class Land{
         const flowersWithPollens = flowers.filter(flower => flower.hasPollen);
 
         const colony = this.colony;
-        // draw ants
-        colony.forEach((ant, index) => {     
-            // update the ant's position
-            ant.move(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, this.obstacles); 
+        // draw bugs
+        colony.forEach((bug, index) => {     
+            // update the bug's position
+            bug.move(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, this.obstacles); 
 
-            // draw the ant's bounding box
+            // draw the bug's bounding box
             if (this.boundingBox) {
                 noFill();
                 stroke("#f00");
-                rect(ant.x - ant.size/2, ant.y - ant.size/2, ant.size, ant.size);
+                rect(bug.x - bug.size/2, bug.y - bug.size/2, bug.size, bug.size);
                 stroke("#000");
             }            
 
-            // draw the ant
-            ant.draw();
+            // draw the bug
+            bug.draw();
 
-            // draw a circle around the selected ant
-            const cursorSize = (ant.size * 1.5) + 3 * Math.sin(frameCount/10);    
-            if (selectedAnt === index) {
+            // draw a circle around the selected bug
+            const cursorSize = (bug.size * 1.5) + 3 * Math.sin(frameCount/10);    
+            if (selectedBug === index) {
                 noFill();
                 stroke("#000");
-                ellipse(ant.x, ant.y, cursorSize, cursorSize);
+                ellipse(bug.x, bug.y, cursorSize, cursorSize);
             }
     
-            // check if the ant is on a food item, then create new Ant and remove the food item
+            // check if the bug is on a food item, then create new bug and remove the food item
             flowersWithPollens.forEach(flower => {
-                const d = dist(ant.x, ant.y, flower.x, flower.y);            
+                const d = dist(bug.x, bug.y, flower.x, flower.y);            
                 if (d <= distanceToReachFood && flower.hasPollen) {
                     // remove the pollen from the flower
                     flower.hasPollen = false;
                     flower.numberOfPollens --;
 
-                    // change the ant's color and hunger
-                    ant.color = flower.pistilColor;
-                    ant.hunger = 500;
+                    // change the bug's color and hunger
+                    bug.color = flower.pistilColor;
+                    bug.hunger = 500;
     
                     // check if the colony is full
                     if (colony.length >= maxPopulation || flower.numberOfPollens < 1 ) return;
     
-                    // else, evolution to make a new ant
-                    const newAnt = Evolution.evolute(ant, flower.pistilColor);                 
-                    colony.push(newAnt);
+                    // else, evolution to make a new bug
+                    const newBug = Evolution.evolute(bug, flower.pistilColor);                 
+                    colony.push(newBug);
                 }
             });
         });
@@ -136,15 +136,15 @@ class Land{
             }
         }
     
-        // left click on the ant to select it
+        // left click on the bug to select it
         if (mouseButton === LEFT) {
             // check if mouse position is on a bug
-            land.colony.forEach((ant, index) => {
-                const d = dist(mouseX, mouseY, ant.x, ant.y);
-                if (d < ant.size) {
-                    selectedAnt = index;
-                    antColorLabel.innerHTML = ant.color;
-                    antGenesInfo.innerHTML = ant.genesInfoString();
+            land.colony.forEach((bug, index) => {
+                const d = dist(mouseX, mouseY, bug.x, bug.y);
+                if (d < bug.size) {
+                    selectedBug = index;
+                    bugColorLabel.innerHTML = bug.color;
+                    bugGenesInfo.innerHTML = bug.genesInfoString();
                 }
             });
             

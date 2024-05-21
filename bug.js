@@ -1,4 +1,4 @@
-class Ant{
+class Bug{
     constructor(color, x, y, size, angle){
         this.color = color;
         this.x = x;
@@ -31,7 +31,7 @@ class Ant{
         // decrease the hungry counter
         this.hunger --;
         if(this.hunger <= 0){
-            // make the ant move towards the nearest food
+            // make the bug move towards the nearest food
             let minDist = 150;
             const aroundFoods = foods.filter(food => dist(this.x, this.y, food.x, food.y) < minDist);            
             // if there is food, move towards to a random one
@@ -77,7 +77,7 @@ class Ant{
 
     draw(){
         push();       
-        // draw the ant
+        // draw the bug
         translate(this.x, this.y);
         rotate(this.angle + PI/2);
         

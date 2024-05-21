@@ -43,16 +43,16 @@
                 <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
                     <h4 style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Bug Info</h4>
                     <div style="float: left; width: 55px; padding:2px">
-                        <canvas id="ant-pattern-canvas" width="50" height="50"></canvas>
-                        <p id="ant-color-label" style="text-align:center"></p>
+                        <canvas id="bug-pattern-canvas" width="50" height="50"></canvas>
+                        <p id="bug-color-label" style="text-align:center"></p>
                     </div>
                     <div>
                         <ul style="list-style: none;">
                             <li style="display: block; text-align: right; padding-right: 20px;">Bug genes</li>
-                            <li style="display: block;"><textarea id="ant-genes-info" readonly rows="10" cols="20"></textarea>    </li>
+                            <li style="display: block;"><textarea id="bug-genes-info" readonly rows="10" cols="20"></textarea>    </li>
                         </ul>
                     </div>
-                    <button id="kill-btn" style="margin-left: 2px;" onclick="sellAnAnt()">Sell it</button>
+                    <button id="kill-btn" style="margin-left: 2px;" onclick="sellABug()">Sell it</button>
                     <button id="bring-to-market">Bring it to the market</button>
                 </li>
                 <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
@@ -81,7 +81,7 @@
 
     <script src="patterns.js"></script>
     <script src="evolution.js"></script>
-    <script src="ant.js"></script>
+    <script src="bug.js"></script>
     <script src="flower.js"></script>
     <script src="land.js"></script>    
     <script src="control-panel.js"></script>  
@@ -90,18 +90,18 @@
     <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
 
-    // draw the pattern of the selected ant on the ant-color-canvas
-    function drawAntPatternCanvas() {
-        let canvas = document.getElementById("ant-pattern-canvas");
+    // draw the pattern of the selected bug on the bug-color-canvas
+    function drawBugPatternCanvas() {
+        let canvas = document.getElementById("bug-pattern-canvas");
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);        
-        let ant = land.colony[selectedAnt];
-        let pattern = ant.appearance.pattern;
+        let bug = land.colony[selectedBug];
+        let pattern = bug.appearance.pattern;
         let size = 50 / pattern.length;
         for (let i = 0; i < pattern.length; i++) {
             for (let j = 0; j < pattern[i].length; j++) {
                 if (pattern[i][j] === 0) {
-                    ctx.fillStyle = ant.color;
+                    ctx.fillStyle = bug.color;
                 } else {
                     ctx.fillStyle = "black";
                 }
@@ -110,10 +110,10 @@
         }
     }
 
-    function sellAnAnt() {
-        if (land.colony.length > 1 && selectedAnt != -1) {
-            land.colony.splice(selectedAnt, 1);
-            selectedAnt = -1;
+    function sellABug() {
+        if (land.colony.length > 1 && selectedBug != -1) {
+            land.colony.splice(selectedBug, 1);
+            selectedBug = -1;
         }
     }
 
@@ -126,7 +126,7 @@
         const petalColor = document.getElementById("petal-color").value;
         const petalSize = document.getElementById("petal-size").value * 1;
 
-        let flower = new Flower(land.x + Math.random() * land.width, land.y + Math.random()*land.height, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
+        let flower = new Flower(land.x + Math.random() * land.width, land.y + Math.random() * land.height, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
         land.addObject(flower);
     }
 

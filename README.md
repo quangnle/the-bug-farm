@@ -1,7 +1,7 @@
 # The Bug Farm
 
 ## Description
-Ant farming game in the Idle Game genre. Players will raise lady bugs by feeding them and creating new, more beautiful species to sell.
+Bug farming game in the Idle Game genre. Players will raise lady bugs by feeding them and creating new, more beautiful species to sell.
 
 ## Features
 - Left click to select a bug in normal mode

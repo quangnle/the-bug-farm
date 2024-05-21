@@ -4,9 +4,9 @@ function setup(){
     generateDefaultPattern();
 }
 
-function drawAnt(x, y, size, color){
+function drawBug(x, y, size, color){
     push();       
-    // draw the ant
+    // draw the bug
     translate(x, y);
     
     // draw the head
@@ -62,8 +62,8 @@ function draw(){
         }
     }
 
-    // draw the ant
-    drawAnt(height + pattern[0].length, pattern[0].length, pattern[0].length, "#f00");    
+    // draw the bug
+    drawBug(height + pattern[0].length, pattern[0].length, pattern[0].length, "#f00");    
 }
 
 function mouseDragged(){
