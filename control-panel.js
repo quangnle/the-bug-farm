@@ -62,6 +62,7 @@ class ControlPanel {
             stroke("#00f");
             rect(5, 2, 100, 26);
             pop();
+            this.flowerIcon.hasPollen = false;
         } else if (this.mode === "plant") {
             push();
             translate(this.x + 110, this.y);
@@ -69,6 +70,7 @@ class ControlPanel {
             stroke("#00f");
             rect(-5, 2, 100, 26);
             pop();
+            this.flowerIcon.hasPollen = true;
         }
     }
 

@@ -80,7 +80,6 @@ class Farm{
                 if (d <= distanceToReachFood && flower.hasPollen) {
                     // remove the pollen from the flower
                     flower.hasPollen = false;
-                    flower.numberOfPollens --;
 
                     // change the bug's color and hunger
                     bug.color = flower.pistilColor;

@@ -10,6 +10,7 @@ class Flower {
         this.hasPollen = false;
         this.numberOfPollens = 10;
         this.spawnningTime = 0;
+        this.angle = 0;
 
         // get bounding box of the flower contains both pistil and petals
         const radius = this.pistilSize + this.petalSize/2;
@@ -25,6 +26,7 @@ class Flower {
         // draw the petals
         push();
         translate(this.x, this.y);
+        rotate(this.angle);
         const angle = TWO_PI / this.petalNumber;
         for(let i = 0; i < this.petalNumber; i++){
             const x = cos(angle * i) * this.pistilSize;
@@ -39,10 +41,17 @@ class Flower {
         pop();
         
         // update pollen status
-        if (!this.hasPollen) this.spawnningTime += 1;
+        if (!this.hasPollen) {
+            this.spawnningTime += 1;
+            this.angle = 0;
+        } else {
+            this.angle += 0.1;
+        }
+
         if (this.spawnningTime > 300) {
             this.hasPollen = true;
             this.spawnningTime = 0;
+            this.numberOfPollens --;
         }
     }
 }
