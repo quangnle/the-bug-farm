@@ -17,8 +17,5 @@ Ant farming game in the Idle Game genre. Players will raise lady bugs by feeding
 - Build a market place to sell / buy bugs
 - NFT
 
-## License
-Courtesy of Legos is required :)
-
 ## Contact
 email: mnest2409@yahoo.com
