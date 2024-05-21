@@ -83,7 +83,7 @@
     <script src="evolution.js"></script>
     <script src="bug.js"></script>
     <script src="flower.js"></script>
-    <script src="land.js"></script>    
+    <script src="farm.js"></script>    
     <script src="control-panel.js"></script>  
     <script src="sketch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
@@ -95,7 +95,7 @@
         let canvas = document.getElementById("bug-pattern-canvas");
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);        
-        let bug = land.colony[selectedBug];
+        let bug = farm.colony[selectedBug];
         let pattern = bug.appearance.pattern;
         let size = 50 / pattern.length;
         for (let i = 0; i < pattern.length; i++) {
@@ -111,8 +111,8 @@
     }
 
     function sellABug() {
-        if (land.colony.length > 1 && selectedBug != -1) {
-            land.colony.splice(selectedBug, 1);
+        if (farm.colony.length > 1 && selectedBug != -1) {
+            farm.colony.splice(selectedBug, 1);
             selectedBug = -1;
         }
     }
@@ -126,13 +126,13 @@
         const petalColor = document.getElementById("petal-color").value;
         const petalSize = document.getElementById("petal-size").value * 1;
 
-        let flower = new Flower(land.x + Math.random() * land.width, land.y + Math.random() * land.height, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
-        land.addObject(flower);
+        let flower = new Flower(farm.x + Math.random() * farm.width, farm.y + Math.random() * farm.height, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
+        farm.addObject(flower);
     }
 
     function removeFlower() {
         if (selectedFlower != -1) {
-            land.objects.splice(selectedFlower, 1);
+            farm.objects.splice(selectedFlower, 1);
             selectedFlower = -1;
         }
     }   

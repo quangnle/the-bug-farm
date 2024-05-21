@@ -1,7 +1,7 @@
 const maxPopulation = 30;
 const distanceToReachFood = 10;
 
-class Land{
+class Farm{
     constructor(x, y, width, height, color){
         this.x = x;
         this.y = y;
@@ -139,7 +139,7 @@ class Land{
         // left click on the bug to select it
         if (mouseButton === LEFT) {
             // check if mouse position is on a bug
-            land.colony.forEach((bug, index) => {
+            this.colony.forEach((bug, index) => {
                 const d = dist(mouseX, mouseY, bug.x, bug.y);
                 if (d < bug.size) {
                     selectedBug = index;
@@ -149,7 +149,7 @@ class Land{
             });
             
             // check if mouse position is on a flower
-            land.objects.forEach((obj, index) => {
+            this.objects.forEach((obj, index) => {
                 if (obj instanceof Flower){
                     const d = dist(mouseX, mouseY, obj.x, obj.y);
                     if (d < obj.pistilSize + obj.petalSize/2){
