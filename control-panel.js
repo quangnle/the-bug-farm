@@ -5,9 +5,8 @@ class ControlPanel {
         this.width = width;
         this.height = height;
         this.color = color;
-
-        this.playMode = true;
-        this.plantMode = false;
+        
+        this.mode = "play";
 
         const pistilSize = 5;
         const pistilColor = "#ff0000";
@@ -15,7 +14,6 @@ class ControlPanel {
         const petalColor = "#ffff00";
         const petalNumber = 5;
         this.flowerIcon = new Flower(10, 15, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
-
     }
 
     drawPlayModeButton(){        
@@ -57,14 +55,14 @@ class ControlPanel {
         pop();
         
         // draw a border around the selected mode
-        if(this.playMode){
+        if(this.mode === "play"){
             push();
             translate(this.x, this.y);
             noFill();
             stroke("#00f");
             rect(5, 2, 100, 26);
             pop();
-        } else {
+        } else if (this.mode === "plant") {
             push();
             translate(this.x + 110, this.y);
             noFill();
@@ -77,12 +75,9 @@ class ControlPanel {
     mousePressed(button, x, y){
         if (button === LEFT) {
             if (x > this.x && x < this.x + 90 && y > this.y && y < this.y + 30) {
-                this.playMode = true;
-                this.plantMode = false;
-            }
-            if (x > this.x + 110 && x < this.x + 200 && y > this.y && y < this.y + 30) {
-                this.playMode = false;
-                this.plantMode = true;
+                this.mode = "play";
+            } else if (x > this.x + 110 && x < this.x + 200 && y > this.y && y < this.y + 30) {
+                this.mode = "plant";
             }
         }
     }
