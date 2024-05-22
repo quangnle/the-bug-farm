@@ -85,7 +85,7 @@ class Farm{
                     bug.color = flower.pistilColor;
                     bug.hunger = 500;
     
-                    // check if the colony is full
+                    // check if the colony is full and the flower has pollen to create a new bug
                     if (colony.length >= maxPopulation || flower.numberOfPollens < 1 ) return;
     
                     // else, evolution to make a new bug

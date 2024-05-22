@@ -73,6 +73,8 @@ class Bug{
         // update position
         this.x += this.dx;
         this.y += this.dy;   
+        this.x = constrain(this.x, boundaries.left + this.size  , boundaries.right - this.size);
+        this.y = constrain(this.y, boundaries.top + this.size, boundaries.bottom - this.size);
     }
 
     draw(){

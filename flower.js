@@ -1,3 +1,6 @@
+const maxPollens = 10;
+const spawnningDuration = 300;
+
 class Flower {
     constructor(x, y, pistilSize, pistilColor, petalSize, petalColor, petalNumber){
         this.x = x;
@@ -8,7 +11,7 @@ class Flower {
         this.petalColor = petalColor;
         this.petalNumber = petalNumber;
         this.hasPollen = false;
-        this.numberOfPollens = 10;
+        this.numberOfPollens = maxPollens;
         this.spawnningTime = 0;
         this.angle = 0;
 
@@ -48,10 +51,14 @@ class Flower {
             this.angle += 0.1;
         }
 
-        if (this.spawnningTime > 300) {
+        if (this.spawnningTime > spawnningDuration) {
             this.hasPollen = true;
             this.spawnningTime = 0;
             this.numberOfPollens --;
+            if (this.numberOfPollens <= 0) {
+                this.pistilSize = 4;
+                this.petalSize = 4;
+            }
         }
     }
 }

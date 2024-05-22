@@ -122,11 +122,11 @@
 
         const pistilColor = document.getElementById("pistil-color").value;
         const pistilSize = document.getElementById("pistil-size").value * 1;
-
+        
         const petalColor = document.getElementById("petal-color").value;
         const petalSize = document.getElementById("petal-size").value * 1;
 
-        let flower = new Flower(farm.x + Math.random() * farm.width, farm.y + Math.random() * farm.height, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
+        let flower = new Flower(farm.x + 10 + Math.random() * (farm.width - 20), farm.y + 10 + Math.random() * (farm.height - 20), pistilSize, pistilColor, petalSize, petalColor, petalNumber);
         farm.addObject(flower);
     }
 
