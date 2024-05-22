@@ -41,19 +41,32 @@
                     </ul>
                 </li>
                 <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
-                    <h4 style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Bug Info</h4>
+                    <h4 style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Selected Object</h4>
                     <div style="float: left; width: 55px; padding:2px">
                         <canvas id="bug-pattern-canvas" width="50" height="50"></canvas>
                         <p id="bug-color-label" style="text-align:center"></p>
                     </div>
                     <div>
                         <ul style="list-style: none;">
-                            <li style="display: block; text-align: right; padding-right: 20px;">Bug genes</li>
                             <li style="display: block;"><textarea id="bug-genes-info" readonly rows="10" cols="20"></textarea>    </li>
                         </ul>
                     </div>
                     <button id="kill-btn" style="margin-left: 2px;" onclick="sellABug()">Sell it</button>
                     <button id="bring-to-market">Bring it to the market</button>
+                </li>
+                <!--Selected Object-->
+                <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
+                    <h4 style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Selected Object</h4>
+                    <div style="float: left; width: 55px; padding:2px">
+                        <canvas id="object-render-canvas" width="50" height="50"></canvas>
+                    </div>
+                    <div>
+                        <ul style="list-style: none;">
+                            <li style="display: block;"><textarea id="object-info" readonly rows="10" cols="20"></textarea>    </li>
+                        </ul>
+                    </div>
+                    <!-- <button id="kill-btn" style="margin-left: 2px;" onclick="sellABug()">Sell it</button>
+                    <button id="bring-to-market">Bring it to the market</button> -->
                 </li>
                 <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
                     <h4 style="text-align: center; background-color: forestgreen; margin-top:0px; margin-bottom: 3px;">Flower Config</h4>
@@ -89,6 +102,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
+
+    const objcvs = document.getElementById("object-render-canvas");
+    const objctx = objcvs.getContext("2d");
+    objctx.fillStyle = "#ffffff";
+    objctx.strokeStyle = "#000000";
+    objctx.fillRect(0, 0, 50, 50);
 
     // draw the pattern of the selected bug on the bug-color-canvas
     function drawBugPatternCanvas() {

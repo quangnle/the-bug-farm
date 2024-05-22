@@ -103,6 +103,38 @@ class Farm{
         this.drawColony();
     }
 
+    plantAFlower(x, y){
+        const petalNumber = parseInt(document.getElementById("petal-number").value);
+
+        const pistilColor = document.getElementById("pistil-color").value;
+        const pistilSize = parseInt(document.getElementById("pistil-size").value);
+
+        const petalColor = document.getElementById("petal-color").value;                
+        const petalSize = parseInt(document.getElementById("petal-size").value);
+
+        const flower = new Flower(x, y, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
+        this.addObject(flower);
+    }
+
+    loadObjectInfo(obj){
+        const objectRenderer = document.getElementById("object-render-canvas");
+        const ctx = objectRenderer.getContext("2d");
+        ctx.fillStyle = "#77dd22";
+        ctx.strokeStyle = "#000";
+        ctx.rect(0,0,50, 50);
+        ctx.fill();
+        ctx.stroke();
+        
+        obj.drawIcon(ctx, 25, 25);
+
+        if (obj instanceof Flower){
+            objectInfo.innerHTML = obj.infoString();
+        } else if (obj instanceof Bug){
+            objectInfo.innerHTML = obj.infoString();
+            
+        }
+    }
+
     mousePressed(mouseButton, mouseX, mouseY) {
         // Right click to add food
         if (mouseButton === RIGHT) {
@@ -119,19 +151,10 @@ class Farm{
             if (isOnObstacle) return;
 
             if (this.mode === "play") {
-                // does nothing
+                // temporarily does nothing
             } 
             else if (this.mode === "plant") {
-                const petalNumber = parseInt(document.getElementById("petal-number").value);
-
-                const pistilColor = document.getElementById("pistil-color").value;
-                const pistilSize = parseInt(document.getElementById("pistil-size").value);
-
-                const petalColor = document.getElementById("petal-color").value;                
-                const petalSize = parseInt(document.getElementById("petal-size").value);
-
-                const flower = new Flower(mouseX, mouseY, pistilSize, pistilColor, petalSize, petalColor, petalNumber);
-                this.addObject(flower);
+                this.plantAFlower(mouseX, mouseY);
             }
         }
     
@@ -143,7 +166,9 @@ class Farm{
                 if (d < bug.size) {
                     selectedBug = index;
                     bugColorLabel.innerHTML = bug.color;
-                    bugGenesInfo.innerHTML = bug.genesInfoString();
+                    bugGenesInfo.innerHTML = bug.infoString();
+
+                    selectedObj = bug;
                 }
             });
             
@@ -153,9 +178,15 @@ class Farm{
                     const d = dist(mouseX, mouseY, obj.x, obj.y);
                     if (d < obj.pistilSize + obj.petalSize/2){
                         selectedFlower = index;
+
+                        selectedObj = obj;
                     } 
                 }
             });
+
+            if (selectedObj) {
+                this.loadObjectInfo(selectedObj);
+            }
         }
     }
 }

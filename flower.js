@@ -61,4 +61,34 @@ class Flower {
             }
         }
     }
+
+    infoString(){
+        return `Pollens left: ${Math.max(this.numberOfPollens, 0)} / ${maxPollens}`;
+    }
+
+    drawIcon(ctx, x, y){
+        const pistilSize = this.pistilSize / 2;
+        const petalSize = this.petalSize / 2;
+
+        ctx.save();
+        ctx.translate(x, y);
+
+        ctx.fillStyle = this.pistilColor;
+        ctx.beginPath();
+        ctx.arc(0, 0, pistilSize, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();        
+        ctx.closePath();
+
+        ctx.fillStyle = this.petalColor;
+        const angle = Math.PI * 2 / this.petalNumber;
+        for(let i = 0; i < this.petalNumber; i++){
+            ctx.beginPath();
+            ctx.arc(2*pistilSize * Math.cos(angle * i), 2*pistilSize * Math.sin(angle * i), petalSize, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+        }
+        ctx.restore();
+    }
 }

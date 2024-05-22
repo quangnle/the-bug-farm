@@ -121,13 +121,60 @@ class Bug{
         pop();
     }
 
-    genesInfoString(){
-        let stGenes = `Appearance: ${this.appearance.name} \n\nList of genes: \n--------------\n`;
+    infoString(){
+        let info = `Hunger rate: ${this.hunger} \nAppearance: ${this.appearance.name} \n\nList of genes: \n--------------\n`;
         // total score
         const totalScore = this.genes.reduce((acc, g) => acc + g.score, 0);
         this.genes.forEach(g => {
-            stGenes += `${g.name} : $(${Math.round(g.score/totalScore*100)}%) \n`;
+            info += `${g.name} : $(${Math.round(g.score/totalScore*100)}%) \n`;
         });
-        return stGenes;
+        return info;
+    }
+
+    drawIcon(ctx, x, y) {        
+        const size = this.size / 2;
+
+        ctx.save();
+        ctx.translate(x, y);
+        // draw the head
+        ctx.fillStyle = "#333";
+        ctx.beginPath();
+        ctx.ellipse(0, 2*size * -0.4, size * 0.5, size * 0.5, 0, 0, Math.PI*2);
+        ctx.fill();
+
+        // draw 2 dots on the head to represent eyes
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(-size * 0.2, -2*size * 0.6, 1, 0, Math.PI*2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(size * 0.2, -2*size * 0.6, 1, 0, Math.PI*2);
+        ctx.fill();
+        ctx.stroke();
+
+        // draw the lower body
+        ctx.strokeStyle = "#000";
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, size, size, 0, 0, Math.PI*2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // draw the pattern
+        ctx.strokeStyle = "#000";
+        //ctx.strokeWeight = 1.5;
+        for (let i = 0; i < this.appearance.pattern.length; i++) {
+            for (let j = 0; j < this.appearance.pattern.length; j++) {
+                if (this.appearance.pattern[j][i] !== -1 && this.appearance.pattern[j][i] !== 0) {
+                    ctx.strokeStyle = this.appearance.pattern[j][i];
+                    ctx.beginPath();
+                    ctx.moveTo(i - size, j - size);
+                    ctx.lineTo(i - size + 1, j - size + 1);
+                    ctx.stroke();
+                }
+            }
+        }        
+        ctx.restore();
     }
 }
