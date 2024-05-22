@@ -107,7 +107,7 @@ class Farm{
         // Right click to add food
         if (mouseButton === RIGHT) {
             // check if mouse position is out of the canvas
-            if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return;
+            if (mouseX < this.x + bugSize || mouseX > this.width - bugSize || mouseY < this.y + bugSize || mouseY > this.height - bugSize) return;
             
             // check if mouse position is on an obstacle
             let isOnObstacle = false;
