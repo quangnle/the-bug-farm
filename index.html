@@ -40,23 +40,9 @@
                         <li>Population: <span style="margin-right: 2px;">1</span></li>
                     </ul>
                 </li>
-                <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
-                    <h4 style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Selected Object</h4>
-                    <div style="float: left; width: 55px; padding:2px">
-                        <canvas id="bug-pattern-canvas" width="50" height="50"></canvas>
-                        <p id="bug-color-label" style="text-align:center"></p>
-                    </div>
-                    <div>
-                        <ul style="list-style: none;">
-                            <li style="display: block;"><textarea id="bug-genes-info" readonly rows="10" cols="20"></textarea>    </li>
-                        </ul>
-                    </div>
-                    <button id="kill-btn" style="margin-left: 2px;" onclick="sellABug()">Sell it</button>
-                    <button id="bring-to-market">Bring it to the market</button>
-                </li>
                 <!--Selected Object-->
                 <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
-                    <h4 style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Selected Object</h4>
+                    <h4 style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Information</h4>
                     <div style="float: left; width: 55px; padding:2px">
                         <canvas id="object-render-canvas" width="50" height="50"></canvas>
                     </div>
@@ -65,8 +51,9 @@
                             <li style="display: block;"><textarea id="object-info" readonly rows="10" cols="20"></textarea>    </li>
                         </ul>
                     </div>
-                    <!-- <button id="kill-btn" style="margin-left: 2px;" onclick="sellABug()">Sell it</button>
-                    <button id="bring-to-market">Bring it to the market</button> -->
+                    <button id="btn-sell-it" style="margin-left: 2px; visibility: hidden;" onclick="sellABug()" >Sell it</button>
+                    <button id="btn-bring-to-market"  style="visibility: hidden;">Bring it to the market</button>
+                    <button id="btn-remove-it" style="margin-left: 2px; visibility: hidden;" onclick="removeAFlower()">Remove it</button>
                 </li>
                 <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
                     <h4 style="text-align: center; background-color: forestgreen; margin-top:0px; margin-bottom: 3px;">Flower Config</h4>
@@ -85,7 +72,6 @@
                             </ul>
                         </li>
                     </ul>
-                    <button id="remove-flower-btn" style="margin-left: 2px;" onclick="removeFlower()">Remove it</button>
                     <button id="plan-btn" style="margin-left: 2px;" onclick="plan()">Random plan a flower</button>                    
                 </li>
             </ul>
@@ -130,10 +116,13 @@
     }
 
     function sellABug() {
-        if (farm.colony.length > 1 && selectedBug != -1) {
-            farm.colony.splice(selectedBug, 1);
-            selectedBug = -1;
-        }
+        if (farm.colony.length === 1) return;
+        
+        farm.colony.forEach((bug, index) => {
+            if (bug === selectedObj) {
+                farm.colony.splice(index, 1);
+            }
+        });
     }
 
     function plan() {        
@@ -149,11 +138,12 @@
         farm.addObject(flower);
     }
 
-    function removeFlower() {
-        if (selectedFlower != -1) {
-            farm.objects.splice(selectedFlower, 1);
-            selectedFlower = -1;
-        }
+    function removeAFlower() {
+        farm.objects.forEach((obj, index) => {
+            if (obj === selectedObj) {
+                farm.objects.splice(index, 1);
+            }
+        });
     }   
     </script>
 </body>

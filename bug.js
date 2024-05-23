@@ -87,7 +87,7 @@ class Bug{
         this.y = constrain(this.y, boundaries.top, boundaries.bottom);   
     }
 
-    draw(){
+    draw(isSelected){
         push();       
         // draw the bug
         translate(this.x, this.y);
@@ -119,10 +119,18 @@ class Bug{
             }
         }        
         pop();
+        
+        if (isSelected) {
+            // draw the bounding box
+            noFill();
+            stroke("#000");
+            const size = this.size * 1.5 + sin(frameCount * 0.1) * 5;
+            ellipse(this.x, this.y, size, size);
+        }
     }
 
     infoString(){
-        let info = `Hunger rate: ${this.hunger} \nAppearance: ${this.appearance.name} \n\nList of genes: \n--------------\n`;
+        let info = `Hunger rate: ${500 - this.hunger} \nAppearance: ${this.appearance.name} \n\nList of genes: \n--------------\n`;
         // total score
         const totalScore = this.genes.reduce((acc, g) => acc + g.score, 0);
         this.genes.forEach(g => {

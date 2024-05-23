@@ -25,7 +25,7 @@ class Flower {
         };
     }
 
-    draw(){
+    draw(isSelected){
         // draw the petals
         push();
         translate(this.x, this.y);
@@ -60,10 +60,18 @@ class Flower {
                 this.petalSize = 4;
             }
         }
+
+        if (isSelected) {
+            // draw the bounding box
+            noFill();
+            stroke("#000");
+            const size = (this.pistilSize + this.petalSize) * 2 + sin(frameCount * 0.1) * 5;
+            ellipse(this.x, this.y, size, this.size);
+        }
     }
 
     infoString(){
-        return `Pollens left: ${Math.max(this.numberOfPollens, 0)} / ${maxPollens}`;
+        return `Time to spawn: ${Math.max(spawnningDuration - this.spawnningTime, 0)} / ${spawnningDuration}\nNumber of pollens left: ${Math.max(this.numberOfPollens, 0)} / ${maxPollens}`;
     }
 
     drawIcon(ctx, x, y){

@@ -35,13 +35,11 @@ class Farm{
     drawObjects(){
         // draw objects
         this.objects.forEach((object, index) => {
-            if ((this.boundingBox && object.boundaries) || index === selectedFlower) {
-                noFill();
-                stroke("#f00");                
-                rect(object.boundaries.left, object.boundaries.top, object.boundaries.right - object.boundaries.left, object.boundaries.bottom - object.boundaries.top);
-                stroke("#000");
-            }
-            object.draw();
+            if (selectedObj === object) {            
+                object.draw(true);
+            } else {
+                object.draw(false);
+            }            
         });
     }
 
@@ -64,14 +62,10 @@ class Farm{
             }            
 
             // draw the bug
-            bug.draw();
-
-            // draw a circle around the selected bug
-            const cursorSize = (bug.size * 1.5) + 3 * Math.sin(frameCount/10);    
-            if (selectedBug === index) {
-                noFill();
-                stroke("#000");
-                ellipse(bug.x, bug.y, cursorSize, cursorSize);
+            if (selectedObj === bug) {
+                bug.draw(true);
+            } else {
+                bug.draw(false);
             }
     
             // check if the bug is on a food item, then create new bug and remove the food item
@@ -117,6 +111,7 @@ class Farm{
     }
 
     loadObjectInfo(obj){
+        objectInfo.innerHTML = obj.infoString();
         const objectRenderer = document.getElementById("object-render-canvas");
         const ctx = objectRenderer.getContext("2d");
         ctx.fillStyle = "#77dd22";
@@ -127,11 +122,19 @@ class Farm{
         
         obj.drawIcon(ctx, 25, 25);
 
-        if (obj instanceof Flower){
-            objectInfo.innerHTML = obj.infoString();
-        } else if (obj instanceof Bug){
-            objectInfo.innerHTML = obj.infoString();
-            
+        const btnSellIt = document.getElementById("btn-sell-it");    
+        const btnRemoveIt = document.getElementById("btn-remove-it");
+        const btnBringToMarket = document.getElementById("btn-bring-to-market");
+
+        // check if the object is a bug or a flower and show the appropriate buttons
+        if (obj instanceof Bug){    
+            btnSellIt.style.visibility = "visible";
+            btnBringToMarket.style.visibility = "visible";
+            btnRemoveIt.style.visibility = "hidden";                
+        } else if (obj instanceof Flower){
+            btnSellIt.style.visibility = "hidden";
+            btnBringToMarket.style.visibility = "hidden";
+            btnRemoveIt.style.visibility = "visible";                
         }
     }
 
@@ -163,30 +166,18 @@ class Farm{
             // check if mouse position is on a bug
             this.colony.forEach((bug, index) => {
                 const d = dist(mouseX, mouseY, bug.x, bug.y);
-                if (d < bug.size) {
-                    selectedBug = index;
-                    bugColorLabel.innerHTML = bug.color;
-                    bugGenesInfo.innerHTML = bug.infoString();
-
-                    selectedObj = bug;
-                }
+                if (d < bug.size) selectedObj = bug;                
             });
             
             // check if mouse position is on a flower
             this.objects.forEach((obj, index) => {
                 if (obj instanceof Flower){
                     const d = dist(mouseX, mouseY, obj.x, obj.y);
-                    if (d < obj.pistilSize + obj.petalSize/2){
-                        selectedFlower = index;
-
-                        selectedObj = obj;
-                    } 
+                    if (d < obj.pistilSize + obj.petalSize/2) selectedObj = obj;
                 }
             });
 
-            if (selectedObj) {
-                this.loadObjectInfo(selectedObj);
-            }
+            if (selectedObj) this.loadObjectInfo(selectedObj);
         }
     }
 }
