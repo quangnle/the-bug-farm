@@ -45,6 +45,7 @@
                     <h4 style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Information</h4>
                     <div style="float: left; width: 55px; padding:2px">
                         <canvas id="object-render-canvas" width="50" height="50"></canvas>
+                        <canvas id="bug-pattern-canvas" width="50" height="50"></canvas>
                     </div>
                     <div>
                         <ul style="list-style: none;">
@@ -72,7 +73,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <button id="plan-btn" style="margin-left: 2px;" onclick="plan()">Random plan a flower</button>                    
+                    <button id="btn-show" onclick="show()">Start The Show!!!</button>
                 </li>
             </ul>
         </div>        
@@ -89,28 +90,33 @@
     <script>
     document.addEventListener('contextmenu', event => event.preventDefault());
 
+    const btnshow = document.getElementById("btn-show");
     const objcvs = document.getElementById("object-render-canvas");
+    const patterncvs = document.getElementById("bug-pattern-canvas");
     const objctx = objcvs.getContext("2d");
     objctx.fillStyle = "#ffffff";
     objctx.strokeStyle = "#000000";
     objctx.fillRect(0, 0, 50, 50);
 
-    // draw the pattern of the selected bug on the bug-color-canvas
-    function drawBugPatternCanvas() {
-        let canvas = document.getElementById("bug-pattern-canvas");
-        let ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);        
-        let bug = farm.colony[selectedBug];
-        let pattern = bug.appearance.pattern;
-        let size = 50 / pattern.length;
-        for (let i = 0; i < pattern.length; i++) {
-            for (let j = 0; j < pattern[i].length; j++) {
-                if (pattern[i][j] === 0) {
-                    ctx.fillStyle = bug.color;
-                } else {
-                    ctx.fillStyle = "black";
+    function show() {
+        const flowers = farm.objects.filter(obj => obj instanceof Flower);
+        if (flowers.length > 0) {
+            if (btnshow.innerHTML === "Stop The Show") {
+                btnshow.innerHTML = "Start The Show!!!";
+                farm.mode = "play";
+                farm.colony.forEach(bug => {
+                    bug.nextTarget = null;
+                });
+            } else {
+                btnshow.innerHTML = "Stop The Show";
+                farm.mode = "show";
+                
+                if (flowers.length > 0) {
+                    farm.colony.forEach(bug => {
+                        bug.nextTarget = flowers[0];
+                        bug.nextTargetIndex = 0;
+                    });
                 }
-                ctx.fillRect(j*size, i*size, size, size);
             }
         }
     }
@@ -123,19 +129,6 @@
                 farm.colony.splice(index, 1);
             }
         });
-    }
-
-    function plan() {        
-        const petalNumber = document.getElementById("petal-number").value * 1;
-
-        const pistilColor = document.getElementById("pistil-color").value;
-        const pistilSize = document.getElementById("pistil-size").value * 1;
-
-        const petalColor = document.getElementById("petal-color").value;
-        const petalSize = document.getElementById("petal-size").value * 1;
-
-        let flower = new Flower(farm.x + bugSize/2 + Math.random() * (farm.width - bugSize), farm.y + bugSize/2 + Math.random() * (farm.height - bugSize), pistilSize, pistilColor, petalSize, petalColor, petalNumber);
-        farm.addObject(flower);
     }
 
     function removeAFlower() {

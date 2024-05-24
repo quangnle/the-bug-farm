@@ -41,6 +41,21 @@ class Farm{
                 object.draw(false);
             }            
         });
+
+        if (this.mode === "plant") {
+            // draw connecting lines between the flowers
+            const flowers = this.objects.filter(obj => obj instanceof Flower);
+            if (flowers.length > 1) {
+                for (let i = 0; i < flowers.length; i++) {
+                    const flower1 = flowers[i];
+                    const flower2 = flowers[(i+1) % flowers.length];
+                    stroke(color(0, 0, 0, 100));
+                    strokeWeight(3);
+                    line(flower1.x, flower1.y, flower2.x, flower2.y);
+                    strokeWeight(1);
+                }
+            }
+        }
     }
 
     drawColony(){
@@ -49,9 +64,13 @@ class Farm{
 
         const colony = this.colony;
         // draw bugs
-        colony.forEach((bug, index) => {     
+        colony.forEach(bug => {     
             // update the bug's position
-            bug.move(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, this.obstacles); 
+            if (this.mode === "show") {
+                bug.move(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, flowers); 
+            } else {
+                bug.move(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, null); 
+            }
 
             // draw the bug's bounding box
             if (this.boundingBox) {
@@ -63,7 +82,7 @@ class Farm{
 
             // draw the bug
             if (selectedObj === bug) {
-                bug.draw(true);
+                bug.draw(true);                
             } else {
                 bug.draw(false);
             }
@@ -80,7 +99,7 @@ class Farm{
                     bug.hunger = 500;
     
                     // check if the colony is full and the flower has pollen to create a new bug
-                    if (colony.length >= maxPopulation || flower.numberOfPollens < 1 ) return;
+                    if (colony.length >= maxPopulation || flower.numberOfPollens < 1 || this.mode == "show" ) return;
     
                     // else, evolution to make a new bug
                     const newBug = Evolution.evolute(bug, flower.pistilColor);                 
@@ -93,7 +112,6 @@ class Farm{
     draw() {        
         this.drawBoundaries();
         this.drawObjects();
-
         this.drawColony();
     }
 
@@ -130,16 +148,19 @@ class Farm{
         if (obj instanceof Bug){    
             btnSellIt.style.visibility = "visible";
             btnBringToMarket.style.visibility = "visible";
-            btnRemoveIt.style.visibility = "hidden";                
+            btnRemoveIt.style.visibility = "hidden";
+            patterncvs.style.visibility = "visible";
+            const patternCtx = patterncvs.getContext("2d");
+            obj.drawBugPatternCanvas(patternCtx, 50, 50);
         } else if (obj instanceof Flower){
             btnSellIt.style.visibility = "hidden";
             btnBringToMarket.style.visibility = "hidden";
             btnRemoveIt.style.visibility = "visible";                
+            patterncvs.style.visibility = "hidden";
         }
     }
 
     mousePressed(mouseButton, mouseX, mouseY) {
-        // Right click to add food
         if (mouseButton === RIGHT) {
             // check if mouse position is out of the canvas
             if (mouseX < this.x + bugSize || mouseX > this.width - bugSize || mouseY < this.y + bugSize || mouseY > this.height - bugSize) return;
@@ -156,7 +177,7 @@ class Farm{
             if (this.mode === "play") {
                 // temporarily does nothing
             } 
-            else if (this.mode === "plant") {
+            else if (this.mode === "plant" || this.mode === "show") {
                 this.plantAFlower(mouseX, mouseY);
             }
         }

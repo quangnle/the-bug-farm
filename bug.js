@@ -54,30 +54,42 @@ class Bug{
         return atan2(y - this.y, x - this.x);
     }    
 
-    move(foods, boundaries, obstacles){
-
-        // decrease the hungry counter
-        this.hunger --;
-        let aroundFoods = null;
-        if(this.hunger <= 0){
-            // make the bug move towards the nearest food
-            let minDist = 150;
-            aroundFoods = foods.filter(food => dist(this.x, this.y, food.x, food.y) < minDist);            
-        }
-
-        if (aroundFoods && aroundFoods.length > 0){
-            const food = aroundFoods[0];
-            const angle = atan2(food.y - this.y, food.x - this.x);
-            this.angle = angle;
-            this.dx = cos(angle);
-            this.dy = sin(angle);
-        } else {
-            // move randomly
-            if (random(1) < 0.01 || this.x < boundaries.left || this.x > boundaries.right || this.y < boundaries.top || this.y > boundaries.bottom) {
-                this.angle = this.randomDirection(boundaries);
-                this.dx = cos(this.angle);
-                this.dy = sin(this.angle);
+    move(foods, boundaries, routes){
+        if (!routes) {
+            // decrease the hungry counter
+            this.hunger --;
+            let aroundFoods = null;
+            if(this.hunger <= 0){
+                // make the bug move towards the nearest food
+                let minDist = 150;
+                aroundFoods = foods.filter(food => dist(this.x, this.y, food.x, food.y) < minDist);            
             }
+
+            if (aroundFoods && aroundFoods.length > 0){
+                const food = aroundFoods[0];
+                const angle = atan2(food.y - this.y, food.x - this.x);
+                this.angle = angle;
+                this.dx = cos(angle);
+                this.dy = sin(angle);
+            } else {
+                // move randomly
+                if (random(1) < 0.01 || this.x < boundaries.left || this.x > boundaries.right || this.y < boundaries.top || this.y > boundaries.bottom) {
+                    this.angle = this.randomDirection(boundaries);
+                    this.dx = cos(this.angle);
+                    this.dy = sin(this.angle);
+                }
+            }
+        } else {
+            const d = dist(this.x, this.y, this.nextTarget.x, this.nextTarget.y);
+            if (d < 5) this.nextTargetIndex ++;
+            if (this.nextTargetIndex >= routes.length) {
+                this.nextTargetIndex = 0;
+            }
+
+            this.nextTarget = routes[this.nextTargetIndex];
+            this.angle = atan2(this.nextTarget.y - this.y, this.nextTarget.x - this.x) + sin(frameCount * 0.1) * 0.25;
+            this.dx = cos(this.angle);
+            this.dy = sin(this.angle);
         }
 
         // update position
@@ -184,5 +196,22 @@ class Bug{
             }
         }        
         ctx.restore();
+    }
+
+    // draw the pattern of the selected bug on the bug-color-canvas
+    drawBugPatternCanvas(ctx, width, height) {
+        ctx.clearRect(0, 0, width, height);
+        let pattern = this.appearance.pattern;
+        let size = 50 / pattern.length;
+        for (let i = 0; i < pattern.length; i++) {
+            for (let j = 0; j < pattern[i].length; j++) {
+                if (pattern[i][j] === 0) {
+                    ctx.fillStyle = this.color;
+                } else {
+                    ctx.fillStyle = "black";
+                }
+                ctx.fillRect(j*size, i*size, size, size);
+            }
+        }
     }
 }
