@@ -94,7 +94,7 @@ class Bug{
         this.hunger --;
         // make the bug move towards the target
         const angle = atan2(this.target.y - this.y, this.target.x - this.x);
-        this.angle = angle;
+        this.angle = angle + sin(frameCount * 0.1) * 0.15;
         this.dx = cos(angle);
         this.dy = sin(angle);
         this.x += this.dx;
