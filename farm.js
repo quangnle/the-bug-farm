@@ -7,7 +7,7 @@ class Farm{
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = color;
+        this.color = 'transparent';
         this.colony = [];
         this.objects = [];
         this.obstacles = [];
@@ -27,8 +27,8 @@ class Farm{
         // draw the boundaries
         stroke(0);
         strokeWeight(2);
-        fill(this.color);
-        rect(this.x, this.y, this.width, this.height);
+        // fill(this.color);
+        // rect(this.x, this.y, this.width, this.height);
         strokeWeight(1);
     }
 
