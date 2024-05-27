@@ -11,8 +11,10 @@ class Bug{
         this.mutationRate = 0.1;
         this.appearance = {name: "default", pattern: pattern_default, "score": 90};
         this.genes  = [];
+        this.foodSenseDistance = 150;
         // add the default pattern
         this.genes.push({name: "default", pattern: pattern_default, "score": 90});        
+        this.target = null;
     }
 
     getBoundingBox(){
@@ -50,53 +52,53 @@ class Bug{
         // choose a random point in the selected region
         const x = random(selectedRegion.x1, selectedRegion.x2);
         const y = random(selectedRegion.y1, selectedRegion.y2);
-        // calculate the angle between the bug's position and the selected point
-        return atan2(y - this.y, x - this.x);
+
+        const d = min(dist(this.x, this.y, x, y), 200);
+        const angle = atan2(y - this.y, x - this.x);
+        return {x: this.x + cos(angle) * d, y: this.y + sin(angle) * d};
     }    
 
-    move(foods, boundaries, routes){
-        if (!routes) {
-            // decrease the hungry counter
-            this.hunger --;
-            let aroundFoods = null;
-            if(this.hunger <= 0){
-                // make the bug move towards the nearest food
-                let minDist = 150;
-                aroundFoods = foods.filter(food => dist(this.x, this.y, food.x, food.y) < minDist);            
-            }
+    findAvailableFood(foods){
+        return foods.find(food => dist(this.x, this.y, food.x, food.y) < this.foodSenseDistance);
+    }
 
-            if (aroundFoods && aroundFoods.length > 0){
-                const food = aroundFoods[0];
-                const angle = atan2(food.y - this.y, food.x - this.x);
-                this.angle = angle;
-                this.dx = cos(angle);
-                this.dy = sin(angle);
-            } else {
-                // move randomly
-                if (random(1) < 0.01 || this.x < boundaries.left || this.x > boundaries.right || this.y < boundaries.top || this.y > boundaries.bottom) {
-                    this.angle = this.randomDirection(boundaries);
-                    this.dx = cos(this.angle);
-                    this.dy = sin(this.angle);
+    findATarget(boundaries, routes){
+        if (routes) {
+            if (this.target == null) return routes[0];
+            else {
+                let routeIdx = routes.findIndex(route => route.x === this.target.x && route.y === this.target.y);
+                if (routeIdx < 0) return routes[0];
+                else {
+                    return routes[(routeIdx + 1) % routes.length];
                 }
             }
         } else {
-            const d = dist(this.x, this.y, this.nextTarget.x, this.nextTarget.y);
-            if (d < 5) this.nextTargetIndex ++;
-            if (this.nextTargetIndex >= routes.length) {
-                this.nextTargetIndex = 0;
-            }
+            return this.randomDirection(boundaries);
+        }
+    }
 
-            this.nextTarget = routes[this.nextTargetIndex];
-            this.angle = atan2(this.nextTarget.y - this.y, this.nextTarget.x - this.x) + sin(frameCount * 0.1) * 0.25;
-            this.dx = cos(this.angle);
-            this.dy = sin(this.angle);
+    step(foods, boundaries, routes){
+        const food = this.findAvailableFood(foods);
+        if (this.hunger <= 0 && food) {
+            this.target = food;
+        }
+        if (this.target == null) this.target = this.findATarget(boundaries, routes);
+        else {
+            const d = dist(this.x, this.y, this.target.x, this.target.y);
+            if (d < 5) {
+                this.target = this.findATarget(boundaries, routes);
+            }
         }
 
-        // update position
+        // decrease the hungry counter
+        this.hunger --;
+        // make the bug move towards the target
+        const angle = atan2(this.target.y - this.y, this.target.x - this.x);
+        this.angle = angle;
+        this.dx = cos(angle);
+        this.dy = sin(angle);
         this.x += this.dx;
         this.y += this.dy;
-        this.x = constrain(this.x, boundaries.left, boundaries.right);
-        this.y = constrain(this.y, boundaries.top, boundaries.bottom);   
     }
 
     draw(isSelected){

@@ -67,9 +67,9 @@ class Farm{
         colony.forEach(bug => {     
             // update the bug's position
             if (this.mode === "show") {
-                bug.move(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, flowers); 
+                bug.step(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, flowers); 
             } else {
-                bug.move(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, null); 
+                bug.step(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, null); 
             }
 
             // draw the bug's bounding box
