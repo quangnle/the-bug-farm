@@ -1,5 +1,6 @@
 class Bug{
-    constructor(color, x, y, size, angle){
+    constructor(_id, color, x, y, size, angle, defaultAppearance, defaultGenes){
+        this._id = _id
         this.color = color;
         this.x = x;
         this.y = y;
@@ -9,12 +10,23 @@ class Bug{
         this.dy = Math.sin(this.angle);
         this.hunger = 500;
         this.mutationRate = 0.1;
-        this.appearance = {name: "default", pattern: pattern_default, "score": 90};
+
+        const _appearance = appearances.find(x => x._id === defaultAppearance) || {name: "default", pattern: pattern_default, "score": 90}
+        this.appearance = _appearance;
         this.genes  = [];
         this.foodSenseDistance = 150;
+        this.target = null;
+        
         // add the default pattern
         this.genes.push({name: "default", pattern: pattern_default, "score": 90});        
-        this.target = null;
+        if (defaultGenes.length === 0) {
+            this.genes.push({name: "default", pattern: pattern_default, "score": 90});
+        } else {
+            defaultGenes.forEach(x => {
+                const _find = appearances.find(app=> app._id === x)
+                this.genes.push(_find)
+            })
+        }
     }
 
     getBoundingBox(){
@@ -39,7 +51,7 @@ class Bug{
         // sum of surfaces
         const sumSurfaces = (boundaries.right - boundaries.left) * (boundaries.bottom - boundaries.top);
         // select a region based on the surface proportion
-        const r = random(1) * sumSurfaces;
+        const r = Math.random() * sumSurfaces;
         let s = 0;
         let selectedRegion = null;
         surfaces.forEach(region => {

@@ -1,0 +1,66 @@
+.btn {
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  color: #01204E;
+  padding: 12px 32px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  transition: 200ms;
+}
+.btn:hover {
+  transform: rotateZ(2deg);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 8px;
+  border: 3px dashed #FEAE6F;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  background-color: #F6DCAC;
+  left: -5px;
+  right: -5px;
+  top: -5px;
+  bottom: -5px;
+  z-index: -2;
+  border-radius: 8px;
+}
+
+.input {
+  position: relative;
+  padding: 16px 24px;
+  background-color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: 0;
+  border: 4px solid #F6DCAC;
+}
+
+#main-canvas {
+  background-image: url('./bg.jpeg');
+}
+
+#sketch-holder {
+  position: relative;
+}
+
+#control-area ul {
+  display: flex;
+  gap: 20px
+}
+#control-area ul li {
+  flex: 1;
+  background: aliceblue;
+}
+
+.hidden {
+  display: none !important;
+}
