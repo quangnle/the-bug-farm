@@ -50,6 +50,10 @@
 
 #sketch-holder {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #control-area ul {
@@ -59,6 +63,14 @@
 #control-area ul li {
   flex: 1;
   background: aliceblue;
+}
+#control-area h4 {
+  font-size: 1rem;
+  padding: 8px 16px;
+  color: white;
+  background: forestgreen;
+  margin: 0;
+  text-align: center;
 }
 
 .hidden {

@@ -53,20 +53,18 @@
     <div id="control-area" name="control-area" style="float: left;">
       <ul style="padding: 0px; margin:0px;">
         <li>
-          <h4 style="text-align: center; background-color: forestgreen; margin-top:0px; margin-bottom: 3px;">Player Info
+          <h4>Player Info
             - Legos</h4>
           <ul style="list-style-type: none; padding-left: 10px;">
-            <li>Money: <span style="margin-right: 2px;">$100</span></li>
-            <li>Capacity: <span style="margin-right: 2px;">100</span></li>
-            <li>Food left: <span style="margin-right: 2px;">10</span></li>
-            <li>Population: <span style="margin-right: 2px;">1</span></li>
+            <li>Money: <span data-stat="money" style="margin-right: 2px;">$100</span></li>
+            <li>Capacity: <span data-stat="capacity" style="margin-right: 2px;">100</span></li>
+            <li>Food left: <span data-stat="food" style="margin-right: 2px;">10</span></li>
+            <li>Population: <span data-stat="population" style="margin-right: 2px;">1</span></li>
           </ul>
         </li>
         <!--Selected Object-->
-        <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
-          <h4
-            style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">
-            Information</h4>
+        <li>
+          <h4>Information</h4>
           <div style="float: left; width: 55px; padding:2px">
             <canvas id="object-render-canvas" width="50" height="50"></canvas>
             <canvas id="bug-pattern-canvas" width="50" height="50"></canvas>
@@ -76,14 +74,14 @@
               <li style="display: block;"><textarea id="object-info" readonly rows="10" cols="20"></textarea> </li>
             </ul>
           </div>
-          <button id="btn-sell-it" style="margin-left: 2px; visibility: hidden;" onclick="handleSellBug()">Sell it</button>
+          <button id="btn-sell-it" style="margin-left: 2px; visibility: hidden;" onclick="handleSellBug()">Sell
+            it</button>
           <button id="btn-bring-to-market" style="visibility: hidden;">Bring it to the market</button>
-          <button id="btn-remove-it" style="margin-left: 2px; visibility: hidden;" onclick="removeAFlower()">Remove
+          <button id="btn-remove-it" style="margin-left: 2px; visibility: hidden;" onclick="handleRemoveFlower()">Remove
             it</button>
         </li>
-        <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
-          <h4 style="text-align: center; background-color: forestgreen; margin-top:0px; margin-bottom: 3px;">Flower
-            Config</h4>
+        <li>
+          <h4>Flower Config</h4>
           <ul style="list-style-type: none; padding: 5px;">
             <li>Number of petals: <input type="number" id="petal-number" value="5" min="5" max="8" style="width: 25px;">
             </li>
@@ -112,7 +110,6 @@
       </ul>
     </div>
   </div>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
   <script src="../patterns.js"></script>
   <script src="../evolution.js"></script>
@@ -170,14 +167,6 @@
         }
       });
     }
-
-    function removeAFlower() {
-      farm.objects.forEach((obj, index) => {
-        if (obj === selectedObj) {
-          farm.objects.splice(index, 1);
-        }
-      });
-    }   
   </script>
 </body>
 

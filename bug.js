@@ -1,5 +1,5 @@
 class Bug{
-    constructor(_id, color, x, y, size, angle, defaultAppearance, defaultGenes){
+    constructor(_id, color, x, y, size, angle, defaultAppearance, defaultGenes = []){
         this._id = _id
         this.color = color;
         this.x = x;
@@ -16,9 +16,8 @@ class Bug{
         this.genes  = [];
         this.foodSenseDistance = 150;
         this.target = null;
-        
+
         // add the default pattern
-        this.genes.push({name: "default", pattern: pattern_default, "score": 90});        
         if (defaultGenes.length === 0) {
             this.genes.push({name: "default", pattern: pattern_default, "score": 90});
         } else {
@@ -106,7 +105,7 @@ class Bug{
         this.hunger --;
         // make the bug move towards the target
         const angle = atan2(this.target.y - this.y, this.target.x - this.x);
-        this.angle = angle;
+        this.angle = angle + sin(frameCount * 0.1) * 0.15;
         this.dx = cos(angle);
         this.dy = sin(angle);
         this.x += this.dx;
