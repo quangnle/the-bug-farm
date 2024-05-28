@@ -1,5 +1,5 @@
 class Bug{
-    constructor(_id, color, x, y, size, angle, defaultAppearance, defaultGenes){
+    constructor(_id, color, x, y, size, angle, defaultAppearance, defaultGenes = []){
         this._id = _id
         this.color = color;
         this.x = x;
@@ -16,9 +16,8 @@ class Bug{
         this.genes  = [];
         this.foodSenseDistance = 150;
         this.target = null;
-        
+
         // add the default pattern
-        this.genes.push({name: "default", pattern: pattern_default, "score": 90});        
         if (defaultGenes.length === 0) {
             this.genes.push({name: "default", pattern: pattern_default, "score": 90});
         } else {

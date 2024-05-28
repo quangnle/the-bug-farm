@@ -24,11 +24,15 @@ const api = {
   me: async () => axios.get('/auth/me'),
   login: async ({username, password}) => axios.post('/auth/login', { username, password }),
   register: async ({username, password}) => axios.post('/auth/register', { username, password }),
-  getAllTanks: async () => axios.get('/tanks'),
+  getAllTanks: async ({ userId }) => axios.get('/tanks', { params: {userId}}),
   getTank: async (id) => axios.get(`/tanks/${id}`),
+  createTank: async (name) => axios.post('/tanks', { name }),
   getAllBugs: async () => axios.get('/bugs'),
   getBug: async (id) => axios.get(`/bugs/${id}`),
   getAllAppearances: async () => axios.get('/appearances'),
+
+  plantFlower: async (payload) => axios.post('/flowers', payload),
+  removeFlower: async (id) => axios.delete(`/flowers/${id}`),
 
   sellBug: async (id) => axios.patch(`/bugs/${id}/sell`, { id }) ,
   bugEatFlower: async (id, flowerId) => axios.patch(`/bugs/${id}/eat-flower`, { id, flowerId }) ,
