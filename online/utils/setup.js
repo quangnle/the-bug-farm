@@ -5,6 +5,7 @@ const TANKS_ELE = document.querySelector('.tank-list')
 
 const MONEY_ELE = document.querySelectorAll('[data-stat="money"]')
 const CAPACITY_ELE = document.querySelectorAll('[data-stat="capacity"]')
+const FLOWERS_ELE = document.querySelectorAll('[data-stat="flowers"]')
 const POPULATION_ELE = document.querySelectorAll('[data-stat="population"]')
 
 // Socket
@@ -94,7 +95,9 @@ const handleSelectTank = async (x) => {
   AUTH_ELE.classList.toggle('hidden')
   
   tank.bugs.forEach(x => {
-    const bug = new Bug(x._id, "#f00", 100, 100, 20, x.angle, x.appearance, x.genes);
+    const _x = Math.random() * 1000 + 100
+    const _y = Math.random() * 600 + 100
+    const bug = new Bug(x._id, "#f00", _x, _y, 20, x.angle, x.appearance, x.genes);
     farm.colony.push(bug)
   })
   tank.flowers.forEach(flo => {
@@ -150,7 +153,11 @@ const handleUpdateInformation = () => {
   CAPACITY_ELE.forEach(x => {
     x.innerText = tank?.size || 0
   })
-  console.log({farm})
+  maxPopulation = tank?.size || 0
+
+  FLOWERS_ELE.forEach(x => {
+    x.innerText = farm?.objects.length || 0
+  })
   POPULATION_ELE.forEach(x => {
     x.innerText = farm?.colony.length || 0
   })

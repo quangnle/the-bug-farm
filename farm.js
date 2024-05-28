@@ -1,4 +1,4 @@
-const maxPopulation = 30
+let maxPopulation = 30
 const distanceToReachFood = 10
 
 class Farm {
