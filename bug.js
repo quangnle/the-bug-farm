@@ -53,7 +53,7 @@ class Bug{
         const x = random(selectedRegion.x1, selectedRegion.x2);
         const y = random(selectedRegion.y1, selectedRegion.y2);
 
-        const d = min(dist(this.x, this.y, x, y), 200);
+        const d = min(dist(this.x, this.y, x, y), this.size * 10);
         const angle = atan2(y - this.y, x - this.x);
         return {x: this.x + cos(angle) * d, y: this.y + sin(angle) * d};
     }    
@@ -77,7 +77,7 @@ class Bug{
         }
     }
 
-    step(foods, boundaries, routes){
+    findDirection(foods, boundaries, routes){
         const food = this.findAvailableFood(foods);
         if (this.hunger <= 0 && food) {
             this.target = food;
@@ -89,7 +89,17 @@ class Bug{
                 this.target = this.findATarget(boundaries, routes);
             }
         }
+    }
 
+    pushedBy(otherBug){
+        // calculate the angle between the two bugs
+        const angle = atan2(this.y - otherBug.y, this.x - otherBug.x);
+        // set this bug's position away from the other bug 1 time the size of the bug
+        this.x += cos(angle);
+        this.y += sin(angle);        
+    }
+
+    update() {
         // decrease the hungry counter
         this.hunger --;
         // make the bug move towards the target

@@ -62,15 +62,37 @@ class Farm{
         const flowers = this.objects.filter(obj => obj instanceof Flower);
         const flowersWithPollens = flowers.filter(flower => flower.hasPollen);
 
-        const colony = this.colony;
+        const colony = this.colony;        
+        const idleBugIndices = [];
+        // fill the idleBugIndices array zeros
+        for (let i = 0; i < colony.length; i++) {
+            idleBugIndices.push(0);
+        }
+        
         // draw bugs
-        colony.forEach(bug => {     
+        colony.forEach((bug,idx) => {     
             // update the bug's position
             if (this.mode === "show") {
-                bug.step(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, flowers); 
+                bug.findDirection(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, flowers); 
             } else {
-                bug.step(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, null); 
+                bug.findDirection(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, null); 
             }
+
+            // check if the bug is colliding with other bugs
+            // then set all the bugs that collide with this bug to 1 in the idleBugIndices array
+            colony.forEach((otherBug, index) => {
+                if (bug !== otherBug) {
+                    const d = dist(bug.x, bug.y, otherBug.x, otherBug.y);
+                    if (d < bug.size) {
+                        idleBugIndices[index] = 1;
+                        otherBug.hunger = 300;
+                        bug.pushedBy(otherBug);
+                    }
+                }
+            });
+
+            // update the bug's position
+            if (idleBugIndices[idx] === 0) bug.update();
 
             // draw the bug's bounding box
             if (this.boundingBox) {
