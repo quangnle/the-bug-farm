@@ -7,7 +7,7 @@ const getToken = () => {
     const cache = JSON.parse(localStorage.getItem('token') || '{}')
  
     if (cache && typeof cache === 'object') {
-      return cache.accessToken
+      return cache
     }
   } catch (error) {
     console.log(error)
@@ -41,7 +41,7 @@ const api = {
 axios.interceptors.request.use(async (config) => {
   const token = await getToken()
   if (token) {
-    config.headers.authorization = `Bearer ${token}`
+    config.headers.authorization = `Bearer ${token.accessToken}`
   }
 
   return config
@@ -64,7 +64,7 @@ axios.interceptors.response.use(
   async (error) => {
     const status = error.response ? error.response.status : null
     if (status === 401) {
-      const user = getLocalStore(LOCAL_STORE_KEY.USER_INFO)
+      const user = getToken()
       try {
         const response = await axios.post('/auth/token', {
           refreshToken: user.refreshToken

@@ -1,4 +1,10 @@
-.btn {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.auth-overlay .btn {
   position: relative;
   z-index: 1;
   cursor: pointer;
@@ -8,11 +14,11 @@
   font-weight: bold;
   transition: 200ms;
 }
-.btn:hover {
+.auth-overlay .btn:hover {
   transform: rotateZ(2deg);
 }
 
-.btn::before {
+.auth-overlay .btn::before {
   content: '';
   position: absolute;
   left: 0;
@@ -22,7 +28,7 @@
   border-radius: 8px;
   border: 3px dashed #FEAE6F;
 }
-.btn::after {
+.auth-overlay  .btn::after {
   content: '';
   position: absolute;
   background-color: #F6DCAC;
@@ -45,7 +51,7 @@
 }
 
 #main-canvas {
-  background-image: url('./bg.jpeg');
+  background-image: url('../bg.jpeg');
 }
 
 #sketch-holder {

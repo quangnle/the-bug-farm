@@ -26,7 +26,7 @@
       font-size: 12px;
     }
   </style>
-  <link rel="stylesheet" href="./assets/style.css">
+  <link rel="stylesheet" href="./assets/styles/index.css">
   <link rel="stylesheet" href="./assets/login-box.css">
 </head>
 
@@ -34,7 +34,19 @@
   <div style="display: flex; column-count: 2; column-gap: 0px;">
     <div name="game-area" style="float: left; width: auto;">
       <div id="sketch-holder">
-        <canvas id="main-canvas"></canvas>
+        <div class="main-canvas__wrapper border-wrapper">
+          <canvas id="main-canvas"></canvas>
+            
+          <div class="corner__top-left corner"></div>
+          <div class="corner__top-right corner"></div>
+          <div class="corner__bottom-left corner"></div>
+          <div class="corner__bottom-right corner"></div>
+
+          <div class="line__left line"></div>
+          <div class="line__right line"></div>
+          <div class="line__top line"></div>
+          <div class="line__bottom line"></div>
+        </div>
         <div class="auth-overlay">
           <form class="login-box">
             <input name="username" class="input" placeholder="Enter your ID" value="test" autofocus="true" />
@@ -49,6 +61,24 @@
       </div>
       <p style="margin-bottom: 0; padding-bottom: 0;">Left click on a bug or a flower to select it. Right click in plant
         mode to plant a flower.</p>
+    </div>
+
+    <div class="control border-wrapper">
+      <div class="control-select">
+        <div class="btn no-border">Player Info</div>
+        <div class="btn no-border">Player Info</div>
+        <div class="btn no-border">Player Info</div>
+      </div>
+
+      <div class="corner__top-left corner"></div>
+      <div class="corner__top-right corner"></div>
+      <div class="corner__bottom-left corner"></div>
+      <div class="corner__bottom-right corner"></div>
+
+      <div class="line__left line"></div>
+      <div class="line__right line"></div>
+      <div class="line__top line"></div>
+      <div class="line__bottom line"></div>
     </div>
     <div id="control-area" name="control-area" style="float: left;">
       <ul style="padding: 0px; margin:0px;">
@@ -112,6 +142,7 @@
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
   <script src="../patterns.js"></script>
+  <script src="./utils/button.js"></script>
   <script src="../evolution.js"></script>
   <script src="../bug.js"></script>
   <script src="../flower.js"></script>

@@ -110,8 +110,6 @@ const handleSelectTank = async (x) => {
 
   const eventSource = new EventSource(BASE_URL + '/events-flower');
   eventSource.onmessage = ({ data }) => {
-    console.log('New message', JSON.parse(data));
-
     const {flower} = JSON.parse(data).data
     if (flower._id) {
       const _flower = farm.objects.find(x => x._id === flower._id)

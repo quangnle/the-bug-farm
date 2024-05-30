@@ -1,0 +1,63 @@
+:root {
+  --offsetDecorX: 4px;
+  --offsetDecorY: 4px;
+
+  --offsetDecorSpriteX: calc(64px * 1);
+  --offsetDecorSpriteY: calc(64px * 7);
+}
+
+.btn {
+  padding: 16px 24px;
+  font-size: 1rem;
+  width: fit-content;
+  position: relative;
+  cursor: pointer;
+  color: darkgreen;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.btn .decor {
+}
+
+.btn .decor .corner {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-image: url('../sprites/decor.png');
+  z-index: -1;
+  transition: 200ms;
+}
+
+.btn .decor .corner__top-left {
+  top: var(--offsetDecorY);
+  left: var(--offsetDecorX);
+  background-position: calc(0px - var(--offsetDecorSpriteX)) calc(0px - var(--offsetDecorSpriteY));
+}
+
+.btn .decor .corner__top-right {
+  top: var(--offsetDecorY);
+  right: var(--offsetDecorX);
+  background-position: calc(-32px - var(--offsetDecorSpriteX)) calc(0px - var(--offsetDecorSpriteY));
+}
+
+.btn .decor .corner__bottom-left {
+  bottom: var(--offsetDecorY);
+  left: var(--offsetDecorX);
+  background-position: calc(0px - var(--offsetDecorSpriteX)) calc(-32px - var(--offsetDecorSpriteY));
+}
+
+.btn .decor .corner__bottom-right {
+  bottom: var(--offsetDecorY);
+  right: var(--offsetDecorX);
+  background-position: calc(-32px - var(--offsetDecorSpriteX)) calc(-32px - var(--offsetDecorSpriteY));
+}
+
+.btn:hover .corner__top-left ,
+.btn:hover .corner__bottom-left {
+  left: 0px;
+}
+.btn:hover .corner__top-right ,
+.btn:hover .corner__bottom-right {
+  right: 0px;
+}
