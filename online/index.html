@@ -58,10 +58,10 @@
           <div class="btn no-border">Flower</div>
           <div class="btn no-border">Player Info</div>
         </div>
-  
+
         <div class="control-body">
           <div class="control-body--inner">
-  
+
             <div class="control-section control-section--information">
               <p>Player: </p>
               <p>Money: <span data-stat="money" style="margin-right: 2px;">$0</span></p>
@@ -69,10 +69,11 @@
               <p>Flowers: <span data-stat="flowers" style="margin-right: 2px;">0</span></p>
               <p>Population: <span data-stat="population" style="margin-right: 2px;">0</span></p>
             </div>
-    
+
             <div class="control-section control-section--flower">
               <ul style="list-style-type: none; padding: 5px;">
-                <li>Number of petals: <input type="number" id="petal-number" value="5" min="5" max="8" style="width: 25px;">
+                <li>Number of petals: <input type="number" id="petal-number" value="5" min="5" max="8"
+                    style="width: 25px;">
                 </li>
                 <li>
                   <ul style="list-style-type: none; padding: 3px;">
@@ -98,17 +99,24 @@
 
       <div class="target-object border-wrapper">
         <div class="target-zoom">
-          <canvas id="object-render-canvas" width="50" height="50"></canvas>
-          <canvas id="bug-pattern-canvas" width="50" height="50"></canvas>
+          <div class="border-wrapper border-2">
+            <canvas id="object-render-canvas" width="50" height="50"></canvas>
+          </div>
+          <div class="border-wrapper border-2"><canvas id="bug-pattern-canvas" width="50" height="50"></canvas></div>
+
         </div>
 
-        <div id="object-info" readonly rows="10" cols="20"></div>
+        <div class="target-info">
+          <div id="object-info" readonly rows="10" cols="20"></div>
 
-        <button id="btn-sell-it" style="margin-left: 2px; visibility: hidden;" onclick="handleSellBug()">Sell
-          it</button>
-        <button id="btn-bring-to-market" style="visibility: hidden;">Bring it to the market</button>
-        <button id="btn-remove-it" style="margin-left: 2px; visibility: hidden;" onclick="handleRemoveFlower()">Remove
-          it</button>
+          <div class="target-control">
+            <button id="btn-sell-it" class="btn" onclick="handleSellBug()">Sell
+              it</button>
+            <button id="btn-bring-to-market" class="btn">Bring it to the market</button>
+            <button id="btn-remove-it" class="btn" onclick="handleRemoveFlower()">Remove
+              it</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

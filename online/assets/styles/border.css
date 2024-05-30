@@ -1,6 +1,7 @@
 :root {
+  --sizeBorder: 64px;
   --offsetBorderX: -16px;
-  --offsetBorderY: -16px
+  --offsetBorderY: -16px;
 }
 
 .border-wrapper {
@@ -9,14 +10,20 @@
 
 .border-wrapper > .decor .corner {
   position: absolute;
-  width: 64px;
-  height: 64px;
-  background-size: 64px;
+  width: var(--sizeBorder);
+  height: var(--sizeBorder);
+  background-size: calc(var(--sizeBorder) * 4);
   z-index: 2;
+  background-image: url('../border/border-1/corner.png');
+
+  --posTopLeft: calc(0px - 0 * var(--sizeBorder));
+  --posTopRight: calc(0px - 1 * var(--sizeBorder));
+  --posBottomLeft: calc(0px - 2 * var(--sizeBorder));
+  --posBottomRight: calc(0px - 3 * var(--sizeBorder));
 }
 .border-wrapper > .decor .line {
   position: absolute;
-  background-size: 64px;
+  background-size: var(--sizeBorder);
   z-index: 1;
 }
 
@@ -25,54 +32,80 @@
   position: absolute;
   top: var(--offsetBorderY);
   left: var(--offsetBorderX);
-  background-image: url('../border/top-left.png');
+  background-position: var(--posTopLeft) var(--posTopLeft);
 }
 .border-wrapper > .decor .corner__top-right {
   position: absolute;
   top: var(--offsetBorderY);
   right: var(--offsetBorderX);
-  background-image: url('../border/top-right.png');
+  background-position: var(--posTopRight) var(--posTopRight);
 }
 .border-wrapper > .decor .corner__bottom-left {
   position: absolute;
   bottom: calc(var(--offsetBorderX));
   left: var(--offsetBorderX);
-  background-image: url('../border/bottom-left.png');
+  background-position: var(--posBottomLeft) var(--posBottomLeft);
 }
 .border-wrapper > .decor .corner__bottom-right {
   position: absolute;
   bottom: calc(var(--offsetBorderX));
   right: var(--offsetBorderX);
-  background-image: url('../border/bottom-right.png');
+  background-position: var(--posBottomRight) var(--posBottomRight);
 }
 
 /* Line */
 .border-wrapper > .decor .line__left {
-  top: calc(64px + var(--offsetBorderY));
-  bottom: calc(64px + var(--offsetBorderY));
+  top: calc(var(--sizeBorder) + var(--offsetBorderY));
+  bottom: calc(var(--sizeBorder) + var(--offsetBorderY));
   left: var(--offsetBorderX);
-  width: 64px;
-  background-image: url('../border/left.png');
+  width: var(--sizeBorder);
+  background-image: url('../border/border-1/left.png');
 }
 .border-wrapper > .decor .line__right {
-  top: calc(64px + var(--offsetBorderY));
-  bottom: calc(64px + var(--offsetBorderY));
+  top: calc(var(--sizeBorder) + var(--offsetBorderY));
+  bottom: calc(var(--sizeBorder) + var(--offsetBorderY));
   right: var(--offsetBorderX);
-  width: 64px;
-  background-image: url('../border/right.png');
+  width: var(--sizeBorder);
+  background-image: url('../border/border-1/right.png');
   
 }
 .border-wrapper > .decor .line__top {
   top: var(--offsetBorderY);
-  left: calc(64px + var(--offsetBorderX));
-  right: calc(64px + var(--offsetBorderX));
-  height: 64px;
-  background-image: url('../border/top.png');
+  left: calc(var(--sizeBorder) + var(--offsetBorderX));
+  right: calc(var(--sizeBorder) + var(--offsetBorderX));
+  height: var(--sizeBorder);
+  background-image: url('../border/border-1/top.png');
 }
 .border-wrapper > .decor .line__bottom {
   bottom: calc(var(--offsetBorderY));
-  left: calc(64px + var(--offsetBorderX));
-  right: calc(64px + var(--offsetBorderX));
-  height: 64px;
-  background-image: url('../border/bottom.png');
+  left: calc(var(--sizeBorder) + var(--offsetBorderX));
+  right: calc(var(--sizeBorder) + var(--offsetBorderX));
+  height: var(--sizeBorder);
+  background-image: url('../border/border-1/bottom.png');
+}
+
+/* Varient */
+.border-wrapper.border-2 > .decor .corner {
+  background-image: url('../border/border-2/corner.png');
+
+  --sizeBorder: 32px;
+  --offsetBorderX: -4px;
+  --offsetBorderY: -4px;
+}
+.border-wrapper.border-2 > .decor .line {
+  --sizeBorder: 32px;
+  --offsetBorderX: -4px;
+  --offsetBorderY: -4px;
+}
+.border-wrapper.border-2 > .decor .line__left {
+  background-image: url('../border/border-2/left.png');
+}
+.border-wrapper.border-2 > .decor .line__right {
+  background-image: url('../border/border-2/right.png');
+}
+.border-wrapper.border-2 > .decor .line__top {
+  background-image: url('../border/border-2/top.png');
+}
+.border-wrapper.border-2 > .decor .line__bottom {
+  background-image: url('../border/border-2/bottom.png');
 }
