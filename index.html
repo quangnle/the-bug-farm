@@ -73,7 +73,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <button id="btn-show" onclick="show()">Start The Show!!!</button>
+                    <button id="btn-show" onclick="show()" style="margin-left: 2px;">Start The Marching Show!!!</button>
                 </li>
                 <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
                     <a href="./pattern-maker/pattern-maker.html" target="_blank">Design Your Own Pattern</a>
@@ -85,6 +85,7 @@
     <script src="evolution.js"></script>
     <script src="bug.js"></script>
     <script src="flower.js"></script>
+    <script src="route.js"></script>
     <script src="farm.js"></script>    
     <script src="control-panel.js"></script>  
     <script src="sketch.js"></script>
@@ -102,23 +103,17 @@
 
     function show() {
         const flowers = farm.objects.filter(obj => obj instanceof Flower);
-        if (flowers.length > 0) {
-            if (btnshow.innerHTML === "Stop The Show") {
-                btnshow.innerHTML = "Start The Show!!!";
+        if (flowers.length > 1) {
+            if (btnshow.innerHTML === "Stop The Show") { // stop the show
+                btnshow.innerHTML = "Start The Marching Show!!!";
                 farm.mode = "play";
-                farm.colony.forEach(bug => {
-                    bug.nextTarget = null;
-                });
-            } else {
+                farm.route.stop();
+                farm.route = null;
+            } else { // start the show
                 btnshow.innerHTML = "Stop The Show";
                 farm.mode = "show";
-                
-                if (flowers.length > 0) {
-                    farm.colony.forEach(bug => {
-                        bug.nextTarget = flowers[0];
-                        bug.nextTargetIndex = 0;
-                    });
-                }
+                farm.route = new Route(farm.colony, flowers);
+                farm.route.start();
             }
         }
     }

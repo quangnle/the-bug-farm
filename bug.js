@@ -64,13 +64,10 @@ class Bug{
 
     findATarget(boundaries, routes){
         if (routes) {
-            if (this.target == null) return routes[0];
+            let routeIdx = routes.flowers.findIndex(route => route.x === this.target.x && route.y === this.target.y);
+            if (routeIdx < 0) return routes.flowers[0];
             else {
-                let routeIdx = routes.findIndex(route => route.x === this.target.x && route.y === this.target.y);
-                if (routeIdx < 0) return routes[0];
-                else {
-                    return routes[(routeIdx + 1) % routes.length];
-                }
+                return routes.flowers[(routeIdx + 1) % routes.flowers.length];
             }
         } else {
             return this.randomDirection(boundaries);
@@ -79,9 +76,10 @@ class Bug{
 
     findDirection(foods, boundaries, routes){
         const food = this.findAvailableFood(foods);
-        if (this.hunger <= 0 && food) {
+        if (this.hunger <= 0 && food && !routes) {
             this.target = food;
         }
+        
         if (this.target == null) this.target = this.findATarget(boundaries, routes);
         else {
             const d = dist(this.x, this.y, this.target.x, this.target.y);

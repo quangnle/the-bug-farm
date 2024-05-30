@@ -12,7 +12,8 @@ class Farm{
         this.objects = [];
         this.obstacles = [];
         this.mode = "play";
-        this.boundingBox = false;
+        this.route = null;
+        this.boundingBox = false;                
     }
 
     addObject(obj){
@@ -72,10 +73,12 @@ class Farm{
         // draw bugs
         colony.forEach((bug,idx) => {     
             // update the bug's position
-            if (this.mode === "show") {
-                bug.findDirection(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, flowers); 
-            } else {
-                bug.findDirection(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, null); 
+            bug.findDirection(flowersWithPollens, {left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height}, this.route); 
+            
+            // check if the bug is jammed
+            if (this.route) {
+                // solve jamed bugs
+                this.route.jamSolve();                
             }
 
             // check if the bug is colliding with other bugs
