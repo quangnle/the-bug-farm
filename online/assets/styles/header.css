@@ -1,0 +1,21 @@
+:root {
+  --offsetHeaderX: calc(0px - 128px * 9);
+  --offsetHeaderY: calc(0px - 64px * 4);
+}
+
+.header {
+  font-size: 1rem;
+  padding: 8px 16px;
+  color: white;
+  margin: 0;
+  text-align: center;
+  width: 128px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-image: url('../sprites/bar.png');
+  background-size: 1280px;
+  background-position: var(--offsetHeaderX) var(--offsetHeaderY);
+}

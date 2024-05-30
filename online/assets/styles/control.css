@@ -1,0 +1,11 @@
+.control {
+  height: 300px;
+  padding: 30px;
+  background: burlywood;
+}
+
+.control-select {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
