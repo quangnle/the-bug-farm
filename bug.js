@@ -169,12 +169,17 @@ class Bug{
     }
 
     infoString(){
-        let info = `Hunger rate: ${500 - this.hunger} \nAppearance: ${this.appearance.name} \n\nList of genes: \n--------------\n`;
         // total score
         const totalScore = this.genes.reduce((acc, g) => acc + g.score, 0);
-        this.genes.forEach(g => {
-            info += `${g.name} : $(${Math.round(g.score/totalScore*100)}%) \n`;
-        });
+        
+        let info = `
+            <p>Hunger rate: ${500 - this.hunger}</p>
+            <p>Appearance: ${this.appearance.name}</p>
+            <p>List of genes:</p>
+            <ul>
+                ${this.genes.map(g => `<li>${g.name} : $(${Math.round(g.score/totalScore*100)}%)</li>`)}
+            </ul>
+        `
         return info;
     }
 

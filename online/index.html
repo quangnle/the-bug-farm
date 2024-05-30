@@ -31,21 +31,11 @@
 </head>
 
 <body>
-  <div style="display: flex; column-count: 2; column-gap: 0px;">
-    <div name="game-area" style="float: left; width: auto;">
+  <div class="game">
+    <div name="game-area">
       <div id="sketch-holder">
         <div class="main-canvas__wrapper border-wrapper">
           <canvas id="main-canvas"></canvas>
-            
-          <div class="corner__top-left corner"></div>
-          <div class="corner__top-right corner"></div>
-          <div class="corner__bottom-left corner"></div>
-          <div class="corner__bottom-right corner"></div>
-
-          <div class="line__left line"></div>
-          <div class="line__right line"></div>
-          <div class="line__top line"></div>
-          <div class="line__bottom line"></div>
         </div>
         <div class="auth-overlay">
           <form class="login-box">
@@ -56,88 +46,70 @@
               <button class="login-box__signup btn">Register</button>
             </div>
           </form>
-          <div class="tank-list" />
+          <div class="tank-list"></div>
         </div>
       </div>
-      <p style="margin-bottom: 0; padding-bottom: 0;">Left click on a bug or a flower to select it. Right click in plant
-        mode to plant a flower.</p>
     </div>
 
-    <div class="control border-wrapper">
-      <div class="control-select">
-        <div class="btn no-border">Player Info</div>
-        <div class="btn no-border">Player Info</div>
-        <div class="btn no-border">Player Info</div>
+    <div class="bottom-area">
+      <div class="control border-wrapper">
+        <div class="control-select">
+          <div class="btn no-border">Player Info</div>
+          <div class="btn no-border">Flower</div>
+          <div class="btn no-border">Player Info</div>
+        </div>
+  
+        <div class="control-body">
+          <div class="control-body--inner">
+  
+            <div class="control-section control-section--information">
+              <p>Player: </p>
+              <p>Money: <span data-stat="money" style="margin-right: 2px;">$0</span></p>
+              <p>Capacity: <span data-stat="capacity" style="margin-right: 2px;">0</span></p>
+              <p>Flowers: <span data-stat="flowers" style="margin-right: 2px;">0</span></p>
+              <p>Population: <span data-stat="population" style="margin-right: 2px;">0</span></p>
+            </div>
+    
+            <div class="control-section control-section--flower">
+              <ul style="list-style-type: none; padding: 5px;">
+                <li>Number of petals: <input type="number" id="petal-number" value="5" min="5" max="8" style="width: 25px;">
+                </li>
+                <li>
+                  <ul style="list-style-type: none; padding: 3px;">
+                    <li style="display: inline;">Pistil Color: <input type="color" id="pistil-color" value="#ff0000"
+                        style="width: 35px;"></li>
+                    <li style="display: inline;">Size: <input type="number" id="pistil-size" value="5" min="3" max="7"
+                        style="width: 25px;"></li>
+                  </ul>
+                </li>
+                <li>
+                  <ul style="list-style-type: none; padding: 3px;">
+                    <li style="display: inline;">Petal Color: <input type="color" id="petal-color" value="#ffffff"
+                        style="width: 35px;"></li>
+                    <li style="display: inline;">Size: <input type="number" id="petal-size" value="5" min="3" max="7"
+                        style="width: 25px;"></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="corner__top-left corner"></div>
-      <div class="corner__top-right corner"></div>
-      <div class="corner__bottom-left corner"></div>
-      <div class="corner__bottom-right corner"></div>
+      <div class="target-object border-wrapper">
+        <div class="target-zoom">
+          <canvas id="object-render-canvas" width="50" height="50"></canvas>
+          <canvas id="bug-pattern-canvas" width="50" height="50"></canvas>
+        </div>
 
-      <div class="line__left line"></div>
-      <div class="line__right line"></div>
-      <div class="line__top line"></div>
-      <div class="line__bottom line"></div>
-    </div>
-    <div id="control-area" name="control-area" style="float: left;">
-      <ul style="padding: 0px; margin:0px;">
-        <li>
-          <h4>Player Info
-            - Legos</h4>
-          <ul style="list-style-type: none; padding-left: 10px;">
-            <li>Money: <span data-stat="money" style="margin-right: 2px;">$0</span></li>
-            <li>Capacity: <span data-stat="capacity" style="margin-right: 2px;">0</span></li>
-            <li>Flowers: <span data-stat="flowers" style="margin-right: 2px;">0</span></li>
-            <li>Population: <span data-stat="population" style="margin-right: 2px;">0</span></li>
-          </ul>
-        </li>
-        <!--Selected Object-->
-        <li>
-          <h4>Information</h4>
-          <div style="float: left; width: 55px; padding:2px">
-            <canvas id="object-render-canvas" width="50" height="50"></canvas>
-            <canvas id="bug-pattern-canvas" width="50" height="50"></canvas>
-          </div>
-          <div>
-            <ul style="list-style: none;">
-              <li style="display: block;"><textarea id="object-info" readonly rows="10" cols="20"></textarea> </li>
-            </ul>
-          </div>
-          <button id="btn-sell-it" style="margin-left: 2px; visibility: hidden;" onclick="handleSellBug()">Sell
-            it</button>
-          <button id="btn-bring-to-market" style="visibility: hidden;">Bring it to the market</button>
-          <button id="btn-remove-it" style="margin-left: 2px; visibility: hidden;" onclick="handleRemoveFlower()">Remove
-            it</button>
-        </li>
-        <li>
-          <h4>Flower Config</h4>
-          <ul style="list-style-type: none; padding: 5px;">
-            <li>Number of petals: <input type="number" id="petal-number" value="5" min="5" max="8" style="width: 25px;">
-            </li>
-            <li>
-              <ul style="list-style-type: none; padding: 3px;">
-                <li style="display: inline;">Pistil Color: <input type="color" id="pistil-color" value="#ff0000"
-                    style="width: 35px;"></li>
-                <li style="display: inline;">Size: <input type="number" id="pistil-size" value="5" min="3" max="7"
-                    style="width: 25px;"></li>
-              </ul>
-            </li>
-            <li>
-              <ul style="list-style-type: none; padding: 3px;">
-                <li style="display: inline;">Petal Color: <input type="color" id="petal-color" value="#ffffff"
-                    style="width: 35px;"></li>
-                <li style="display: inline;">Size: <input type="number" id="petal-size" value="5" min="3" max="7"
-                    style="width: 25px;"></li>
-              </ul>
-            </li>
-          </ul>
-          <button id="btn-show" onclick="show()">Start The Show!!!</button>
-        </li>
-        <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
-          <a href="./pattern-maker/pattern-maker.html" target="_blank">Design Your Own Pattern</a>
-        </li>
-      </ul>
+        <div id="object-info" readonly rows="10" cols="20"></div>
+
+        <button id="btn-sell-it" style="margin-left: 2px; visibility: hidden;" onclick="handleSellBug()">Sell
+          it</button>
+        <button id="btn-bring-to-market" style="visibility: hidden;">Bring it to the market</button>
+        <button id="btn-remove-it" style="margin-left: 2px; visibility: hidden;" onclick="handleRemoveFlower()">Remove
+          it</button>
+      </div>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>

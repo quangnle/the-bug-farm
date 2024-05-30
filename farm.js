@@ -141,8 +141,8 @@ class Farm {
             return
 
           // else, evolution to make a new bug
-          const newBug = Evolution.evolute(bug, flower.pistilColor)
-          colony.push(newBug)
+          // const newBug = Evolution.evolute(bug, flower.pistilColor)
+          // colony.push(newBug)
         }
       })
     })

@@ -1,11 +1,51 @@
+.bottom-area {
+  display: flex;
+  gap: 40px
+}
+
 .control {
+  flex: 1;
   height: 300px;
   padding: 30px;
   background: burlywood;
+
+  display: flex;
+  gap: 40px;
 }
 
 .control-select {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: space-between;
+  justify-content: space-around;
+}
+.control-select .btn {
+  min-width: 160px;
+  text-align: center;
+}
+.control-body {
+  flex: 1;
+  overflow: hidden;
+}
+.control-body--inner {
+  transition: 200ms;
+}
+.control-section {
+  height: 240px;
+}
+
+.target-object {
+  width: 300px;
+  height: 300px;
+  padding: 30px;
+}
+
+.target-zoom {
+  display: flex;
+  gap: 30px;
+}
+.target-zoom canvas {
+  flex: 1;
+  aspect-ratio: 1;
 }
