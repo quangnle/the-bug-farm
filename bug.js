@@ -23,7 +23,13 @@ class Bug{
         } else {
             defaultGenes.forEach(x => {
                 const _find = appearances.find(app=> app._id === x)
-                this.genes.push(_find)
+                this.genes.push(
+                  _find || {
+                    name: "default",
+                    pattern: pattern_default,
+                    score: 90,
+                  }
+                )
             })
         }
     }
