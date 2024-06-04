@@ -29,7 +29,8 @@ const api = {
   createTank: async (name) => axios.post('/tanks', { name }),
   getAllBugs: async () => axios.get('/bugs'),
   getBug: async (id) => axios.get(`/bugs/${id}`),
-  getAllAppearances: async () => axios.get('/appearances'),
+  getAllAppearances: async () => axios.get('/appearances/default'),
+  createAppearance: async (payload) => axios.post('/appearances', payload),
 
   plantFlower: async (payload) => axios.post('/flowers', payload),
   removeFlower: async (id) => axios.delete(`/flowers/${id}`),

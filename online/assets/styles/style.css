@@ -5,16 +5,8 @@
 }
 
 html {
-  background-color: burlywood;
-}
-
-.game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  gap: 40px;
-  padding: 20px 120px;
+  background: url('../bg-2.jpeg');
+  font-family: "Chakra Petch", sans-serif;
 }
 
 .auth-overlay .btn {
@@ -67,14 +59,6 @@ html {
   background-image: url('../bg.jpeg');
 }
 
-#sketch-holder {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 #control-area ul {
   display: flex;
   gap: 20px
@@ -94,4 +78,44 @@ html {
 
 .hidden {
   display: none !important;
+}
+
+#main-canvas {
+  width: 100% !important;
+  aspect-ratio: 3 / 2;
+}
+.target-info {
+  flex: 1;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+}
+.target-info p {
+  font-size: 1rem;
+}
+.target-info ul {
+  font-size: 1rem;
+  padding-left: 1rem;
+}
+.target-info li {
+  font-size: 1rem;
+}
+
+.target-control {
+  margin-top: auto;
+  display: flex;
+  gap: 12px;
+}
+
+#btn-show {
+  margin-top: auto;
+  width: 100%;
+}
+
+.myBtn {
+  margin: 0 auto;
+}
+
+#btn-remove-it {
+  display: none;
 }

@@ -3,6 +3,7 @@ const AUTH_ELE = document.querySelector('.auth-overlay')
 const LOGIN_ELE = document.querySelector('.login-box')
 const TANKS_ELE = document.querySelector('.tank-list')
 
+const PLAYER_ELE = document.querySelectorAll('[data-stat="player"]')
 const MONEY_ELE = document.querySelectorAll('[data-stat="money"]')
 const CAPACITY_ELE = document.querySelectorAll('[data-stat="capacity"]')
 const FLOWERS_ELE = document.querySelectorAll('[data-stat="flowers"]')
@@ -24,10 +25,9 @@ const syncMe = async () => {
 } 
 
 const setupInit = async () => {
-  console.log('loaded')
   // load appearance
   api.getAllAppearances().then(res => {
-    appearances = res.data.data
+    appearances = res.data
 
     farm = new Farm(0, 0, farmWidth, farmHeight, "#77dd22");
     controlPanel = new ControlPanel(0, farmHeight, farmWidth, 30, "#ffffff");
@@ -145,6 +145,10 @@ const handleRemoveFlower = async () => {
 }   
 
 const handleUpdateInformation = () => {
+  console.log('asdasd')
+  PLAYER_ELE.forEach(x => {
+    x.innerText = user.username
+  })
   MONEY_ELE.forEach(x => {
     x.innerText = '$' + user.money
   })
@@ -158,5 +162,21 @@ const handleUpdateInformation = () => {
   })
   POPULATION_ELE.forEach(x => {
     x.innerText = farm?.colony.length || 0
+  })
+  handleUpdateObjectList(farm)
+}
+
+const handleUpdateObjectList = (farm) => {
+  if (!farm) return
+  document.getElementsByClassName('object-list--inner').forEach((ele) => {
+    ele.innerHTML = ""
+
+    farm.colony.forEach(bug => {
+      const child = document.createElement('div')
+      child.className = 'object-list__item border-wrapper border-2'
+
+      createObjectItem(child, bug)
+      ele.appendChild(child)
+    })
   })
 }

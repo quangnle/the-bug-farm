@@ -1,0 +1,144 @@
+:root {
+  --layoutGap: 24px;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+}
+.game {
+  display: flex;
+  height: fit-content;
+  gap: 20px
+}
+.game-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layoutGap);
+  height: fit-content;
+}
+.right {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--layoutGap);
+}
+.tabs {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.tab-body {
+  flex: 1;
+}
+.control-area {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layoutGap);
+  flex: 1;
+  height: 100%;
+  position: relative;;
+}
+.object-list {
+  flex: 1;
+  max-height: calc(960px - 30px - 400px);
+  padding: 12px;
+  display: none;
+  background-color: burlywood;
+}
+.flower-seed {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  background-color: burlywood;
+  padding: 30px;
+}
+.tab-body[data-tab="flower-seed"] .flower-seed {
+  display: flex;
+}
+.tab-body[data-tab="object-list"] .object-list {
+  display: flex;
+}
+.player-info {
+  display: flex;
+  height: 98px;
+  padding: 12px;
+  background-color: burlywood;
+  align-items: center;
+  gap: var(--layoutGap);
+}
+#sketch-holder {
+  position: relative;
+  width: fit-content;
+}
+.main-canvas__wrapper {
+  width: 100%;
+  max-width: 960px;
+  aspect-ratio: 1 / 1;
+  
+}
+#main-canvas {
+
+}
+.flower-seed .header {
+  padding: 8px 12px;
+  margin: 0 auto 12px;
+  font-size: 0.925rem;
+}
+.target-object {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  background: burlywood;
+}
+.target-zoom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.target-zoom canvas {
+  display: flex;
+  width: 120px;
+}
+
+.object-list--inner {
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-right: 12px;
+  padding: 12px;
+}
+
+.object-list__item {
+  display: flex;
+  width: 100%;
+  gap: 16px;
+  padding: 8px 12px;
+  background-color: white;
+  cursor: pointer;
+}
+.object-list__item div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.object-list__item .output {
+  width: 64px;
+  height: auto;
+  border: 1px solid orange;
+}
+.mode {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  gap: 20px;
+}

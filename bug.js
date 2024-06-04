@@ -177,7 +177,7 @@ class Bug{
             <p>Appearance: ${this.appearance.name}</p>
             <p>List of genes:</p>
             <ul>
-                ${this.genes.map(g => `<li>${g.name} : $(${Math.round(g.score/totalScore*100)}%)</li>`)}
+                ${this.genes.map(g => `<li>${g.name} : $(${Math.round(g.score/totalScore*100)}%)</li>`).join('\n')}
             </ul>
         `
         return info;

@@ -142,7 +142,16 @@ class Farm {
 
           // else, evolution to make a new bug
           // const newBug = Evolution.evolute(bug, flower.pistilColor)
-          // colony.push(newBug)
+          if (bug._id && flower._id) {
+            api.bugEatFlower(bug._id, flower._id).then(({data}) => {
+              console.log(data)
+              if (data._id) {
+                const newBug = new Bug(data._id, flower.pistilColor, bug.x, bug.y, data.size, data.angle, data.appearance, data.genes)
+                colony.push(newBug)
+                handleUpdateInformation()
+              }
+            })
+          }
         }
       })
     })
@@ -210,16 +219,16 @@ class Farm {
 
     // check if the object is a bug or a flower and show the appropriate buttons
     if (obj instanceof Bug) {
-      btnSellIt.style.visibility = "visible"
-      btnBringToMarket.style.visibility = "visible"
-      btnRemoveIt.style.visibility = "hidden"
+      btnSellIt.style.display = "flex"
+      btnBringToMarket.style.display = "flex"
+      btnRemoveIt.style.display = "none"
       patterncvs.style.visibility = "visible"
       const patternCtx = patterncvs.getContext("2d")
       obj.drawBugPatternCanvas(patternCtx, 50, 50)
     } else if (obj instanceof Flower) {
-      btnSellIt.style.visibility = "hidden"
-      btnBringToMarket.style.visibility = "hidden"
-      btnRemoveIt.style.visibility = "visible"
+      btnSellIt.style.display = "none"
+      btnBringToMarket.style.display = "none"
+      btnRemoveIt.style.display = "flex"
       patterncvs.style.visibility = "hidden"
     }
   }

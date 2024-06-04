@@ -3,10 +3,10 @@ const bugGenesInfo = document.getElementById("bug-genes-info");
 const objectInfo = document.getElementById("object-info");
 
 const mainCanvas = document.getElementById("main-canvas");
-const width = 1200;
-const height = 830;
-const farmWidth = 1200;
-const farmHeight = 800;
+const width = 960;
+const height = 960;
+const farmWidth = 960;
+const farmHeight = 960;
 
 const bugSize = 20;
 
