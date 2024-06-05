@@ -18,12 +18,21 @@ window.onload = () => {
 
   document.querySelectorAll('.tabs > .btn').forEach((ele, key) => {
     const target = document.querySelector('.tab-body')
-    console.log(ele, key, target)
     ele.addEventListener('click', () => {
       target.setAttribute('data-tab', [
         'flower-seed',
         'object-list'
       ][key])
+    })
+  })
+
+  document.querySelectorAll('input[name="mode-switch"]').forEach(ele => {
+    ele.addEventListener('click', event => {
+      const { value } = event.target
+      farm.mode = value
+      document.querySelectorAll('.mode').forEach(x => {
+        x.setAttribute('data-mode', value)
+      })
     })
   })
 }

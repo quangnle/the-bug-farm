@@ -38,9 +38,9 @@ function drawSvg(tag, rows) {
 
 const createObjectItem = (tag, bug) => {
   tag.innerHTML = `
-          <div class="avatar">
+          <div class="avatar" style="background: ${bug.color}">
             <svg class="output" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" shape-rendering="crispEdges">
-              <path fill="none" stroke="#000000" d="M0" />
+              <path fill="${bug.color}" stroke="#000000" d="M0" />
             </svg>
           </div>
           <div>
@@ -54,5 +54,12 @@ const createObjectItem = (tag, bug) => {
   setupBorder(tag)
   tag.addEventListener("click", () => {
     selectedObj = bug
+    document.querySelectorAll('.object-list__item').forEach(x => {
+      if (tag !== x) {
+        x.classList.remove('active')
+      } else {
+        x.classList.toggle('active')
+      }
+    })
   })
 }

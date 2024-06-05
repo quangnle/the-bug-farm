@@ -29,9 +29,16 @@
       <div id="sketch-holder" class="sketch-holder">
         <div class="main-canvas__wrapper border-wrapper">
           <canvas id="main-canvas"></canvas>
-          <div class="mode">
-            <button class="btn no-border">Play</button>
-            <button class="btn no-border">Plant</button>
+          <div class="mode" data-mode="play">
+            <label class="btn no-border">
+              <input type="radio" name="mode-switch" id="mode-play" value="play" />
+              <span>Play</span>
+            </label>
+
+            <label class="btn no-border">
+              <input type="radio" name="mode-switch" id="mode-plant" value="plant" />
+              <span>Plant</span>
+            </label>
           </div>
         </div>
         <div class="auth-overlay">
@@ -50,8 +57,8 @@
 
     <div class="right">
       <div class="tabs">
-        <button class="btn no-border">Hello World</button>
-        <button class="btn no-border">Hello world</button>
+        <button class="btn no-border">Flower Seed</button>
+        <button class="btn no-border">Bug List</button>
       </div>
       <div class="tab-body" data-tab="flower-seed">
         <div class="control-area">
@@ -100,6 +107,7 @@
                         style="width: 25px;"></li>
                   </ul>
                 </li>
+                <li>Right-click in Plant Mode for plating flower</li>
               </ul>
             </div>
 

@@ -130,10 +130,18 @@ body {
   gap: 4px;
 }
 
+.object-list__item .avatar {
+  width: 64px;
+  height: 64px;
+}
+
 .object-list__item .output {
   width: 64px;
-  height: auto;
-  border: 1px solid orange;
+  height: 64px;
+}
+.object-list__item.active {
+  background-color: darkgreen;
+  color: white;
 }
 .mode {
   position: absolute;
@@ -141,4 +149,24 @@ body {
   left: 20px;
   display: flex;
   gap: 20px;
+}
+.mode[data-mode="play"] label:has(> #mode-play) {
+  color: white;
+}
+.mode[data-mode="play"] label:has(> #mode-play)::after {
+  width: calc(100% - var(--offsetDecorX) * 2);
+  height: calc(100% - var(--offsetDecorY) * 4);
+}
+.mode[data-mode="plant"] label:has(> #mode-plant) {
+  color: white;
+}
+.mode[data-mode="plant"] label:has(> #mode-plant)::after {
+  width: calc(100% - var(--offsetDecorX) * 2);
+  height: calc(100% - var(--offsetDecorY) * 4);
+}
+
+.mode label input[type="radio"] {
+  position: absolute;
+  width: 0;
+  height: 0;
 }
