@@ -87,6 +87,10 @@ class Bug{
                 this.target = this.findATarget(boundaries, routes);
             }
         }
+
+        this.angle = atan2(this.target.y - this.y, this.target.x - this.x);
+        this.dx = cos(this.angle);
+        this.dy = sin(this.angle);
     }
 
     pushedBy(otherBug){
@@ -101,10 +105,6 @@ class Bug{
         // decrease the hungry counter
         this.hunger --;
         // make the bug move towards the target
-        const angle = atan2(this.target.y - this.y, this.target.x - this.x);
-        this.angle = angle + sin(frameCount * 0.1) * 0.15;
-        this.dx = cos(angle);
-        this.dy = sin(angle);
         this.x += this.dx;
         this.y += this.dy;
     }
