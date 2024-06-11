@@ -37,6 +37,7 @@ function drawSvg(tag, rows) {
 }
 
 const createObjectItem = (tag, bug) => {
+  const total = bug.genes.reduce((acc, x) => acc + x.score, 0)
   tag.innerHTML = `
           <div class="avatar" style="background: ${bug.color}">
             <svg class="output" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" shape-rendering="crispEdges">
@@ -44,8 +45,8 @@ const createObjectItem = (tag, bug) => {
             </svg>
           </div>
           <div>
-            <p><b>ID</b>: ${bug._id}</p>
-            <p><b>Pattern: </b>${bug.appearance.name}</p>
+            <p><b>Genes: </b></p>
+            ${bug.genes.map(x => `<p>${x.name} - ${Math.round(x.score / total * 100)}%</p>`).join('')}
           </div>
       `
 

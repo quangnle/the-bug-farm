@@ -30,9 +30,7 @@ window.onload = () => {
     ele.addEventListener('click', event => {
       const { value } = event.target
       farm.mode = value
-      document.querySelectorAll('.mode').forEach(x => {
-        x.setAttribute('data-mode', value)
-      })
+      ele.parentElement.classList.toggle('active')
     })
   })
 }

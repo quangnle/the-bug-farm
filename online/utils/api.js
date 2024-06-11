@@ -36,6 +36,7 @@ const api = {
   removeFlower: async (id) => axios.delete(`/flowers/${id}`),
 
   sellBug: async (id) => axios.patch(`/bugs/${id}/sell`, { id }) ,
+  sellBugs: async (payload) => axios.delete('/bugs/sell', { data: payload }) ,
   bugEatFlower: async (id, flowerId) => axios.patch(`/bugs/${id}/eat-flower`, { id, flowerId }) ,
 }
 

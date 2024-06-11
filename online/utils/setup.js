@@ -95,8 +95,8 @@ const handleSelectTank = async (x) => {
   AUTH_ELE.classList.toggle('hidden')
   
   tank.bugs.forEach(x => {
-    const _x = Math.random() * 1000 + 100
-    const _y = Math.random() * 600 + 100
+    const _x = Math.random() * (farmWidth - 100) + 100
+    const _y = Math.random() * (farmHeight - 100) + 100
     const bug = new Bug(x._id, "#f00", _x, _y, 20, x.angle, x.appearance, x.genes);
     farm.colony.push(bug)
   })
@@ -127,10 +127,12 @@ const handleSellBug = async () => {
 
   const _find = farm.colony.findIndex(x => x === selectedObj)
   if (_find >= 0) {
-    const _bug = farm.colony.splice(_find, 1)
-    await api.sellBug(_bug[0]._id)
-    user.money += 1
-    handleUpdateInformation()
+    const [_bug] = farm.colony.splice(_find, 1)
+    // await api.sellBug(_bug[0]._id)
+    // user.money += 1
+    // handleUpdateInformation()
+    console.log(_bug)
+    sellBugEffect(_bug.x, _bug.y)
   }
 }
 
@@ -145,7 +147,6 @@ const handleRemoveFlower = async () => {
 }   
 
 const handleUpdateInformation = () => {
-  console.log('asdasd')
   PLAYER_ELE.forEach(x => {
     x.innerText = user.username
   })
@@ -162,21 +163,5 @@ const handleUpdateInformation = () => {
   })
   POPULATION_ELE.forEach(x => {
     x.innerText = farm?.colony.length || 0
-  })
-  handleUpdateObjectList(farm)
-}
-
-const handleUpdateObjectList = (farm) => {
-  if (!farm) return
-  document.getElementsByClassName('object-list--inner').forEach((ele) => {
-    ele.innerHTML = ""
-
-    farm.colony.forEach(bug => {
-      const child = document.createElement('div')
-      child.className = 'object-list__item border-wrapper border-2'
-
-      createObjectItem(child, bug)
-      ele.appendChild(child)
-    })
   })
 }

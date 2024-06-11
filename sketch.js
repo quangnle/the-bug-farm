@@ -15,8 +15,23 @@ let selectedFlower = -1;
 
 let selectedObj = null;
 
+const animCallback = []
+
+// assets
+let diamond
+let cashSound = new Audio()
+cashSound.src = './assets/sounds/cash.mp3'
+cashSound.preload = 'auto'
+
+function preload () {
+    // Load Sound
+    // cashSound = loadSound('./assets/sounds/cash.mp3')
+    diamond = loadImage('./assets/images/diamond.png')
+}
+
 
 function setup() {
+
     createCanvas(width, height, mainCanvas);
 
     setupInit()
@@ -26,11 +41,23 @@ function draw() {
     clear()
     farm?.draw();
     controlPanel?.draw();
+
+    animCallback.forEach((callback, index) => {
+		const { done } = callback.generator.next()
+		if (done) {
+			console.log('done', done)
+			callback.onDone()
+
+			console.log(animCallback)
+			animCallback.splice(index, 1)
+			console.log(animCallback)
+		}
+	})
 }
 
 function mousePressed() {
     // check if the mouse is on the farm
-    if (mouseY > farm.x && mouseY < farm.y + farmHeight) {
+    if (mouseY > farm?.x && mouseY < farm?.y + farmHeight) {
         farm.mousePressed(mouseButton, mouseX, mouseY);
         if (selectedBug > -1) {
             drawBugPatternCanvas();    
