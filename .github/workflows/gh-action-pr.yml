@@ -1,0 +1,33 @@
+name: Notifications on Pull Request
+on:
+  pull_request:
+    branches: [ "develop", "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.19.1]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{github.event.after}}
+      - name: Send pull request notifications
+        run: |
+          GITHUB_REPO_URL="https://github.com/${{ github.repository }}/"
+          GITHUB_COMMIT_URL="${GITHUB_REPO_URL}commit/"
+          BOT_TOKEN="5430539874:AAHCYYQJ1NvTU9PzZ_z1j-Xeftpa0gYZcu8"
+          WEBHOOK_URL="https://api.telegram.org/bot{$BOT_TOKEN}/sendMessage"
+          CHAT_ID="-843440680"
+          REPO_NAME="${{ github.event.repository.name }}"
+          GITHUB_BRANCH_COMMITS_URL="${GITHUB_REPO_URL}commits/${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}"
+          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          TEXT="A new pull request [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) has been created on branch [${GIT_BRANCH}](${GITHUB_BRANCH_COMMITS_URL})"
+          SLACK_HEADER="[${REPO_NAME}](${GITHUB_REPO_URL})\n"
+          TEXTS=${SLACK_HEADER}${TEXT}
+          MESSAGES=$(echo '{"chat_id":"'"${CHAT_ID}"'","text":"'"${TEXTS}"'", "parse_mode" : "markdown"}')
+          echo "${MESSAGES}"
+          curl -X POST -H 'Content-type: application/json' --data "${MESSAGES}" ${WEBHOOK_URL}
+        continue-on-error: true
