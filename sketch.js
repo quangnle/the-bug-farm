@@ -19,9 +19,6 @@ const animCallback = []
 
 // assets
 let diamond
-let cashSound = new Audio()
-cashSound.src = './assets/sounds/cash.mp3'
-cashSound.preload = 'auto'
 
 function preload () {
     // Load Sound
@@ -31,9 +28,7 @@ function preload () {
 
 
 function setup() {
-
     createCanvas(width, height, mainCanvas);
-
     setupInit()
 }
 
