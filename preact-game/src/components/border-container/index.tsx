@@ -1,4 +1,4 @@
-import { ReactNode } from 'preact/compat'
+import { ReactNode } from 'react'
 import './style.css'
 import clsx from 'clsx'
 

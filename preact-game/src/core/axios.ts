@@ -23,23 +23,35 @@ const setToken = (token) => {
 }
 
 const api = {
-  me: async () => axios.get('/auth/me'),
-  login: async ({username, password}) => axios.post('/auth/login', { username, password }),
-  register: async ({username, password}) => axios.post('/auth/register', { username, password }),
-  getAllTanks: async ({ userId }) => axios.get('/tanks', { params: {userId}}),
+  me: async () => axios.get("/auth/me"),
+  login: async ({ username, password }) =>
+    axios.post("/auth/login", { username, password }),
+  register: async ({ username, password }) =>
+    axios.post("/auth/register", { username, password }),
+  getAllTanks: async ({ userId }) =>
+    axios.get("/tanks", { params: { userId } }),
   getTank: async (id) => axios.get(`/tanks/${id}`),
-  createTank: async (name) => axios.post('/tanks', { name }),
-  getAllBugs: async () => axios.get('/bugs'),
+  createTank: async (name) => axios.post("/tanks", { name }),
+  getAllBugs: async () => axios.get("/bugs"),
   getBug: async (id) => axios.get(`/bugs/${id}`),
-  getAllAppearances: async () => axios.get('/appearances/default'),
-  createAppearance: async (payload) => axios.post('/appearances', payload),
+  getAllAppearances: async () => axios.get("/appearances/default"),
+  createAppearance: async (payload) => axios.post("/appearances", payload),
 
-  plantFlower: async (payload) => axios.post('/flowers', payload),
+  plantFlower: async (payload) => axios.post("/flowers", payload),
   removeFlower: async (id) => axios.delete(`/flowers/${id}`),
 
-  sellBug: async (id) => axios.patch(`/bugs/${id}/sell`, { id }) ,
-  sellBugs: async (payload) => axios.delete('/bugs/sell', { data: payload }) ,
-  bugEatFlower: async (id, flowerId) => axios.patch(`/bugs/${id}/eat-flower`, { id, flowerId }) ,
+  sellBug: async (id) => axios.patch(`/bugs/${id}/sell`, { id }),
+  sellBugs: async (payload) => axios.delete("/bugs/sell", { data: payload }),
+  bugEatFlower: async (id, flowerId) =>
+    axios.patch(`/bugs/${id}/eat-flower`, { id, flowerId }),
+
+  getSales: async (params?: { sellerId: string }) => axios.get("/sales"),
+  saleListing: async (payload: {
+    bugId: string
+    price: number
+    description: string
+  }) => axios.post("/sales/listing", payload),
+  buyBug: async (bugId: string, payload: { tankId: string }) => axios.patch(`/sales/${bugId}/buy`, payload),
 }
 
 axios.interceptors.request.use(async (config) => {

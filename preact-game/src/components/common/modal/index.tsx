@@ -1,5 +1,7 @@
 import { motion } from "framer-motion"
-import Backdrop from "../backdrop"
+import { ReactNode } from "react"
+import Backdrop from "./backdrop";
+import { createPortal } from "react-dom";
 
 const dropIn = {
     hidden: {
@@ -23,23 +25,23 @@ const dropIn = {
   };
   
 
-const Modal = ({ handleClose, text }) => {
-    return (
-      <Backdrop onClick={handleClose}>
-          <motion.div
-            onClick={(e) => e.stopPropagation()}  
-            className="modal orange-gradient"
-            variants={dropIn}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <p>{text}</p>
-            <button onClick={handleClose}>Close</button>
-          </motion.div>
-      </Backdrop>
-    );
-  };
+const Modal = ({ children, handleClose = () => {} }: { children?: ReactNode | ReactNode[], handleClose?: () => void }) => {
+  return createPortal(
+    <Backdrop onClick={handleClose}>
+      <motion.div
+        onClick={(e) => e.stopPropagation()}
+        className="modal"
+        variants={dropIn}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        {children}
+      </motion.div>
+    </Backdrop>,
+     document.getElementById("modal-root") as HTMLElement
+  )
+}
 
   
   export default Modal;
