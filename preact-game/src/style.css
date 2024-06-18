@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: "Chakra Petch", sans-serif;
+}
+
+h1 {
+  line-height:1em;
+  color:#de9f00;
+  font-weight:bold;
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  text-shadow: 0px 0px 0 rgb(125, 62, -97), 1px 1px 0 rgb(38, -25, -184), 2px 2px 1px rgba(0, 0, 0, 0.6), 2px 2px 1px rgba(0, 0, 0, 0.5), 0px 0px 1px rgba(0, 0, 0, .2);
+}
+
+.sub-header {
+  margin: 1rem auto 1rem 0;
+  color: #9e9e9e;
+}

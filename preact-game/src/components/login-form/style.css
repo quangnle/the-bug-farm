@@ -1,0 +1,15 @@
+.login-box input {
+  transition: border-color .3s cubic-bezier(.25, .01, .25, 1) 0s, color .3s cubic-bezier(.25, .01, .25, 1) 0s, background .2s cubic-bezier(.25, .01, .25, 1) 0s;
+  @apply outline-none px-4 border border-transparent h-[44px] bg-[#05060f0a] rounded-md text-xl w-[240px];
+}
+.login-box label {
+  @apply flex gap-4 items-center w-[360px] justify-between;
+  margin-bottom: .3rem;
+  font-weight: bold;
+  color: #05060f99;
+  transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
+}
+.login-box label > span {
+  @apply text-xl text-[#05060f99] font-bold;
+  transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
+}

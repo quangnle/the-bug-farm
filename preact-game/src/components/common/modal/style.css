@@ -1,0 +1,7 @@
+.backdrop {
+  @apply absolute top-0 left-0 h-full w-full bg-black/50 flex items-center justify-center overflow-y-hidden z-50;
+}
+
+.modal {
+  @apply m-auto p-8 flex flex-col items-center;
+}

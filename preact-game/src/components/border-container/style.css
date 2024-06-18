@@ -1,0 +1,110 @@
+:root {
+  --sizeBorder: 40px;
+  --offsetBorderX: -8px;
+  --offsetBorderY: -8px;
+}
+
+.border-container {
+  position: relative;
+  min-height: 64px;
+}
+
+.border-container > .decor .corner {
+  position: absolute;
+  width: var(--sizeBorder);
+  height: var(--sizeBorder);
+  background-size: calc(var(--sizeBorder) * 4);
+  z-index: 2;
+  background-image: url('./assets/border-1/corner.png');
+
+  --posTopLeft: calc(0px - 0 * var(--sizeBorder));
+  --posTopRight: calc(0px - 1 * var(--sizeBorder));
+  --posBottomLeft: calc(0px - 2 * var(--sizeBorder));
+  --posBottomRight: calc(0px - 3 * var(--sizeBorder));
+}
+.border-container > .decor .line {
+  position: absolute;
+  background-size: var(--sizeBorder);
+  z-index: 1;
+}
+
+/* Corner */
+.border-container > .decor .corner__top-left {
+  top: var(--offsetBorderY);
+  left: var(--offsetBorderX);
+  background-position: var(--posTopLeft) var(--posTopLeft);
+}
+.border-container > .decor .corner__top-right {
+  top: var(--offsetBorderY);
+  right: var(--offsetBorderX);
+  background-position: var(--posTopRight) var(--posTopRight);
+}
+.border-container > .decor .corner__bottom-left {
+  bottom: calc(var(--offsetBorderX));
+  left: var(--offsetBorderX);
+  background-position: var(--posBottomLeft) var(--posBottomLeft);
+}
+.border-container > .decor .corner__bottom-right {
+  bottom: calc(var(--offsetBorderX));
+  right: var(--offsetBorderX);
+  background-position: var(--posBottomRight) var(--posBottomRight);
+}
+
+/* Line */
+.border-container > .decor .line__left {
+  top: calc(var(--sizeBorder) + var(--offsetBorderY));
+  bottom: calc(var(--sizeBorder) + var(--offsetBorderY));
+  left: var(--offsetBorderX);
+  width: calc(var(--sizeBorder) / 2);
+  background-image: url('./assets/border-1/left.png');
+}
+.border-container > .decor .line__right {
+  top: calc(var(--sizeBorder) + var(--offsetBorderY));
+  bottom: calc(var(--sizeBorder) + var(--offsetBorderY));
+  right: var(--offsetBorderX);
+  width: calc(var(--sizeBorder) / 2);
+  background-image: url('./assets/border-1/right.png');
+  background-position-x: calc(var(--sizeBorder) / 2);
+  
+}
+.border-container > .decor .line__top {
+  top: var(--offsetBorderY);
+  left: calc(var(--sizeBorder) + var(--offsetBorderX));
+  right: calc(var(--sizeBorder) + var(--offsetBorderX));
+  height: calc(var(--sizeBorder) / 2);
+  background-image: url('./assets/border-1/top.png');
+}
+.border-container > .decor .line__bottom {
+  bottom: calc(var(--offsetBorderY));
+  left: calc(var(--sizeBorder) + var(--offsetBorderX));
+  right: calc(var(--sizeBorder) + var(--offsetBorderX));
+  height: calc(var(--sizeBorder) / 2);
+  background-image: url('./assets/border-1/bottom.png');
+  background-position-y: calc(var(--sizeBorder) / 2);
+}
+
+/* Varient */
+.border-container.border-2 > .decor .corner {
+  background-image: url('./assets/border-2/corner.png');
+
+  --sizeBorder: 32px;
+  --offsetBorderX: -4px;
+  --offsetBorderY: -4px;
+}
+.border-container.border-2 > .decor .line {
+  --sizeBorder: 32px;
+  --offsetBorderX: -4px;
+  --offsetBorderY: -4px;
+}
+.border-container.border-2 > .decor .line__left {
+  background-image: url('./assets/border-2/left.png');
+}
+.border-container.border-2 > .decor .line__right {
+  background-image: url('./assets/border-2/right.png');
+}
+.border-container.border-2 > .decor .line__top {
+  background-image: url('./assets/border-2/top.png');
+}
+.border-container.border-2 > .decor .line__bottom {
+  background-image: url('./assets/border-2/bottom.png');
+}
