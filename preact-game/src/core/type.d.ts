@@ -12,7 +12,7 @@ type ITank = {
 }
 
 type IAppearance = {
-  _id: string
+  _id?: string
   name: string
   pattern: number[][]
   score: number
@@ -43,6 +43,7 @@ type ISale = {
   _id: string
   bug: Bug
   price: number
+  genes: IAppearance[]
 
   geneHash: string
   sellerId: string

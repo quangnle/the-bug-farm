@@ -1,0 +1,14 @@
+.plant-control {
+  @apply flex flex-col gap-2
+}
+.plant-control li {
+  @apply flex items-center gap-2 font-bold;
+}
+
+.plant-control span{
+  width: 140px;
+  text-align: right;
+}
+.plant-control input {
+  @apply flex-1 rounded-md p-1 px-3;
+}

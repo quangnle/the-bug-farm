@@ -7,6 +7,7 @@ import { Signal, signal } from "@preact/signals"
 import Farm from "@/core/entity/farm"
 import Bug from "@/core/entity/bug"
 import { GAME_STATE, sketchInstance } from "@/core/gameState"
+import Button from "../common/button"
 
 const MARKET_SIZE = 480
 const marketFarm: Signal<Farm> = signal(
@@ -23,20 +24,25 @@ export default function Market() {
   const fetchMarket = async () => {
     try {
       const { data } = await api.getSales()
-      setMarket(data.data)
       if (p5Ref.current) {
+        const _market: ISale[] = []
         data.data.forEach((x: ISale) => {
-          marketFarm.value.colony.push(
-            new Bug({
-              ...x.bug,
-              size: 20,
-              x: 100,
-              y: 100,
-              color: "#f00",
-              p5: p5Ref.current as p5,
-            })
-          )
+          const _bug = new Bug({
+            ...x.bug,
+            size: 20,
+            x: 100,
+            y: 100,
+            color: "#f00",
+            p5: p5Ref.current as p5,
+          })
+
+          marketFarm.value.colony.push(_bug)
+          _market.push({
+            ...x,
+            bug: _bug
+          })
         })
+        setMarket(_market)
       }
     } catch (error) {}
   }
@@ -83,9 +89,13 @@ export default function Market() {
     } catch (error) {}
   }
 
+  const total = useMemo(() => {
+    return (selectedSale?.bug as Bug)?.genes?.reduce((acc, x) => acc + x.score, 0)
+  }, [selectedSale])
+
   return (
     <>
-      <button onClick={() => setShow(true)}>Market</button>
+      <Button onClick={() => setShow(true)}>Market</Button>
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="flex flex-col items-center bg-black/60 p-8">
@@ -106,8 +116,16 @@ export default function Market() {
                       Price: {selectedSale?.price}$
                     </p>
                     <p>Pattern: {selectedSale?.bug.name}</p>
+                    <p>Pattern: {selectedSale?.bug.name}</p>
+                    <ul>
+                      {(selectedSale.bug as Bug).genes.map((x, i) => (
+                        <li>
+                          {x.name} - {Math.round(x.score / total * 100)}%
+                        </li>
+                      ))}
+                    </ul>
                     <div className="mt-auto">
-                      <button onClick={handleBuy}>Buy</button>
+                      <Button onClick={handleBuy}>Buy</Button>
                     </div>
                   </>
                 )}

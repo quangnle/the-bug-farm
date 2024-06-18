@@ -25,6 +25,7 @@ class Flower {
     petalSize,
     petalColor,
     petalNumber,
+    numberOfPollens,
     hasPollen,
     spawningTime
   }: {
@@ -36,7 +37,8 @@ class Flower {
     petalSize: number
     petalColor: string
     petalNumber: number
-    hasPollen: boolean,
+    numberOfPollens: number
+    hasPollen: boolean
     spawningTime: number
   }) {
     this._id = _id
@@ -48,7 +50,7 @@ class Flower {
     this.petalColor = petalColor
     this.petalNumber = petalNumber
     this.hasPollen = hasPollen
-    this.numberOfPollens = MAX_POLLENS
+    this.numberOfPollens = numberOfPollens
     this.spawningTime = spawningTime
     this.angle = 0
 

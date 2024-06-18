@@ -2,12 +2,13 @@ import { ReactNode } from 'react'
 import './style.css'
 import clsx from 'clsx'
 
-export default function BorderContainer ({ children, className }: {
+export default function BorderContainer ({ children, className, onClick }: {
   children?: ReactNode | ReactNode[],
   className?: string
+  onClick?: () => void
 }) {
   return (
-    <div className={clsx("border-container", className)}>
+    <div className={clsx("border-container", className)} onClick={onClick}>
       {children}
       <div className="decor">
       <div className="corner__top-left corner"></div>

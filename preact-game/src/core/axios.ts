@@ -29,8 +29,10 @@ const api = {
   register: async ({ username, password }) =>
     axios.post("/auth/register", { username, password }),
   getAllTanks: async ({ userId }) =>
-    axios.get("/tanks", { params: { userId } }),
-  getTank: async (id) => axios.get(`/tanks/${id}`),
+    axios.get("/tanks", {
+      params: { userId, sortField: "createdAt", sortOrder: "asc" },
+    }),
+  getTank: async (id) => axios.get(`/tanks/${id}`, {}),
   createTank: async (name) => axios.post("/tanks", { name }),
   getAllBugs: async () => axios.get("/bugs"),
   getBug: async (id) => axios.get(`/bugs/${id}`),
@@ -51,7 +53,8 @@ const api = {
     price: number
     description: string
   }) => axios.post("/sales/listing", payload),
-  buyBug: async (bugId: string, payload: { tankId: string }) => axios.patch(`/sales/${bugId}/buy`, payload),
+  buyBug: async (bugId: string, payload: { tankId: string }) =>
+    axios.patch(`/sales/${bugId}/buy`, payload),
 }
 
 axios.interceptors.request.use(async (config) => {

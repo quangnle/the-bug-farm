@@ -5,16 +5,30 @@ import Bug from "./entity/bug"
 import Farm from "./entity/farm"
 import { FARM_HEIGHT, FARM_WIDTH } from "./constants"
 import api from "./axios"
+import { CoroutineCallback } from "./coroutine"
 
+export const coroutineCallbacks = signal<Array<CoroutineCallback>>([])
 const user: Signal<IUser | null> = signal(null)
 const tank: Signal<ITank | null> = signal(null)
 const farm: Signal<Farm> = signal(
   new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22")
 )
 const appearance: Signal<IAppearance[]> = signal([])
+export const GAME_ASSET: Record<string, any> = {
+  diamond: null,
+  cashout: null
+}
 
 const sketch = (s: p5) => {
   console.log('init p5')
+  s.preload = () => {
+    GAME_ASSET.diamond = s.loadImage('./assets/diamond.png')
+
+    // Sound
+    GAME_ASSET.cashout = new Audio()
+    GAME_ASSET.cashout.src = './sounds/cash.mp3'
+    GAME_ASSET.cashout.preload = 'auto'
+  }
   s.setup = () => {
     const canvas = document.getElementById('main-canvas')
     canvas && s.createCanvas(960, 960, canvas)
@@ -22,18 +36,20 @@ const sketch = (s: p5) => {
   s.draw = () => {
     s.clear()
     farm.value?.draw(s);
-    // controlPanel?.draw();
 
-    // animCallback.forEach((callback, index) => {
-		// const { done } = callback.generator.next()
-		// if (done) {
-		// 	console.log('done', done)
-		// 	callback.onDone()
+    coroutineCallbacks.value.forEach(
+      (callback: CoroutineCallback, index: number) => {
+        const iter = callback.generator.next()
+        const { done } = iter
+        if (done) {
+          callback.onDone()
 
-		// 	console.log(animCallback)
-		// 	animCallback.splice(index, 1)
-		// 	console.log(animCallback)
-		// }
+          coroutineCallbacks.value = coroutineCallbacks.value.filter(
+            (_, cIndex) => cIndex !== index
+          )
+        }
+      }
+    )
 
     s.mousePressed = () => {
       if (!sketchInstance.isLooping()) return
@@ -66,7 +82,7 @@ effect(() => {
     if (!tank.value?._id) return
   const { data } = await api.getTank(tank.value?._id)
   
-  data.bugs.forEach((x: Bug & { appearance: string }) => {
+  data.bugs.forEach((x: Bug & { appearance: string, genes: string[] }) => {
     const _x = Math.random() * (FARM_WIDTH - 100) + 100
     const _y = Math.random() * (FARM_HEIGHT - 100) + 100
 

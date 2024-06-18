@@ -9,21 +9,21 @@ import SelectedObject from "@/components/selected-object"
 
 export default function Home() {
   return (
-    <div className="homepage h-screen">
+    <div className="homepage h-screen overflow-hidden">
       <div className="mx-auto">
         <div className="flex flex-col gap-8">
 					<LoginForm  />
 					<SelectTank />
-          <BorderContainer className="header py-4 px-8">
+          <BorderContainer className="header">
             <GameHeader />
           </BorderContainer>
           <div className="flex gap-8">
             <GameBody />
             <div className="flex flex-col gap-8 flex-1 min-w-[300px]">
-              <BorderContainer className="flex-1 p-8 bg-[burlywood]">
+              <BorderContainer className="flex-1 p-8 bg-green-200">
                 <SelectedObject />
               </BorderContainer>
-              <BorderContainer className="flex-1 p-8 bg-[burlywood]">
+              <BorderContainer className="flex-1 p-8 bg-green-200">
                 <FlowerPlant />
               </BorderContainer>
             </div>

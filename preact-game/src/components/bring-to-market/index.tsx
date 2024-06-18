@@ -5,6 +5,7 @@ import BugPattern from "../bug-pattern"
 import { selectedObject } from "@/core/gameState"
 import Bug from "@/core/entity/bug"
 import api from "@/core/axios"
+import Button from "../common/button"
 
 export default function BringToMarket () {
   const [show, setShow] = useState(false)
@@ -28,7 +29,7 @@ export default function BringToMarket () {
   }
   return (
     <>
-      <button onClick={() => setShow(true)}>Bring to Market</button>
+      <Button onClick={() => setShow(true)}>Bring to Market</Button>
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="bg-white bg-black/60 p-8">
@@ -71,7 +72,7 @@ export default function BringToMarket () {
                   />
                 </label>
 
-                <button type="submit" className="text-[orange]">Submit</button>
+                <Button type="submit" className="text-[orange]">Submit</Button>
               </form>
             </div>
           </BorderContainer>

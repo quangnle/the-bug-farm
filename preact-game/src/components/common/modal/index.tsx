@@ -1,7 +1,8 @@
 import { motion } from "framer-motion"
 import { ReactNode } from "react"
-import Backdrop from "./backdrop";
-import { createPortal } from "react-dom";
+import Backdrop from "./backdrop"
+import { createPortal } from "react-dom"
+import './style.css'
 
 const dropIn = {
     hidden: {

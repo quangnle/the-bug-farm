@@ -3,9 +3,10 @@ import Flower from "./flower"
 import Route from "./route"
 
 import p5 from "p5"
-import { selectedObject, sketchInstance } from "../gameState"
+import { GAME_STATE, selectedObject, sketchInstance } from "../gameState"
 import api from "../axios"
 import { BUG_SIZE } from "../constants"
+import { plantFlower } from "@/components/flower-plant"
 
 let maxPopulation = 30
 const distanceToReachFood = 10
@@ -196,43 +197,29 @@ class Farm {
     this.drawColony(p)
   }
 
-  // plantAFlower(x: number, y: number) {
-  //   const petalNumber = parseInt(document.getElementById("petal-number")?.value)
+  plantAFlower(x: number, y: number) {
+    const _flower = {...plantFlower.value}
 
-  //   const pistilColor = document.getElementById("pistil-color")?.value
-  //   const pistilSize = parseInt(document.getElementById("pistil-size")?.value)
-
-  //   const petalColor = document.getElementById("petal-color")?.value
-  //   const petalSize = parseInt(document.getElementById("petal-size")?.value)
-
-  //   api
-  //     .plantFlower({
-  //       tank: GAME_STATE.tank.value?._id,
-  //       x,
-  //       y,
-  //       pistilColor: pistilColor,
-  //       pistilSize: pistilSize,
-  //       petalColor: petalColor,
-  //       petalSize: petalSize,
-  //       petalNumber: petalNumber,
-  //     })
-  //     .then((res) => {
-  //       if (res.data._id) {
-  //         const flower = new Flower(
-  //           res.data._id,
-  //           x,
-  //           y,
-  //           pistilSize,
-  //           pistilColor,
-  //           petalSize,
-  //           petalColor,
-  //           petalNumber,
-  //           false
-  //         )
-  //         this.addObject(flower)
-  //       }
-  //     })
-  // }
+    api
+      .plantFlower({
+        tank: GAME_STATE.tank.value?._id,
+        x,
+        y,
+        ..._flower
+      })
+      .then((res) => {
+        if (res.data._id) {
+          const flower = new Flower({
+            _id: res.data._id,
+            x,
+            y,
+            ...res.data,
+            hasPollen: false,
+          })
+          this.addObject(flower)
+        }
+      })
+  }
 
   // loadObjectInfo(obj: Flower | Bug) {
   //   objectInfo.innerHTML = obj.infoString()
@@ -294,7 +281,7 @@ class Farm {
       if (this.mode === "play") {
         // temporarily does nothing
       } else if (this.mode === "plant" || this.mode === "show") {
-        // this.plantAFlower(mouseX, mouseY)
+        this.plantAFlower(mouseX, mouseY)
       }
     }
 

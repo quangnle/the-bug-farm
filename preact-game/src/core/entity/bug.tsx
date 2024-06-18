@@ -16,7 +16,7 @@ class Bug {
   hunger: number // Add missing property
   mutationRate: number // Add missing property
   appearance: IAppearance // Add missing property
-  genes: any[] // Add missing property
+  genes: IAppearance[] // Add missing property
   foodSenseDistance: number // Add missing property
   target: any // Add missing property
   p5: p5
@@ -46,6 +46,7 @@ class Bug {
     p5: p5
   }) {
     this._id = _id
+    this.name = name
     this.color = color
     this.x = x
     this.y = y
@@ -75,11 +76,7 @@ class Bug {
           (app: any) => app._id === x
         )
         this.genes.push(
-          _find || {
-            name: "default",
-            pattern: PATTERN_DEFAULT, // Add missing variable or replace with a default value
-            score: 90,
-          }
+          _find || PATTERN_DEFAULT
         )
       })
     }
