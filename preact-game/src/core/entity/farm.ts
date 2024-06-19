@@ -5,10 +5,9 @@ import Route from "./route"
 import p5 from "p5"
 import { GAME_STATE, selectedObject, sketchInstance } from "../gameState"
 import api from "../axios"
-import { BUG_SIZE } from "../constants"
+import { BUG_SIZE, MAX_POPULATION } from "../constants"
 import { plantFlower } from "@/components/flower-plant"
 
-let maxPopulation = 30
 const distanceToReachFood = 10
 
 class Farm {
@@ -162,7 +161,7 @@ class Farm {
 
           // check if the colony is full and the flower has pollen to create a new bug
           if (
-            colony.length >= maxPopulation ||
+            colony.length >= (GAME_STATE.tank.value?.size || MAX_POPULATION) ||
             flower.numberOfPollens < 1 ||
             this.mode == "show"
           )
@@ -171,8 +170,8 @@ class Farm {
           // else, evolution to make a new bug
           // const newBug = Evolution.evolute(bug, flower.pistilColor)
           if (bug._id && flower._id) {
+            flower.hasPollen = false
             api.bugEatFlower(bug._id, flower._id).then(({ data }) => {
-              console.log(data)
               if (data._id) {
                 const newBug = new Bug({
                   ...data,

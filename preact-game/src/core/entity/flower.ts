@@ -90,7 +90,7 @@ class Flower {
       this.angle += 0.1
     }
 
-    if (this.spawningTime > SPAWN_DURATION) {
+    if (this.spawningTime < 0) {
         this.hasPollen = true
     }
 

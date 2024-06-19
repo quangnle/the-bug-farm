@@ -106,6 +106,7 @@ effect(() => {
       const flower = new Flower({
         ...flo,
       })
+      console.log({flower, flo})
       farm.value.addObject(flower)
     })
 
