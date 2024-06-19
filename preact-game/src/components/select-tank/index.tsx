@@ -5,6 +5,8 @@ import api from "../../core/axios"
 import Modal from "../common/modal"
 import Loading from "../common/loading"
 
+const MAX_TANK = 5
+
 export default function SelectTank() {
   const [tanks, setTanks] = useState<ITank[]>([])
   const [loading, setLoading] = useState(false)
@@ -61,8 +63,8 @@ export default function SelectTank() {
                 <Loading className="scale-150" />
               </div>
             ) : (
-              <div className="flex items-center justify-center gap-4">
-                {tanks.slice(0, 3).map((x) => (
+              <div className="flex flex-wrap items-center justify-center gap-4 max-w-[700px]">
+                {tanks.slice(0, MAX_TANK).map((x) => (
                   <div
                     className="flex gap-4 p-4 border-4 border-dashed hover:border-[burlywood] rounded-xl cursor-pointer w-[200px] aspect-[3/2]"
                     onClick={() => handleSelectTank(x)}
@@ -77,7 +79,7 @@ export default function SelectTank() {
                     </div>
                   </div>
                 ))}
-                {new Array(3 - tanks.length).fill(null).map(() => (
+                {new Array(MAX_TANK - tanks.length).fill(null).map(() => (
                   <div
                     className="flex gap-4 px-4 py-2 items-center justify-center border-4 border-dashed hover:border-[burlywood] rounded-xl cursor-pointer w-[200px] aspect-[3/2]"
                     onClick={handleNewTank}

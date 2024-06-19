@@ -84,9 +84,11 @@ export default function Market() {
 
   const handleBuy = async () => {
     try {
-      if (!selected || !GAME_STATE.tank.value?._id) return
-      await api.buyBug(selected?._id, { tankId: GAME_STATE.tank.value?._id})
-    } catch (error) {}
+      if (!selectedSale || !GAME_STATE.tank.value?._id) return
+      await api.buyBug(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
+    } catch (error) {
+      console.log(error.response.data.message)
+    }
   }
 
   const total = useMemo(() => {
@@ -115,15 +117,15 @@ export default function Market() {
                     <p className="text-2xl font-bold text-[orange]">
                       Price: {selectedSale?.price}$
                     </p>
-                    <p>Pattern: {selectedSale?.bug.name}</p>
-                    <p>Pattern: {selectedSale?.bug.name}</p>
-                    <ul>
-                      {(selectedSale.bug as Bug).genes.map((x, i) => (
-                        <li>
-                          {x.name} - {Math.round(x.score / total * 100)}%
-                        </li>
-                      ))}
-                    </ul>
+                    <p>Pattern: {selectedSale?.bug.appearance?.name}</p>
+                    <p className="border-b border-black border-dashed">
+                      List of genes:{" "}
+                    </p>
+                    {selected?.genes.map((gene, index) => (
+                      <p key={index}>
+                        - {gene.name}: {Math.round((gene.score / total) * 100)}%
+                      </p>
+                    ))}
                     <div className="mt-auto">
                       <Button onClick={handleBuy}>Buy</Button>
                     </div>
