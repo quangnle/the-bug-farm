@@ -7,6 +7,7 @@ import BugPattern from "../bug-pattern"
 import clsx from "clsx"
 import api from "@/core/axios"
 import Button from "../common/button"
+import { sellBugEffect } from "@/core/effect"
 
 export default function BugList() {
   const [show, setShow] = useState(false)
@@ -31,7 +32,9 @@ export default function BugList() {
       GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
         (bug) => !selectedBugs.includes(bug)
       )
-      setShow(false)
+      setSelectedBugs([])
+      setBugs(GAME_STATE.farm.value.colony)
+      sellBugEffect(0, 0)
     } catch (error) {
       console.error(error)
     }

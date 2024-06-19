@@ -91,6 +91,15 @@ export default function Market() {
     }
   }
 
+  const handleUnBuy = async () => {
+    try {
+      if (!selectedSale || !GAME_STATE.tank.value?._id) return
+      await api.saleUnListting(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
+    } catch (error) {
+      console.log(error.response.data.message)
+    }
+  }
+
   const total = useMemo(() => {
     return (selectedSale?.bug as Bug)?.genes?.reduce((acc, x) => acc + x.score, 0)
   }, [selectedSale])
@@ -103,7 +112,7 @@ export default function Market() {
           <BorderContainer className="flex flex-col items-center bg-black/60 p-8">
             <h1 className="text-center font-bold mb-4">Market</h1>
             <p className="text-2xl font-bold text-[orange] text-center mb-2">
-              Money: {GAME_STATE.user.value?.money}$
+              Money: ${GAME_STATE.user.value?.money}
             </p>
             <div className="flex gap-8">
               <canvas
@@ -115,7 +124,7 @@ export default function Market() {
                   <>
                     <p>ID: {selectedSale?.bug._id}</p>
                     <p className="text-2xl font-bold text-[orange]">
-                      Price: {selectedSale?.price}$
+                      Price: ${selectedSale?.price}
                     </p>
                     <p>Pattern: {selectedSale?.bug.appearance?.name}</p>
                     <p className="border-b border-black border-dashed">
@@ -127,7 +136,11 @@ export default function Market() {
                       </p>
                     ))}
                     <div className="mt-auto">
-                      <Button onClick={handleBuy}>Buy</Button>
+                      {GAME_STATE.user.value?._id === selectedSale.sellerId ? (
+                        <Button onClick={handleBuy}>Buy</Button>
+                      ) : (
+                        <Button onClick={handleUnBuy}>Cancel</Button>
+                      )}
                     </div>
                   </>
                 )}

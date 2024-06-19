@@ -1,4 +1,5 @@
 import axios from "axios"
+import { GAME_STATE } from "./gameState"
 
 export const BASE_URL = 'https://api-bug-game.skyglab.tech'
 
@@ -53,6 +54,12 @@ const api = {
     price: number
     description: string
   }) => axios.post("/sales/listing", payload),
+  saleUnListting: async (
+    id: string,
+    payload: {
+      tankId: string
+    }
+  ) => axios.patch(`/sales/${id}/cancel`, payload),
   buyBug: async (bugId: string, payload: { tankId: string }) =>
     axios.patch(`/sales/${bugId}/buy`, payload),
 }
@@ -68,6 +75,11 @@ axios.interceptors.request.use(async (config) => {
 
 axios.interceptors.response.use(
   (response) => {
+    if (GAME_STATE.user.value && (response.request.responseURL.includes('buy') || response.request.responseURL.includes('sell'))) {
+      api.me().then(({ data }) => {
+        GAME_STATE.user.value.money = data.money
+      })
+    }
     if (typeof window === 'undefined') {
       return response
     }
