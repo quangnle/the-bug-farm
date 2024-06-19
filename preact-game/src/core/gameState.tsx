@@ -4,7 +4,7 @@ import Flower from "./entity/flower"
 import Bug from "./entity/bug"
 import Farm from "./entity/farm"
 import { FARM_HEIGHT, FARM_WIDTH } from "./constants"
-import api from "./axios"
+import api, { BASE_URL } from "./axios"
 import { CoroutineCallback } from "./coroutine"
 
 export const coroutineCallbacks = signal<Array<CoroutineCallback>>([])
@@ -16,26 +16,26 @@ const farm: Signal<Farm> = signal(
 const appearance: Signal<IAppearance[]> = signal([])
 export const GAME_ASSET: Record<string, any> = {
   diamond: null,
-  cashout: null
+  cashout: null,
 }
 
 const sketch = (s: p5) => {
-  console.log('init p5')
+  console.log("init p5")
   s.preload = () => {
-    GAME_ASSET.diamond = s.loadImage('/assets/diamond.png')
+    GAME_ASSET.diamond = s.loadImage("/assets/diamond.png")
 
     // Sound
     GAME_ASSET.cashout = new Audio()
-    GAME_ASSET.cashout.src = '/sounds/cash.mp3'
-    GAME_ASSET.cashout.preload = 'auto'
+    GAME_ASSET.cashout.src = "/sounds/cash.mp3"
+    GAME_ASSET.cashout.preload = "auto"
   }
   s.setup = () => {
-    const canvas = document.getElementById('main-canvas')
+    const canvas = document.getElementById("main-canvas")
     canvas && s.createCanvas(960, 960, canvas)
   }
   s.draw = () => {
     s.clear()
-    farm.value?.draw(s);
+    farm.value?.draw(s)
 
     coroutineCallbacks.value.forEach(
       (callback: CoroutineCallback, index: number) => {
@@ -54,9 +54,15 @@ const sketch = (s: p5) => {
     s.mousePressed = () => {
       if (!sketchInstance.isLooping()) return
       // check if the mouse is on the farm
-      if (s.mouseY > farm.value?.x && s.mouseY < farm.value?.y + farm.value?.height) {
-        farm.value?.mousePressed(s.mouseButton, s.mouseX, s.mouseY);
-      } else if (s.mouseY > farm.value?.y + farm.value?.height && s.mouseY < s.height) {
+      if (
+        s.mouseY > farm.value?.x &&
+        s.mouseY < farm.value?.y + farm.value?.height
+      ) {
+        farm.value?.mousePressed(s.mouseButton, s.mouseX, s.mouseY)
+      } else if (
+        s.mouseY > farm.value?.y + farm.value?.height &&
+        s.mouseY < s.height
+      ) {
         // check if the mouse is on the control panel
         // controlPanel.mousePressed(s.mouseButton, s.mouseX, s.mouseY)
         // update mode for farm
@@ -80,31 +86,43 @@ export const GAME_STATE = {
 effect(() => {
   const fetchTank = async () => {
     if (!tank.value?._id) return
-  const { data } = await api.getTank(tank.value?._id)
-  
-  data.bugs.forEach((x: Bug & { appearance: string, genes: string[] }) => {
-    const _x = Math.random() * (FARM_WIDTH - 100) + 100
-    const _y = Math.random() * (FARM_HEIGHT - 100) + 100
+    const { data } = await api.getTank(tank.value?._id)
 
-    const bug = new Bug({
-      ...x,
-      x: _x,
-      y: _y,
-      size: 20,
-      color: '#f00',
-      p5: sketchInstance
+    data.bugs.forEach((x: Bug & { appearance: string; genes: string[] }) => {
+      const _x = Math.random() * (FARM_WIDTH - 100) + 100
+      const _y = Math.random() * (FARM_HEIGHT - 100) + 100
+
+      const bug = new Bug({
+        ...x,
+        x: _x,
+        y: _y,
+        size: 20,
+        color: "#f00",
+        p5: sketchInstance,
+      })
+      farm.value.colony.push(bug)
     })
-    farm.value.colony.push(bug)
-  })
-  data.flowers.forEach((flo: Flower) => {
-    const flower = new Flower({
-      ...flo,
+    data.flowers.forEach((flo: Flower) => {
+      const flower = new Flower({
+        ...flo,
+      })
+      farm.value.addObject(flower)
     })
-    console.log({flo,flower})
-    farm.value.addObject(flower)
-  })
+
+    const eventSource = new EventSource(BASE_URL + "/events-flower")
+    eventSource.onmessage = ({ data }) => {
+      const { flower } = JSON.parse(data).data
+      if (flower._id) {
+        const _flower = farm.value.objects.find((x) => x._id === flower._id)
+        if (_flower) {
+          _flower.hasPollen = flower.hasPollen
+          _flower.numberOfPollens = flower.numberOfPollens
+          _flower.spawningTime = flower.spawningTime
+        }
+      }
+    }
   }
 
   fetchTank()
-  console.log('game state changed', farm.value)
+  console.log("game state changed", farm.value)
 })

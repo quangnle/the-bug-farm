@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const BASE_URL = 'https://api-bug-game.skyglab.tech'
+export const BASE_URL = 'https://api-bug-game.skyglab.tech'
 
 axios.defaults.baseURL = BASE_URL
 

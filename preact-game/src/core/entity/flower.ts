@@ -66,7 +66,6 @@ class Flower {
 
   draw(isSelected: boolean) {
     // draw the petals
-    this.spawningTime -= p5.deltaTime
     p5.push()
     p5.translate(this.x, this.y)
     p5.rotate(this.angle)
@@ -85,21 +84,15 @@ class Flower {
 
     // update pollen status
     if (!this.hasPollen) {
-      this.spawningTime += 1
+      this.spawningTime -= p5.deltaTime
       this.angle = 0
     } else {
       this.angle += 0.1
     }
 
-    // if (this.spawningTime > spawnningDuration) {
-    //     this.hasPollen = true;
-    //     this.spawningTime = 0;
-    //     this.numberOfPollens --;
-    //     if (this.numberOfPollens <= 0) {
-    //         this.pistilSize = 4;
-    //         this.petalSize = 4;
-    //     }
-    // }
+    if (this.spawningTime > SPAWN_DURATION) {
+        this.hasPollen = true
+    }
 
     if (isSelected) {
       // draw the bounding box
