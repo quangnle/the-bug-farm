@@ -45,7 +45,10 @@ export default function FlowerPlant() {
           <input type="number" name="petalSize" value={plantFlower.value.petalSize} onChange={handleChangeInput} id="petal-size" min="3" max="7" />
         </li>
       </ul>
-      <PlantSwitch className="mt-auto" />
+      <div className="mt-auto">
+        <p className="mb-2 text-sm">Right-click to plant a flower (cost $7)</p>
+        <PlantSwitch className="" />
+      </div>
     </div>
   )
 }
