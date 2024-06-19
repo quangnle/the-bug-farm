@@ -5,7 +5,7 @@ import Route from "./route"
 import p5 from "p5"
 import { GAME_STATE, selectedObject, sketchInstance } from "../gameState"
 import api from "../axios"
-import { BUG_SIZE, MAX_POPULATION } from "../constants"
+import { BUG_SIZE, MAX_POPULATION, SPAWN_DURATION } from "../constants"
 import { plantFlower } from "@/components/flower-plant"
 
 const distanceToReachFood = 10
@@ -154,6 +154,7 @@ class Farm {
         if (d <= distanceToReachFood && flower.hasPollen) {
           // remove the pollen from the flower
           flower.hasPollen = false
+          flower.spawningTime = SPAWN_DURATION
 
           // change the bug's color and hunger
           bug.color = flower.pistilColor
@@ -169,8 +170,7 @@ class Farm {
 
           // else, evolution to make a new bug
           // const newBug = Evolution.evolute(bug, flower.pistilColor)
-          if (bug._id && flower._id) {
-            flower.hasPollen = false
+          if (bug._id && flower._id && flower.numberOfPollens > 0) {
             api.bugEatFlower(bug._id, flower._id).then(({ data }) => {
               if (data._id) {
                 const newBug = new Bug({

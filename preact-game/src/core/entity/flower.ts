@@ -83,11 +83,13 @@ class Flower {
     p5.pop()
 
     // update pollen status
-    if (!this.hasPollen) {
-      this.spawningTime -= p5.deltaTime
-      this.angle = 0
-    } else {
-      this.angle += 0.1
+    if (this.numberOfPollens > 0) {
+      if (!this.hasPollen) {
+        this.spawningTime -= p5.deltaTime
+        this.angle = 0
+      } else {
+        this.angle += 0.1
+      }
     }
 
     if (this.spawningTime < 0) {

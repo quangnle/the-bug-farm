@@ -39,10 +39,14 @@ export default function SelectTank() {
   }
 
   const handleNewTank = async () => {
-    let newTank = prompt('Enter tank name', `Tank ${tanks.length + 1}`)
-    const { data } = await api.createTank(newTank)
-    if (data._id) {
-      handleSelectTank(data)
+    try {
+      let newTank = prompt('Enter tank name', `Tank ${tanks.length + 1}`)
+      const { data } = await api.createTank(newTank)
+      if (data._id) {
+        handleSelectTank(data)
+      }
+    } catch (error) {
+      alert(error.response.data.message)
     }
   }
 

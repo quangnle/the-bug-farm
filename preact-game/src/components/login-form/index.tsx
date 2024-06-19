@@ -8,8 +8,8 @@ import Button from "../common/button"
 
 export default function LoginForm() {
   const [form, setForm] = useState({
-    username: "test",
-    password: "12345678",
+    username: "",
+    password: "",
   })
   const [loading, setLoading] = useState(false)
   const [registerLoading, setRegisterLoading] = useState(false)
@@ -24,7 +24,9 @@ export default function LoginForm() {
       if (data.user) {
         GAME_STATE.user.value = data.user
       }
-    } catch (error) {} finally {
+    } catch (error) {
+      alert(error.response.data.message)
+    } finally {
       setLoading(false)
     }
   }
@@ -37,9 +39,14 @@ export default function LoginForm() {
       setRegisterLoading(true)
       const { data } = await api.register(form)
       if (data) {
-        GAME_STATE.user.value = data
+        const { data: data2 } = await api.me()
+        if (data2.user) {
+          GAME_STATE.user.value = data.user
+        }
       }
-    } catch (error) {} finally {
+    } catch (error) {
+      alert(error.response.data.message)
+    } finally {
       setRegisterLoading(false)
     }
   }
