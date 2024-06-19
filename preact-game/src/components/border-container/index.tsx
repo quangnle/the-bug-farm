@@ -10,17 +10,17 @@ export default function BorderContainer ({ children, className, onClick }: {
   return (
     <div className={clsx("border-container", className)} onClick={onClick}>
       {children}
-      <div className="decor">
-      <div className="corner__top-left corner"></div>
-      <div className="corner__top-right corner"></div>
-      <div className="corner__bottom-left corner"></div>
-      <div className="corner__bottom-right corner"></div>
+      {/* <div className="decor">
+        <div className="corner__top-left corner"></div>
+        <div className="corner__top-right corner"></div>
+        <div className="corner__bottom-left corner"></div>
+        <div className="corner__bottom-right corner"></div>
 
-      <div className="line__left line"></div>
-      <div className="line__right line"></div>
-      <div className="line__top line"></div>
-      <div className="line__bottom line"></div>
-      </div>
+        <div className="line__left line"></div>
+        <div className="line__right line"></div>
+        <div className="line__top line"></div>
+        <div className="line__bottom line"></div>
+      </div> */}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 .homepage {
   @apply flex flex-col items-center justify-center h-full;
 
-  background-image: url('./assets/bg.jpeg');
+  background-image: url('/assets/bg.jpeg');
 }

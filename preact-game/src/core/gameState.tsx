@@ -22,11 +22,11 @@ export const GAME_ASSET: Record<string, any> = {
 const sketch = (s: p5) => {
   console.log('init p5')
   s.preload = () => {
-    GAME_ASSET.diamond = s.loadImage('./assets/diamond.png')
+    GAME_ASSET.diamond = s.loadImage('/assets/diamond.png')
 
     // Sound
     GAME_ASSET.cashout = new Audio()
-    GAME_ASSET.cashout.src = './sounds/cash.mp3'
+    GAME_ASSET.cashout.src = '/sounds/cash.mp3'
     GAME_ASSET.cashout.preload = 'auto'
   }
   s.setup = () => {

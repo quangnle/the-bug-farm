@@ -11,11 +11,12 @@ export default function LoginForm() {
     username: "test",
     password: "12345678",
   })
-const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [registerLoading, setRegisterLoading] = useState(false)
 
   const handleSubmit = async (event: any) => {
     event.preventDefault()
-    if (loading) return
+    if (loading || registerLoading) return
 
     try {
       setLoading(true)
@@ -25,6 +26,21 @@ const [loading, setLoading] = useState(false)
       }
     } catch (error) {} finally {
       setLoading(false)
+    }
+  }
+
+  const handleRegister = async (event: any) => {
+    event.preventDefault()
+    if (loading || registerLoading) return
+
+    try {
+      setRegisterLoading(true)
+      const { data } = await api.register(form)
+      if (data) {
+        GAME_STATE.user.value = data
+      }
+    } catch (error) {} finally {
+      setRegisterLoading(false)
     }
   }
   
@@ -64,7 +80,18 @@ const [loading, setLoading] = useState(false)
                   type="password"
                 />
               </label>
-              <Button loading={loading} className="mt-8 btn-big">Login</Button>
+              <div className="flex gap-4 justify-center">
+                <Button
+                  type="submit"
+                  loading={loading}
+                  className="mt-8 btn-big"
+                >
+                  Login
+                </Button>
+                <Button onClick={handleRegister} loading={registerLoading} className="mt-8 btn-big">
+                  Register
+                </Button>
+              </div>
             </form>
           </BorderContainer>
         </Modal>

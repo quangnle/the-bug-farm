@@ -7,6 +7,9 @@
 .border-container {
   position: relative;
   min-height: 64px;
+
+  border: 8px solid burlywood;
+  border-radius: 8px;
 }
 
 .border-container > .decor .corner {

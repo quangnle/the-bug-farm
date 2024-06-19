@@ -92,14 +92,14 @@ export default function SelectedObject () {
   return (
     <div className="flex flex-col h-full">
       <div className="flex justify-between mb-4">
-        <BorderContainer className="border-2 w-24 h-24">
+        {selectedObject.value && <BorderContainer className="border-2 w-24 h-24">
           <canvas
             ref={canvasRef}
             className="object-render-canvas w-full"
             width={64}
             height={64}
           />
-        </BorderContainer>
+        </BorderContainer>}
 
         {selectedObject.value instanceof Bug && (
           <BorderContainer className="border-2 w-24 h-24 bg-[red]">
