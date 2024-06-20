@@ -27,7 +27,9 @@ export default function Market() {
   const [selected, setSelected] = useState<Bug | null>(null)
   const [market, setMarket] = useState<ISale[]>([])
 
-  const { data: list, loading, refresh: reloadList, pagination } = useList(api.getSales)
+  const { data: list, loading, refresh: reloadList, pagination } = useList(api.getSales, {
+    lock: !GAME_STATE.user.value?._id
+  })
 
   useEffect(() => {
     if (list && list.length) {
