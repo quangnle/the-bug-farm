@@ -24,7 +24,7 @@ jobs:
           GITHUB_COMMIT_URL="${GITHUB_REPO_URL}commit/"
           BOT_TOKEN="5430539874:AAHCYYQJ1NvTU9PzZ_z1j-Xeftpa0gYZcu8"
           WEBHOOK_URL="https://api.telegram.org/bot{$BOT_TOKEN}/sendMessage"
-          CHAT_ID="-843440680"
+          CHAT_ID="-4257709913"
           REPO_NAME="${{ github.event.repository.name }}"
           GITHUB_BRANCH_COMMITS_URL="${GITHUB_REPO_URL}commits/${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}"
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
