@@ -8,6 +8,7 @@ import clsx from "clsx"
 import api from "@/core/axios"
 import Button from "../common/button"
 import { sellBugEffect } from "@/core/effect"
+import moment from "moment"
 
 export default function BugList() {
   const [show, setShow] = useState(false)
@@ -17,7 +18,7 @@ export default function BugList() {
   useEffect(() => {
     if (show) {
       sketchInstance.noLoop()
-      setBugs(GAME_STATE.farm.value.colony)
+      setBugs(GAME_STATE.farm.value.colony.reverse())
     } else {
       sketchInstance.loop()
     }
@@ -70,7 +71,7 @@ export default function BugList() {
                     <BorderContainer
                       key={bug._id}
                       className={clsx(
-                        "border-2 p-2 hover:bg-green-600 flex items-center gap-4 text-white cursor-pointer",
+                        "border-2 p-2 hover:bg-green-600 gap-4 text-white cursor-pointer",
                         selectedBugs.includes(bug) && "bg-green-600"
                       )}
                       onClick={() => {
@@ -83,25 +84,31 @@ export default function BugList() {
                         })
                       }}
                     >
-                      <div className="w-16 h-16 bg-red-600">
-                        <BugPattern appc={bug.appearance._id} />
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 bg-red-600">
+                          <BugPattern appc={bug.appearance._id} />
+                        </div>
+                        <div className="py-2">
+                          <p>
+                            <b>Pattern</b>: {bug.appearance.name}
+                          </p>
+                          <p>
+                            <b>Genes</b>:
+                          </p>
+                          <ul>
+                            {bug.genes.map((gene) => (
+                              <li>
+                                &middot; {gene.name} -{" "}
+                                {Math.round((gene.score / total) * 100)}%
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </div>
-                      <div className="py-2">
-                        <p>
-                          <b>Pattern</b>: {bug.appearance.name}
-                        </p>
-                        <p>
-                          <b>Genes</b>:
-                        </p>
-                        <ul>
-                          {bug.genes.map((gene) => (
-                            <li>
-                              &middot; {gene.name} -{" "}
-                              {Math.round((gene.score / total) * 100)}%
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      <p className="text-right">
+                        Hatch:{" "}
+                        {moment((bug as unknown as IBug).createdAt).fromNow()}
+                      </p>
                     </BorderContainer>
                   )
                 })}

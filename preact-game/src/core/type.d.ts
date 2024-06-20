@@ -9,6 +9,8 @@ type ITank = {
   name: string
   userId: string
   size: number
+  noBug?: number
+  noFlower?: number
 }
 
 type IAppearance = {
@@ -37,6 +39,8 @@ type IRoute =  {
 type IBug = {
   _id: string
   appearance: string
+  createdAt: Moment | string
+  updatedAt: Moment | string
 }
 
 type ISale = {

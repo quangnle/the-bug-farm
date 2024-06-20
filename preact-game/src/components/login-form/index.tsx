@@ -43,9 +43,9 @@ export default function LoginForm() {
       setRegisterLoading(true)
       const { data } = await api.register(form)
       if (data) {
-        const { data: data2 } = await api.me()
+        const { data: data2 } = await api.login(form)
         if (data2.user) {
-          GAME_STATE.user.value = data.user
+          GAME_STATE.user.value = data2.user
         }
       }
     } catch (error) {

@@ -7,7 +7,7 @@ import Loading from "../common/loading"
 
 const MAX_TANK = 5
 
-export default function SelectTank() {
+export default function SelectTank({ show, onSelectTank = () => {} } : { show: boolean, onSelectTank?: (x: ITank) => void}) {
   const [tanks, setTanks] = useState<ITank[]>([])
   const [loading, setLoading] = useState(false)
 
@@ -36,16 +36,12 @@ export default function SelectTank() {
     GAME_STATE.user.value?._id && getListAppearance()
   }, [GAME_STATE.user.value])
 
-  const handleSelectTank = (x: ITank) => {
-    GAME_STATE.tank.value = x
-  }
-
   const handleNewTank = async () => {
     try {
       let newTank = prompt('Enter tank name', `Tank ${tanks.length + 1}`)
       const { data } = await api.createTank(newTank)
       if (data._id) {
-        handleSelectTank(data)
+        onSelectTank(data)
       }
     } catch (error) {
       alert(error.response.data.message)
@@ -54,7 +50,7 @@ export default function SelectTank() {
 
   return (
     <>
-      {GAME_STATE.user.value?._id && !GAME_STATE.tank.value?._id && (
+      {show && (
         <Modal handleClose={() => {}}>
           <BorderContainer className="w-full h-full bg-white p-8 text-center min-w-[650px]">
             <h1 className="mb-8">Tank List</h1>
@@ -66,15 +62,18 @@ export default function SelectTank() {
               <div className="flex flex-wrap items-center justify-center gap-4 max-w-[700px]">
                 {tanks.slice(0, MAX_TANK).map((x) => (
                   <div
-                    className="flex gap-4 p-4 border-4 border-dashed hover:border-[burlywood] rounded-xl cursor-pointer w-[200px] aspect-[3/2]"
-                    onClick={() => handleSelectTank(x)}
+                    className="flex gap-4 p-4 border-4 border-dashed hover:border-[burlywood] hover:bg-[burlywood]/20 rounded-xl cursor-pointer w-[240px] aspect-[3/2]"
+                    onClick={() => onSelectTank(x)}
                   >
-                    <div className="text-xl">
+                    <div className="text-xl text-left">
                       <p>
                         <b>Name</b>: {x.name}
                       </p>
                       <p>
-                        <b>Capacity</b>: {x.size}
+                        <b>Capacity</b>: {x.noBug}/{x.size}
+                      </p>
+                      <p>
+                        <b>Flower</b>: {x.noFlower}
                       </p>
                     </div>
                   </div>

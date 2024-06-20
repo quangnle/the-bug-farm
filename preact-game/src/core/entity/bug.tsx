@@ -21,6 +21,7 @@ class Bug {
   target: any // Add missing property
   p5: p5
   name: string
+  createdAt: string
 
   constructor({
     _id,
@@ -32,6 +33,7 @@ class Bug {
     angle,
     appearance : defaultAppearance,
     genes : defaultGenes = [],
+    createdAt,
     p5,
   }: {
     _id: string
@@ -43,6 +45,7 @@ class Bug {
     angle: number
     appearance: string
     genes: string[],
+    createdAt: string
     p5: p5
   }) {
     this._id = _id
@@ -57,6 +60,7 @@ class Bug {
     this.hunger = 500
     this.mutationRate = 0.1
     this.p5 = p5
+    this.createdAt = createdAt
 
     const _appearance =
       GAME_STATE.appearance.value.find(

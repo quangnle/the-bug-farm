@@ -1,5 +1,6 @@
 import axios from "axios"
 import { GAME_STATE } from "./gameState"
+import { ICommonGetListParams, IListPagination } from "@/hooks/useList"
 
 export const BASE_URL = 'https://api-bug-game.skyglab.tech'
 
@@ -48,7 +49,11 @@ const api = {
   bugEatFlower: async (id, flowerId) =>
     axios.patch(`/bugs/${id}/eat-flower`, { id, flowerId }),
 
-  getSales: async (params?: { sellerId: string }) => axios.get("/sales"),
+  getSales: async (params?: { sellerId?: string } & ICommonGetListParams) =>
+    {
+      const { data } = await axios.get("/sales", { params })
+      return data as IListPagination<ISale>
+    },
   saleListing: async (payload: {
     bugId: string
     price: number

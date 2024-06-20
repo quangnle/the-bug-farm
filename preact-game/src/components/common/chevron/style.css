@@ -1,0 +1,8 @@
+.chevron img {
+  width: 48px;
+  object-position: center;
+}
+
+.chevron.left img {
+  transform: rotate(180deg);
+}

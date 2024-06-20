@@ -31,7 +31,7 @@ const sketch = (s: p5) => {
   }
   s.setup = () => {
     const canvas = document.getElementById("main-canvas")
-    canvas && s.createCanvas(960, 960, canvas)
+    canvas && s.createCanvas(FARM_WIDTH, FARM_HEIGHT, canvas)
   }
   s.draw = () => {
     s.clear()
@@ -86,7 +86,10 @@ export const GAME_STATE = {
 effect(() => {
   const fetchTank = async () => {
     if (!tank.value?._id) return
+    
     const { data } = await api.getTank(tank.value?._id)
+
+    farm.value = new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22")
 
     data.bugs.forEach((x: Bug & { appearance: string; genes: string[] }) => {
       const _x = Math.random() * (FARM_WIDTH - 100) + 100
@@ -125,5 +128,4 @@ effect(() => {
   }
 
   fetchTank()
-  console.log("game state changed", farm.value)
 })

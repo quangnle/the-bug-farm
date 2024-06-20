@@ -91,7 +91,7 @@ export default function SelectedObject () {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-center gap-4 mb-4">
         {selectedObject.value && <BorderContainer className="border-2 w-24 h-24">
           <canvas
             ref={canvasRef}

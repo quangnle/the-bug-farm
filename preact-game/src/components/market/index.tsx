@@ -6,8 +6,14 @@ import p5 from "p5"
 import { Signal, signal } from "@preact/signals"
 import Farm from "@/core/entity/farm"
 import Bug from "@/core/entity/bug"
-import { GAME_STATE, sketchInstance } from "@/core/gameState"
+import { GAME_STATE, selectedObject, sketchInstance } from "@/core/gameState"
 import Button from "../common/button"
+import useList from "@/hooks/useList"
+import clsx from "clsx"
+import BugPattern from "../bug-pattern"
+import moment from "moment"
+import Chevron from "../common/chevron"
+import Loading from "../common/loading"
 
 const MARKET_SIZE = 480
 const marketFarm: Signal<Farm> = signal(
@@ -21,17 +27,19 @@ export default function Market() {
   const [selected, setSelected] = useState<Bug | null>(null)
   const [market, setMarket] = useState<ISale[]>([])
 
-  const fetchMarket = async () => {
-    try {
-      const { data } = await api.getSales()
+  const { data: list, loading, refresh: reloadList, pagination } = useList(api.getSales)
+
+  useEffect(() => {
+    if (list && list.length) {
+      marketFarm.value.colony = []
       if (p5Ref.current) {
         const _market: ISale[] = []
-        data.data.forEach((x: ISale) => {
+        list.forEach((x: ISale) => {
           const _bug = new Bug({
             ...x.bug,
             size: 20,
-            x: 100,
-            y: 100,
+            x: Math.random() * MARKET_SIZE,
+            y: Math.random() * MARKET_SIZE,
             color: "#f00",
             p5: p5Ref.current as p5,
           })
@@ -44,13 +52,13 @@ export default function Market() {
         })
         setMarket(_market)
       }
-    } catch (error) {}
-  }
+    }
+  }, [list])
 
   useEffect(() => {
     if (show) {
       sketchInstance.noLoop()
-      fetchMarket()
+      reloadList()
 
       p5Ref.current = new p5((s) => {
         console.log("init p5")
@@ -88,7 +96,7 @@ export default function Market() {
       await api.buyBug(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
       removeBug()
     } catch (error) {
-      console.log(error.response.data.message)
+      alert(error.response.data.message)
     }
   }
 
@@ -98,7 +106,7 @@ export default function Market() {
       await api.saleUnListting(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
       removeBug()
     } catch (error) {
-      console.log(error.response.data.message)
+      alert(error.response.data.message)
     }
   }
 
@@ -111,50 +119,91 @@ export default function Market() {
     }
   }
 
-  const total = useMemo(() => {
-    return (selectedSale?.bug as Bug)?.genes?.reduce((acc, x) => acc + x.score, 0)
-  }, [selectedSale])
+  const handleChangePage = (value) => {
+    if (!pagination?.total) return
+    const nextPage = (pagination?.page || 1) + value
+    console.log(nextPage, Math.round(pagination?.total / (pagination?.perPage || 10)))
+
+    if (
+      nextPage <= 0 ||
+      nextPage > Math.ceil(pagination?.total / (pagination?.perPage || 10))
+    ) {
+      return
+    }
+
+    pagination?.onChange && pagination?.onChange(nextPage)
+  }
 
   return (
     <>
       <Button onClick={() => setShow(true)}>Market</Button>
       {show && (
         <Modal handleClose={() => setShow(false)}>
-          <BorderContainer className="flex flex-col items-center bg-black/60 p-8">
+          <BorderContainer className="flex flex-col items-center bg-black/60 p-8 min-h-[1000px]">
             <h1 className="text-center font-bold mb-4">Market</h1>
             <p className="text-2xl font-bold text-[orange] text-center mb-2">
               Money: ${GAME_STATE.user.value?.money}
             </p>
-            <div className="flex gap-8">
-              <canvas
-                ref={canvasRef}
-                className="w-1/2 aspect-square rounded-lg border-8 border-[burlywood] bg-[lightgreen]"
-              />
-              <div className="w-[300px] text-white flex flex-col">
-                {selectedSale && (
-                  <>
-                    <p>ID: {selectedSale?.bug._id}</p>
-                    <p className="text-2xl font-bold text-[orange]">
-                      Price: ${selectedSale?.price}
-                    </p>
-                    <p>Pattern: {selectedSale?.bug.appearance?.name}</p>
-                    <p className="border-b border-black border-dashed">
-                      List of genes:{" "}
-                    </p>
-                    {selected?.genes.map((gene, index) => (
-                      <p key={index}>
-                        - {gene.name}: {Math.round((gene.score / total) * 100)}%
+            <div className="flex items-start gap-8">
+              <div className="">
+                <div className="border-[burlywood] bg-[lightgreen] rounded-lg border-8 flex items-center justify-center">
+                  <canvas ref={canvasRef} className="aspect-square" />
+                  {loading && <Loading className="absolute " />}
+                </div>
+                <div className="flex justify-between items-center">
+                  <Chevron
+                    direction="left"
+                    onClick={() => handleChangePage(-1)}
+                  />
+                  <span className="text-white">{pagination?.page || 1}</span>
+                  <Chevron
+                    direction="right"
+                    onClick={() => handleChangePage(+1)}
+                  />
+                </div>
+              </div>
+              <div className="w-[560px] text-white grid grid-cols-2 gap-2">
+                {market.map((sale) => (
+                  <div
+                    key={sale._id}
+                    className={clsx(
+                      "border-2 p-2 hover:bg-green-600 gap-4 text-white cursor-pointer flex flex-col",
+                      selected?._id === sale.bug._id && "bg-green-600"
+                    )}
+                    onClick={() => {
+                      setSelected(sale.bug)
+                      selectedObject.value = sale.bug
+                    }}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 bg-red-600">
+                        <BugPattern appc={sale.bug.appearance._id} />
+                      </div>
+                      <div className="py-2">
+                        <p>
+                          <b>Pattern</b>: {sale.bug.appearance.name}
+                        </p>
+
+                        <p className="text-sm">
+                          Hatch:{" "}
+                          {moment(
+                            (sale.bug as unknown as IBug).createdAt
+                          ).fromNow()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-auto flex justify-between">
+                      <p className="text-[orange] text-2xl font-bold mt-auto pl-2">
+                        <b>Price:</b> ${sale.price}
                       </p>
-                    ))}
-                    <div className="mt-auto">
-                      {GAME_STATE.user.value?._id === selectedSale.seller ? (
+                      {GAME_STATE.user.value?._id === sale.seller ? (
                         <Button onClick={handleUnBuy}>Cancel</Button>
                       ) : (
                         <Button onClick={handleBuy}>Buy</Button>
                       )}
                     </div>
-                  </>
-                )}
+                  </div>
+                ))}
               </div>
             </div>
           </BorderContainer>
