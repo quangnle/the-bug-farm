@@ -86,6 +86,7 @@ export default function Market() {
     try {
       if (!selectedSale || !GAME_STATE.tank.value?._id) return
       await api.buyBug(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
+      removeBug()
     } catch (error) {
       console.log(error.response.data.message)
     }
@@ -95,8 +96,18 @@ export default function Market() {
     try {
       if (!selectedSale || !GAME_STATE.tank.value?._id) return
       await api.saleUnListting(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
+      removeBug()
     } catch (error) {
       console.log(error.response.data.message)
+    }
+  }
+
+
+  const removeBug = () => {
+    if (selected) {
+      marketFarm.value.colony = marketFarm.value.colony.filter((x) => x._id !== selected._id)
+      setMarket(market.filter((x) => x.bug._id !== selected._id))
+      setSelected(null)
     }
   }
 
@@ -136,10 +147,10 @@ export default function Market() {
                       </p>
                     ))}
                     <div className="mt-auto">
-                      {GAME_STATE.user.value?._id === selectedSale.sellerId ? (
-                        <Button onClick={handleBuy}>Buy</Button>
-                      ) : (
+                      {GAME_STATE.user.value?._id === selectedSale.seller ? (
                         <Button onClick={handleUnBuy}>Cancel</Button>
+                      ) : (
+                        <Button onClick={handleBuy}>Buy</Button>
                       )}
                     </div>
                   </>

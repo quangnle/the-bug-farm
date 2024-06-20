@@ -46,6 +46,6 @@ type ISale = {
   genes: IAppearance[]
 
   geneHash: string
-  sellerId: string
+  seller: string
   description: string
 }

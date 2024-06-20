@@ -7,10 +7,14 @@ import './style.css'
 import Button from "../common/button"
 
 export default function LoginForm() {
-  const [form, setForm] = useState({
-    username: "",
-    password: "",
-  })
+  const [form, setForm] = useState(
+    import.meta.env.MODE === "development"
+      ? { username: "test", password: "12345678" }
+      : {
+          username: "",
+          password: "",
+        }
+  )
   const [loading, setLoading] = useState(false)
   const [registerLoading, setRegisterLoading] = useState(false)
 
@@ -50,7 +54,6 @@ export default function LoginForm() {
       setRegisterLoading(false)
     }
   }
-  
 
   return (
     <>
