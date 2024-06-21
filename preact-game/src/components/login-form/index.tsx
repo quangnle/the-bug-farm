@@ -5,6 +5,7 @@ import Modal from "../common/modal"
 import BorderContainer from "../border-container"
 import './style.css'
 import Button from "../common/button"
+import { handleError } from "@/utils/helpers"
 
 export default function LoginForm() {
   const [form, setForm] = useState(
@@ -29,7 +30,7 @@ export default function LoginForm() {
         GAME_STATE.user.value = data.user
       }
     } catch (error) {
-      alert(error.response.data.message)
+      handleError(error)
     } finally {
       setLoading(false)
     }
@@ -49,7 +50,7 @@ export default function LoginForm() {
         }
       }
     } catch (error) {
-      alert(error.response.data.message)
+      handleError(error)
     } finally {
       setRegisterLoading(false)
     }

@@ -6,6 +6,7 @@ import p5 from "p5";
 import { PATTERN, SELECTED_COLOR, draw, mouseDragged, setup } from "./useCreatePattern"
 import { sketchInstance } from "@/core/gameState";
 import api from "@/core/axios";
+import { handleError } from "@/utils/helpers";
 
 export default function CreatePattern() {
   const [show, setShow] = useState(false)
@@ -43,7 +44,7 @@ export default function CreatePattern() {
       })
       setShow(false)
     } catch (error) {
-      alert(error.response.data.message)
+      handleError(error)
     }
   }
 

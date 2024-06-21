@@ -4,6 +4,7 @@ import BorderContainer from "../border-container"
 import api from "../../core/axios"
 import Modal from "../common/modal"
 import Loading from "../common/loading"
+import { handleError } from "@/utils/helpers"
 
 const MAX_TANK = 5
 
@@ -44,7 +45,7 @@ export default function SelectTank({ show, onSelectTank = () => {} } : { show: b
         onSelectTank(data)
       }
     } catch (error) {
-      alert(error.response.data.message)
+      handleError(error)
     }
   }
 

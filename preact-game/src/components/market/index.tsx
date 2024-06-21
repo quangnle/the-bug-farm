@@ -14,6 +14,7 @@ import BugPattern from "../bug-pattern"
 import moment from "moment"
 import Chevron from "../common/chevron"
 import Loading from "../common/loading"
+import { handleError } from "@/utils/helpers"
 
 const MARKET_SIZE = 480
 const marketFarm: Signal<Farm> = signal(
@@ -98,7 +99,7 @@ export default function Market() {
       await api.buyBug(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
       removeBug()
     } catch (error) {
-      alert(error.response.data.message)
+      handleError(error)
     }
   }
 
@@ -108,7 +109,7 @@ export default function Market() {
       await api.saleUnListting(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
       removeBug()
     } catch (error) {
-      alert(error.response.data.message)
+      handleError(error)
     }
   }
 
