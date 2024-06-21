@@ -322,11 +322,11 @@ class Bug {
           this.appearance.pattern[j][i] !== -1 &&
           this.appearance.pattern[j][i] !== 0
         ) {
-          ctx.strokeStyle = this.appearance.pattern[j][i];
-          ctx.beginPath();
-          ctx.moveTo(i - size, j - size);
-          ctx.lineTo(i - size + 1, j - size + 1);
-          ctx.stroke();
+          ctx.fillStyle =
+            typeof this.appearance.pattern[j][i] === "string"
+              ? this.appearance.pattern[j][i]
+              : "black"
+          ctx.fillRect(i - size, j-size, 1, 1);
         }
       }
     }
