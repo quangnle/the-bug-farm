@@ -7,15 +7,18 @@ import { Signal, signal } from "@preact/signals";
 import clsx from "clsx";
 import moment from "moment";
 import p5 from "p5";
-import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import BorderContainer from "../border-container";
 import BugPattern from "../bug-pattern";
 import Button from "../common/button";
 import Chevron from "../common/chevron";
 import Loading from "../common/loading";
 import Modal from "../common/modal";
+import MarketLog from "./market-log";
+import { getSaleGenesInfo } from "@/core/utils";
+import { CANVAS_SIZE } from "../create-pattern/useCreatePattern";
 
-const MARKET_SIZE = 480;
+const MARKET_SIZE = 400;
 const marketFarm: Signal<Farm> = signal(
   new Farm(0, 0, MARKET_SIZE, MARKET_SIZE, "#77dd22")
 );
@@ -26,6 +29,7 @@ export default function Market() {
   const [show, setShow] = useState(false);
   const [selected, setSelected] = useState<Bug | null>(null);
   const [market, setMarket] = useState<ISale[]>([]);
+  const [tab, setTab] = useState<'market' | 'logs'>('market')
 
   const {
     data: list,
@@ -154,8 +158,8 @@ export default function Market() {
           ...bug,
           p5: sketchInstance,
           size: 20,
-          x: Math.random() * 480,
-          y: Math.random() * 480,
+          x: Math.random() * CANVAS_SIZE,
+          y: Math.random() * CANVAS_SIZE,
           color: "#f00",
         })
       );
@@ -185,12 +189,32 @@ export default function Market() {
       <Button onClick={() => setShow(true)}>Market</Button>
       {show && (
         <Modal handleClose={() => setShow(false)}>
-          <BorderContainer className="flex flex-col items-center bg-black/60 p-8 min-h-[1000px]">
-            <h1 className="text-center font-bold mb-4">Market</h1>
-            <p className="text-2xl font-bold text-[orange] text-center mb-2">
-              Money: ${GAME_STATE.user.value?.money}
-            </p>
-            <div className="flex items-start gap-8">
+          <BorderContainer className="flex flex-col items-center w-[80vw] bg-black/60 p-8 min-h-[1000px]">
+            <h1 className="text-center font-bold mb-8">
+              Market ${GAME_STATE.user.value?.money}
+            </h1>
+
+            <div className="w-full flex justify-between mb-8">
+              <Button
+                className={clsx(tab === "market" && "invisible")}
+                onClick={() => setTab("market")}
+              >
+                Market
+              </Button>
+              <Button
+                className={clsx(tab === "logs" && "invisible")}
+                onClick={() => setTab("logs")}
+              >
+                Logs
+              </Button>
+            </div>
+
+            <div
+              className={clsx(
+                "items-start gap-8 w-full",
+                tab === "market" ? "flex" : "hidden"
+              )}
+            >
               <div className="">
                 <div className="border-[burlywood] bg-[lightgreen] rounded-lg border-8 flex items-center justify-center">
                   <canvas ref={canvasRef} className="aspect-square" />
@@ -198,17 +222,24 @@ export default function Market() {
                 </div>
                 <div className="flex justify-between items-center">
                   <Chevron
+                    className={clsx(pagination?.page === 1 && "invisible")}
                     direction="left"
                     onClick={() => handleChangePage(-1)}
                   />
                   <span className="text-white">{pagination?.page || 1}</span>
                   <Chevron
+                    className={clsx(
+                      pagination?.page ===
+                        Math.round(
+                          pagination?.total / (pagination?.perPage || 10)
+                        ) && "invisible"
+                    )}
                     direction="right"
                     onClick={() => handleChangePage(+1)}
                   />
                 </div>
               </div>
-              <div className="w-[560px] max-h-[800px] overflow-y-auto text-white grid grid-cols-2 gap-2">
+              <div className="max-h-[800px] overflow-y-auto text-white grid grid-cols-2 gap-2">
                 {market.map((sale) => (
                   <div
                     key={sale._id}
@@ -217,17 +248,17 @@ export default function Market() {
                       selected?._id === sale.bug._id && "bg-green-600"
                     )}
                     onClick={() => {
-                      setSelected(sale.bug);
-                      selectedObject.value = sale.bug;
+                      setSelected(sale.bug)
+                      selectedObject.value = sale.bug
                     }}
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items gap-4">
                       <div className="w-16 h-16 bg-red-600">
                         <BugPattern appc={sale.bug.appearance._id} />
                       </div>
-                      <div className="py-2">
+                      <div className="py-2 flex-1">
                         <p>
-                          <b>Pattern</b>: {sale.bug.appearance.name}
+                          <b>Gene</b>: {getSaleGenesInfo(sale.bug.genes)}
                         </p>
 
                         <p className="text-sm">
@@ -238,7 +269,7 @@ export default function Market() {
                         </p>
                       </div>
                     </div>
-                    <p className="pl-2">{sale.description}</p>
+                    <p className="pl-2 line-clamp-1">{sale.description}</p>
                     <div className="mt-auto flex justify-between">
                       <p className="text-[orange] text-2xl font-bold mt-auto pl-2">
                         <b>Price:</b> ${sale.price}
@@ -255,9 +286,12 @@ export default function Market() {
                 ))}
               </div>
             </div>
+            <div className={clsx("w-full", tab === "logs" ? "flex" : "hidden")}>
+              {/* <MarketLog onClickCancel={handleUnBuy} /> */}
+            </div>
           </BorderContainer>
         </Modal>
       )}
     </>
-  );
+  )
 }

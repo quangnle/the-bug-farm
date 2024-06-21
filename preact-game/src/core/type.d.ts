@@ -48,8 +48,10 @@ type ISale = {
   bug: Bug
   price: number
   genes: IAppearance[]
+  appearance: string
 
   geneHash: string
   seller: string
   description: string
+  status: string
 }

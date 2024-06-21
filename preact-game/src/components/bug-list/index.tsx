@@ -20,13 +20,35 @@ export default function BugList() {
     order: number;
   }>({
     type: "rarity",
-    order: -1,
+    order: 1,
   });
 
   useEffect(() => {
     if (show) {
       sketchInstance.noLoop();
-      setBugs(GAME_STATE.farm.value.colony);
+      setBugs(
+        GAME_STATE.farm.value.colony.sort((a, b) => {
+          if (filter.type === "createdAt") {
+            return (
+              (new Date(a.createdAt).getTime() -
+                new Date(b.createdAt).getTime()) *
+              filter.order
+            );
+          }
+          if (filter.type === "rarity") {
+            const rarityA = a.genes.reduce(
+              (acc, gene) => acc + Math.pow(100 - gene.score, 2),
+              0
+            );
+            const rarityB = b.genes.reduce(
+              (acc, gene) => acc + Math.pow(100 - gene.score, 2),
+              0
+            );
+            return (rarityA - rarityB) * filter.order;
+          }
+          return 0;
+        })
+      );
     } else {
       sketchInstance.loop();
     }
@@ -57,29 +79,6 @@ export default function BugList() {
       console.error(error);
     }
   };
-
-  const DISPLAY_BUG = useMemo(() => {
-    return bugs.sort((a, b) => {
-      if (filter.type === "createdAt") {
-        return (
-          (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) *
-          filter.order
-        );
-      }
-      if (filter.type === "rarity") {
-        const rarityA = a.genes.reduce(
-          (acc, gene) => acc + Math.pow(100 - gene.score, 2),
-          0
-        );
-        const rarityB = b.genes.reduce(
-          (acc, gene) => acc + Math.pow(100 - gene.score, 2),
-          0
-        );
-        return (rarityA - rarityB) * filter.order;
-      }
-      return 0;
-    });
-  }, [bugs, filter]);
 
   return (
     <>
@@ -124,7 +123,7 @@ export default function BugList() {
                   gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
                 }}
               >
-                {DISPLAY_BUG.map((bug) => {
+                {bugs.map((bug) => {
                   const total = bug.genes.reduce(
                     (acc, gene) => acc + gene.score,
                     0
