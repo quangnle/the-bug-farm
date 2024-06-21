@@ -5,6 +5,7 @@ import BugList from "./bug-list"
 import Button from "./common/button"
 import Flower from "@/core/entity/flower"
 import Route from "@/core/entity/route"
+import CreatePattern from "./create-pattern"
 
 export default function GameHeader () {
   const [staticData, setStaticData] = useState({
@@ -37,6 +38,7 @@ export default function GameHeader () {
       <Button onClick={() => {
         GAME_STATE.tank.value = null
       }}>Change Tank</Button>
+      <CreatePattern />
       <BugList />
       <Market />
     </div>

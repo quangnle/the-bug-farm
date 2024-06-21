@@ -82,6 +82,15 @@ export default function SelectedObject () {
       }
     })
   }
+  const handleRemoveAllFlower = async () => {
+    GAME_STATE.farm.value.objects = GAME_STATE.farm.value.objects.filter((obj) => {
+      if (obj.numberOfPollens === 0) {
+        api.removeFlower(obj._id)
+        return false
+      }
+      return true
+    })
+  }
 
   const total = useMemo(() => {
     if (selectedObject.value instanceof Bug) {
@@ -138,7 +147,8 @@ export default function SelectedObject () {
             <p>
               Num of Pollens left: {staticData.numberOfPollens} / {MAX_POLLENS}
             </p>
-            <div className="mt-auto flex justify-between">
+            <div className="mt-auto flex flex-col gap-2 justify-between">
+              {selectedObject.value.numberOfPollens === 0 && <Button onClick={handleRemoveAllFlower}>Remove All withered Flower</Button>}
               <Button onClick={handleRemoveFlower}>Remove flower</Button>
             </div>
           </>
