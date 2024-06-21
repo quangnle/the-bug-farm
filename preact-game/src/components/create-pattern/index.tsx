@@ -3,50 +3,55 @@ import Button from "../common/button";
 import Modal from "../common/modal";
 import BorderContainer from "../border-container";
 import p5 from "p5";
-import { PATTERN, SELECTED_COLOR, draw, mouseDragged, setup } from "./useCreatePattern"
+import {
+  PATTERN,
+  SELECTED_COLOR,
+  draw,
+  mouseDragged,
+  setup,
+} from "./useCreatePattern";
 import { sketchInstance } from "@/core/gameState";
 import api from "@/core/axios";
 import { handleError } from "@/utils/helpers";
 
 export default function CreatePattern() {
-  const [show, setShow] = useState(false)
-  const canvasRef = useRef(null)
-  const p5Ref = useRef<p5 | null>(null)
+  const [show, setShow] = useState(false);
+  const canvasRef = useRef(null);
+  const p5Ref = useRef<p5 | null>(null);
 
-  const [name, setName] = useState('')
+  const [name, setName] = useState("");
 
   useEffect(() => {
     if (show) {
-      sketchInstance?.noLoop()
+      sketchInstance?.noLoop();
       p5Ref.current = new p5((s) => {
-        s.setup = () => setup(s, canvasRef.current)
-        s.draw = () => draw(s),
-        s.mousePressed = () => mouseDragged(s)
-      })
+        s.setup = () => setup(s, canvasRef.current);
+        (s.draw = () => draw(s)), (s.mousePressed = () => mouseDragged(s));
+      });
     } else {
-      sketchInstance?.loop()
-      p5Ref.current?.remove()
+      sketchInstance?.loop();
+      p5Ref.current?.remove();
     }
     return () => {
-      p5Ref.current?.remove()
-    }
-  }, [show])
+      p5Ref.current?.remove();
+    };
+  }, [show]);
 
   const handleSubmit = async () => {
     try {
       if (!name) {
-        alert('Required pattern name')
-        return
+        alert("Required pattern name");
+        return;
       }
       await api.createAppearance({
         name,
-        pattern: PATTERN.value
-      })
-      setShow(false)
+        pattern: PATTERN.value,
+      });
+      setShow(false);
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
-  }
+  };
 
   return (
     <>
@@ -64,14 +69,17 @@ export default function CreatePattern() {
                   type="color"
                   id="color-picker"
                   onChange={(event) => {
-                    SELECTED_COLOR.value = event.target.value
+                    SELECTED_COLOR.value = event.target.value;
                   }}
                   value={SELECTED_COLOR.value}
                 />
 
                 <label className="mt-4">
                   <span className="font-bold">Pattern name: </span>
-                  <input value={name} onChange={(event) => setName(event.target.value)} />
+                  <input
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                  />
                 </label>
                 <div className="flex items-center gap-4 mt-auto">
                   <Button onClick={handleSubmit}>Create Pattern</Button>
@@ -83,5 +91,5 @@ export default function CreatePattern() {
         </Modal>
       )}
     </>
-  )
+  );
 }
