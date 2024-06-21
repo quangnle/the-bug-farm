@@ -13,7 +13,7 @@ export default function GameBody() {
 
   return (
     <div className="game-body relative">
-      <BorderContainer className="sketch-holder">
+      <BorderContainer className="">
         <canvas id="main-canvas" />
       </BorderContainer>
       <div className="absolute w-full -bottom-5 left-0 rounded-lg flex justify-between p-4 bg-green-200">

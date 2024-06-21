@@ -21,6 +21,7 @@ export const GAME_ASSET: Record<string, any> = {
 
 const sketch = (s: p5) => {
   console.log("init p5");
+  let bg: any;
   s.preload = () => {
     GAME_ASSET.diamond = s.loadImage("/assets/diamond.png");
 
@@ -31,12 +32,15 @@ const sketch = (s: p5) => {
   };
   s.setup = () => {
     const canvas = document.getElementById("main-canvas");
-    canvas && s.createCanvas(FARM_WIDTH, FARM_HEIGHT, canvas);
+    if (canvas) {
+      bg = s.loadImage("/assets/bg-2.jpeg");
+      s.createCanvas(FARM_WIDTH, FARM_HEIGHT, canvas);
+    }
   };
   s.draw = () => {
     s.clear();
+    s.background(bg);
     farm.value?.draw(s);
-
     coroutineCallbacks.value.forEach(
       (callback: CoroutineCallback, index: number) => {
         const iter = callback.generator.next();
