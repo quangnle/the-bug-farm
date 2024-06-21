@@ -1,11 +1,15 @@
-import { ReactNode } from 'react'
-import './style.css'
-import clsx from 'clsx'
+import { ReactNode } from "react";
+import "./style.css";
+import clsx from "clsx";
 
-export default function BorderContainer ({ children, className, onClick }: {
-  children?: ReactNode | ReactNode[],
-  className?: string
-  onClick?: () => void
+export default function BorderContainer({
+  children,
+  className,
+  onClick,
+}: {
+  children?: ReactNode | ReactNode[];
+  className?: string;
+  onClick?: () => void;
 }) {
   return (
     <div className={clsx("border-container", className)} onClick={onClick}>
@@ -22,5 +26,5 @@ export default function BorderContainer ({ children, className, onClick }: {
         <div className="line__bottom line"></div>
       </div> */}
     </div>
-  )
+  );
 }

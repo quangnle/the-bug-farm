@@ -1,14 +1,14 @@
-import { useEffect, useMemo, useState } from "react"
-import Modal from "../common/modal"
-import BorderContainer from "../border-container"
-import Bug from "@/core/entity/bug"
-import { GAME_STATE, sketchInstance } from "@/core/gameState"
-import BugPattern from "../bug-pattern"
-import clsx from "clsx"
-import api from "@/core/axios"
-import Button from "../common/button"
-import { sellBugEffect } from "@/core/effect"
-import moment from "moment"
+import { useEffect, useMemo, useState } from "react";
+import Modal from "../common/modal";
+import BorderContainer from "../border-container";
+import Bug from "@/core/entity/bug";
+import { GAME_STATE, sketchInstance } from "@/core/gameState";
+import BugPattern from "../bug-pattern";
+import clsx from "clsx";
+import api from "@/core/axios";
+import Button from "../common/button";
+import { sellBugEffect } from "@/core/effect";
+import moment from "moment";
 
 export default function BugList() {
   const [show, setShow] = useState(false);
@@ -16,16 +16,16 @@ export default function BugList() {
   const [selectedBugs, setSelectedBugs] = useState<Bug[]>([]);
 
   const [filter, setFilter] = useState<{
-    type: "none" | "rarity" | "createdAt"
-    order: number
+    type: "none" | "rarity" | "createdAt";
+    order: number;
   }>({
     type: "rarity",
     order: 1,
-  })
+  });
 
   useEffect(() => {
     if (show) {
-      sketchInstance.noLoop()
+      sketchInstance.noLoop();
       setBugs(
         GAME_STATE.farm.value.colony.sort((a, b) => {
           if (filter.type === "createdAt") {
@@ -33,22 +33,22 @@ export default function BugList() {
               (new Date(a.createdAt).getTime() -
                 new Date(b.createdAt).getTime()) *
               filter.order
-            )
+            );
           }
           if (filter.type === "rarity") {
             const rarityA = a.genes.reduce(
               (acc, gene) => acc + Math.pow(100 - gene.score, 2),
               0
-            )
+            );
             const rarityB = b.genes.reduce(
               (acc, gene) => acc + Math.pow(100 - gene.score, 2),
               0
-            )
-            return (rarityA - rarityB) * filter.order
+            );
+            return (rarityA - rarityB) * filter.order;
           }
-          return 0
+          return 0;
         })
-      )
+      );
     } else {
       sketchInstance.loop();
     }
@@ -82,26 +82,35 @@ export default function BugList() {
 
   return (
     <>
-      <Button onClick={() => setShow(true)}>Collections</Button>
+      <Button onClick={() => setShow(true)}>Inventory</Button>
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="bg-black/60 w-[80vw]">
             <div className="h-[70vh] overflow-y-auto overflow-x-hidden p-4">
-              <h1 className="font-bold text-center mb-6">Collections</h1>
+              <h1 className="font-bold text-center mb-6">Inventory</h1>
               <div className="h-20 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <Button className="w-[200px]" onClick={() => {
-                    setFilter((prev) => ({
-                      ...prev,
-                      type: prev.type === 'rarity' ? 'createdAt' : 'rarity'
-                    }))
-                  }}>Filter by: {filter.type}</Button>
-                  <Button onClick={() => {
-                    setFilter((prev) => ({
-                      ...prev,
-                      order: prev.order * -1,
-                    }))
-                  }}>Direction: {filter.order === 1 ? 'Asc': 'Desc'}</Button>
+                  <Button
+                    className="w-[200px]"
+                    onClick={() => {
+                      setFilter((prev) => ({
+                        ...prev,
+                        type: prev.type === "rarity" ? "createdAt" : "rarity",
+                      }));
+                    }}
+                  >
+                    Filter by: {filter.type}
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setFilter((prev) => ({
+                        ...prev,
+                        order: prev.order * -1,
+                      }));
+                    }}
+                  >
+                    Direction: {filter.order === 1 ? "Asc" : "Desc"}
+                  </Button>
                 </div>
                 {selectedBugs.length > 0 && (
                   <Button onClick={handleSellAll}>Sell</Button>
