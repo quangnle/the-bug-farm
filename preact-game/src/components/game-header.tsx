@@ -36,8 +36,8 @@ export default function GameHeader() {
     <div className="flex items-center justify-between bg-green-200 gap-8 p-6 px-8">
       <div className="flex items-center gap-8">
         <h1 className="h1">{GAME_STATE.user.value?.username}</h1>
-        <div className="font-bold">Money: ${staticData.money}</div>
-        <div className="font-bold">
+        <div className="font-bold w-30">Money: ${staticData.money}</div>
+        <div className="font-bold w-40">
           Population: {staticData.population} / {GAME_STATE.tank.value?.size}
         </div>
         <div className="font-bold">Flowers: {staticData.flowers}</div>

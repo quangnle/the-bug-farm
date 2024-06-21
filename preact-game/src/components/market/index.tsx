@@ -17,6 +17,7 @@ import Modal from "../common/modal";
 import MarketLog from "./market-log";
 import { getSaleGenesInfo } from "@/core/utils";
 import { CANVAS_SIZE } from "../create-pattern/useCreatePattern";
+import Tooltip from "../common/toolip";
 
 const MARKET_SIZE = 400;
 const marketFarm: Signal<Farm> = signal(
@@ -186,7 +187,9 @@ export default function Market() {
 
   return (
     <>
-      <Button onClick={() => setShow(true)}>Market</Button>
+      <Tooltip message="Market">
+        <Button onClick={() => setShow(true)}>Market</Button>
+      </Tooltip>
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="flex flex-col items-center w-[80vw] bg-black/60 p-8 min-h-[1000px]">

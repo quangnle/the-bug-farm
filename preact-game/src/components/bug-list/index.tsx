@@ -82,12 +82,12 @@ export default function BugList() {
 
   return (
     <>
-      <Button onClick={() => setShow(true)}>Bug List</Button>
+      <Button onClick={() => setShow(true)}>Collections</Button>
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="bg-black/60 w-[80vw]">
             <div className="h-[70vh] overflow-y-auto overflow-x-hidden p-4">
-              <h1 className="font-bold text-center mb-6">Bug List</h1>
+              <h1 className="font-bold text-center mb-6">Collections</h1>
               <div className="h-20 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <Button className="w-[200px]" onClick={() => {
