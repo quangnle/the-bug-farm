@@ -10,7 +10,7 @@ import { handleError } from "@/utils/helpers"
 export default function LoginForm() {
   const [form, setForm] = useState(
     import.meta.env.MODE === "development"
-      ? { username: "test", password: "12345678" }
+      ? { username: "test", password: "tamdeptrai" }
       : {
           username: "",
           password: "",
