@@ -1,8 +1,8 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Modal from "../common/modal"
 import BorderContainer from "../border-container"
 import BugPattern from "../bug-pattern"
-import { selectedObject } from "@/core/gameState"
+import { GAME_STATE, selectedObject, sketchInstance } from "@/core/gameState"
 import Bug from "@/core/entity/bug"
 import api from "@/core/axios"
 import Button from "../common/button"
@@ -22,11 +22,22 @@ export default function BringToMarket () {
         ...form
       }
       await api.saleListing(payload)
+      GAME_STATE.farm.value.colony.splice(GAME_STATE.farm.value.colony.indexOf(selectedObject.value as Bug), 1)
+      selectedObject.value = null
       setShow(false)
     } catch (error) {
       
     }
   }
+
+  useEffect(() => {
+    if (show) {
+      sketchInstance.noLoop()
+    } else {
+      sketchInstance.loop()
+    }
+  }, [show])
+
   return (
     <>
       <Button onClick={() => setShow(true)}>Bring to Market</Button>

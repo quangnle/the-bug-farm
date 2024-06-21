@@ -84,7 +84,8 @@ axios.interceptors.response.use(
       GAME_STATE.user.value &&
       (response.request.responseURL.includes("buy") ||
         response.request.responseURL.includes("sell") ||
-        response.request.responseURL.includes("flower"))
+        response.request.responseURL.includes("flower") ||
+        response.request.responseURL.includes("appearances"))
     ) {
       api.me().then(({ data }) => {
         GAME_STATE.user.value.money = data.money

@@ -26,6 +26,11 @@ export default function BugList() {
 
   const handleSellAll = async () => {
     try {
+      if (selectedBugs.some((bug) => bug.appearance.name !== 'default')) {
+        if (!confirm('You have some special bugs in your sale, are you sure to sell them?')) {
+          return
+        }
+      }
       await api.sellBugs({
         tankId: GAME_STATE.tank.value?._id,
         bugIds: selectedBugs.map((bug) => bug._id),

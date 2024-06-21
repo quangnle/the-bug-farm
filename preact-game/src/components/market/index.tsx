@@ -113,11 +113,21 @@ export default function Market() {
   }
 
 
-  const removeBug = () => {
+  const removeBug = async () => {
     if (selected) {
       marketFarm.value.colony = marketFarm.value.colony.filter((x) => x._id !== selected._id)
       setMarket(market.filter((x) => x.bug._id !== selected._id))
       setSelected(null)
+
+      const { data: bug } = await api.getBug(selected._id)
+      GAME_STATE.farm.value?.colony.push(new Bug({
+        ...bug,
+        p5: sketchInstance,
+        size: 20,
+        x: Math.random() * 480,
+        y: Math.random() * 480,
+        color: "#f00"
+      }))
     }
   }
 
@@ -164,7 +174,7 @@ export default function Market() {
                   />
                 </div>
               </div>
-              <div className="w-[560px] text-white grid grid-cols-2 gap-2">
+              <div className="w-[560px] max-h-[800px] overflow-y-auto text-white grid grid-cols-2 gap-2">
                 {market.map((sale) => (
                   <div
                     key={sale._id}
