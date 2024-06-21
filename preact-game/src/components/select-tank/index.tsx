@@ -8,7 +8,7 @@ import { handleError } from "@/utils/helpers"
 
 const MAX_TANK = 5
 
-export default function SelectTank({ show, onSelectTank = () => {} } : { show: boolean, onSelectTank?: (x: ITank) => void}) {
+export default function SelectTank({ show, onSelectTank = () => {}, onClose = () => {} } : { show: boolean, onSelectTank?: (x: ITank) => void, onClose?: () => void}) {
   const [tanks, setTanks] = useState<ITank[]>([])
   const [loading, setLoading] = useState(false)
 
@@ -52,7 +52,7 @@ export default function SelectTank({ show, onSelectTank = () => {} } : { show: b
   return (
     <>
       {show && (
-        <Modal handleClose={() => {}}>
+        <Modal handleClose={onClose}>
           <BorderContainer className="w-full h-full bg-white p-8 text-center min-w-[650px]">
             <h1 className="mb-8">Tank List</h1>
             {loading ? (

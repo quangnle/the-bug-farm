@@ -9,11 +9,13 @@ import api from "@/core/axios";
 import Button from "../common/button";
 import { sellBugEffect } from "@/core/effect";
 import moment from "moment";
+import SelectTank from "../select-tank";
 
 export default function BugList() {
   const [show, setShow] = useState(false);
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [selectedBugs, setSelectedBugs] = useState<Bug[]>([]);
+  const [showSelectTank, setShowSelectTank] = useState(false)
 
   const [filter, setFilter] = useState<{
     type: "none" | "rarity" | "createdAt";
@@ -80,6 +82,27 @@ export default function BugList() {
     }
   };
 
+  const handleSelectTank = async (tankId: ITank) => {
+    await handleChangeTank(selectedBugs.map((bug) => bug._id), tankId._id)
+    setShowSelectTank(false)
+  }
+
+  const handleChangeTank = async (bugs: string[], tankId: string) => {
+    try {
+      await Promise.all(bugs.map(async (bug) => api.bugChangeTank(bug, {
+        tankId
+      })))
+      GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
+        (bug) => !selectedBugs.includes(bug)
+      );
+      setSelectedBugs([]);
+      setBugs(GAME_STATE.farm.value.colony);
+      sellBugEffect(0, 0);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Button onClick={() => setShow(true)}>Inventory</Button>
@@ -96,7 +119,7 @@ export default function BugList() {
                       setFilter((prev) => ({
                         ...prev,
                         type: prev.type === "rarity" ? "createdAt" : "rarity",
-                      }));
+                      }))
                     }}
                   >
                     Filter by: {filter.type}
@@ -106,14 +129,22 @@ export default function BugList() {
                       setFilter((prev) => ({
                         ...prev,
                         order: prev.order * -1,
-                      }));
+                      }))
                     }}
                   >
                     Direction: {filter.order === 1 ? "Asc" : "Desc"}
                   </Button>
                 </div>
                 {selectedBugs.length > 0 && (
-                  <Button onClick={handleSellAll}>Sell</Button>
+                  <div className="flex gap-2">
+                    <SelectTank
+                      show={showSelectTank}
+                      onSelectTank={handleSelectTank}
+                      onClose={() => setShowSelectTank(false)}
+                    />
+                    <Button onClick={() => setShowSelectTank(true)}>Change Tank</Button>
+                    <Button onClick={handleSellAll}>Sell</Button>
+                  </div>
                 )}
               </div>
 
@@ -127,7 +158,7 @@ export default function BugList() {
                   const total = bug.genes.reduce(
                     (acc, gene) => acc + gene.score,
                     0
-                  );
+                  )
 
                   return (
                     <BorderContainer
@@ -139,11 +170,11 @@ export default function BugList() {
                       onClick={() => {
                         setSelectedBugs((prev) => {
                           if (prev.includes(bug)) {
-                            return prev.filter((b) => b !== bug);
+                            return prev.filter((b) => b !== bug)
                           } else {
-                            return [...prev, bug];
+                            return [...prev, bug]
                           }
-                        });
+                        })
                       }}
                     >
                       <div className="flex items-center gap-4">
@@ -172,7 +203,7 @@ export default function BugList() {
                         {moment((bug as unknown as IBug).createdAt).fromNow()}
                       </p>
                     </BorderContainer>
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -180,5 +211,5 @@ export default function BugList() {
         </Modal>
       )}
     </>
-  );
+  )
 }

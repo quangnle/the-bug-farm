@@ -48,12 +48,13 @@ const api = {
   sellBugs: async (payload) => axios.delete("/bugs/sell", { data: payload }),
   bugEatFlower: async (id, flowerId) =>
     axios.patch(`/bugs/${id}/eat-flower`, { id, flowerId }),
+  bugChangeTank: async (id, payload: { tankId: string }) =>
+    axios.patch(`/bugs/${id}/change-tank`, payload),
 
-  getSales: async (params?: { sellerId?: string } & ICommonGetListParams) =>
-    {
-      const { data } = await axios.get("/sales", { params })
-      return data as IListPagination<ISale>
-    },
+  getSales: async (params?: { sellerId?: string } & ICommonGetListParams) => {
+    const { data } = await axios.get("/sales", { params })
+    return data as IListPagination<ISale>
+  },
   saleListing: async (payload: {
     bugId: string
     price: number
