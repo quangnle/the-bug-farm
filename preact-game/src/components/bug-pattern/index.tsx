@@ -1,19 +1,19 @@
-import { PATTERN_DEFAULT } from "@/core/constants"
-import { GAME_STATE } from "@/core/gameState"
-import { drawSvg } from "@/core/utils"
-import { useEffect, useRef } from "react"
+import { PATTERN_DEFAULT } from "@/core/constants";
+import { GAME_STATE } from "@/core/gameState";
+import { drawSvg } from "@/core/utils";
+import { useEffect, useRef } from "react";
 
-export default function BugPattern({ appc } : { appc:  string}) {
-  const ref = useRef(null)
+export default function BugPattern({ appc }: { appc?: string }) {
+  const ref = useRef(null);
 
   useEffect(() => {
     if (ref.current) {
       const { pattern } =
         GAME_STATE.appearance.value.find((x) => x._id === appc) ||
-        PATTERN_DEFAULT
-      drawSvg(ref.current, pattern)
+        PATTERN_DEFAULT;
+      drawSvg(ref.current, pattern);
     }
-  }, [appc])
+  }, [appc]);
 
   return (
     <svg
@@ -25,5 +25,5 @@ export default function BugPattern({ appc } : { appc:  string}) {
     >
       <path fill="red" stroke="#000000" d="M0" />
     </svg>
-  )
+  );
 }
