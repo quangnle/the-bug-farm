@@ -34,15 +34,17 @@ export default function GameHeader() {
 
   return (
     <div className="flex items-center justify-between bg-green-200 gap-8 p-6 px-8">
-      <div className="flex items-center gap-8">
-        <h1 className="h1">{GAME_STATE.user.value?.username}</h1>
+      {/* <div className="flex justify-between items-center gap-8"> */}
+      <h1 className="h1">{GAME_STATE.user.value?.username}</h1>
+      <div className="flex gap-8">
         <div className="font-bold">Money: ${staticData.money}</div>
         <div className="font-bold">
           Population: {staticData.population} / {GAME_STATE.tank.value?.size}
         </div>
         <div className="font-bold">Flowers: {staticData.flowers}</div>
       </div>
-      <div className="flex gap-4">
+      {/* </div> */}
+      {/* <div className="flex gap-4">
         <Button
           onClick={() => {
             GAME_STATE.tank.value = null;
@@ -54,7 +56,7 @@ export default function GameHeader() {
         <CreatePattern />
         <BugList />
         <Market />
-      </div>
+      </div> */}
     </div>
   );
 }
