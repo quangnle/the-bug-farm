@@ -9,6 +9,7 @@ import BringToMarket from "../bring-to-market";
 import Button from "../common/button";
 import { sellBugEffect } from "@/core/effect";
 import api from "@/core/axios";
+import SelectTank from "../select-tank";
 
 export default function SelectedObject() {
   const canvasRef = useRef(null);
@@ -59,9 +60,9 @@ export default function SelectedObject() {
   const handleSellBugApi = async (bug: Bug) => {
     try {
       const _find = GAME_STATE.farm.value.colony.findIndex(
-        (x) => x === selectedObject.value
+        (x) => x._id === bug._id
       );
-      if (_find) {
+      if (_find > -1) {
         await api.sellBugs({
           tankId: GAME_STATE.tank.value?._id,
           bugIds: [bug._id],
@@ -122,6 +123,26 @@ export default function SelectedObject() {
     }
   }, [selectedObject.value]);
 
+  const [showSelectTank, setShowSelectTank] = useState(false)
+  const handleSelectTank = async (tankId: ITank) => {
+    await handleChangeTank(selectedObject.value?._id as string, tankId._id)
+    setShowSelectTank(false)
+  }
+
+  const handleChangeTank = async (bug: string, tankId: string) => {
+    try {
+      await api.bugChangeTank(bug, {
+        tankId
+      })
+      GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
+        (_bug) => _bug._id !== bug
+      );
+      selectedObject.value = null
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex justify-center gap-4 mb-4">
@@ -145,10 +166,6 @@ export default function SelectedObject() {
       <div className="flex flex-col h-full">
         {selectedObject.value instanceof Bug && (
           <>
-            <p>Hunger rate: {staticData.hungerRate}</p>
-            <p className="mb-4">
-              Appearance: {selectedObject.value.appearance?.name}
-            </p>
             <p className="border-b border-black border-dashed">
               List of genes:{" "}
             </p>
@@ -157,9 +174,17 @@ export default function SelectedObject() {
                 - {gene.name}: {Math.round((gene.score / total!) * 100)}%
               </p>
             ))}
-            <div className="mt-auto flex justify-between">
+            <div className="mt-auto flex flex-wrap gap-2 justify-between">
               <Button onClick={handleSellBug}>Sell</Button>
+              <Button onClick={() => setShowSelectTank(true)}>
+                Change tank
+              </Button>
               <BringToMarket />
+              <SelectTank
+                show={showSelectTank}
+                onSelectTank={handleSelectTank}
+                onClose={() => setShowSelectTank(false)}
+              />
             </div>
           </>
         )}
@@ -171,7 +196,7 @@ export default function SelectedObject() {
               {SPAWN_DURATION / 1000}s
             </p>
             <p>
-              Num of Pollens left: {staticData.numberOfPollens} / {MAX_POLLENS}
+              Num of Nectars left: {staticData.numberOfPollens} / {MAX_POLLENS}
             </p>
             <div className="mt-auto flex flex-col gap-2 justify-between">
               {selectedObject.value.numberOfPollens === 0 && (
@@ -185,5 +210,5 @@ export default function SelectedObject() {
         )}
       </div>
     </div>
-  );
+  )
 }

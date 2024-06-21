@@ -1,10 +1,5 @@
 import { GAME_STATE, sketchInstance } from "@/core/gameState";
 import { useEffect, useState } from "react";
-import BugList from "./bug-list";
-import Button from "./common/button";
-import CreatePattern from "./create-pattern";
-import Market from "./market";
-import p5 from "p5";
 
 export default function GameHeader() {
   const [staticData, setStaticData] = useState({

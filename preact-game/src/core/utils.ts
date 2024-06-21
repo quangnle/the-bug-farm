@@ -42,5 +42,5 @@ export const getSaleGenesInfo = (genes: IAppearance[] | string[]) => {
     _genes = genes as IAppearance[]
   }
   const total = _genes.reduce((sum, gene) => sum + gene.score, 0)
-  return _genes.map(x => `${x.name} (${Math.round(x.score / total * 100)}%)`).join(", ")
+  return _genes.map(x => `- ${x.name} (${Math.round(x.score / total * 100)}%)`).join("\n")
 }

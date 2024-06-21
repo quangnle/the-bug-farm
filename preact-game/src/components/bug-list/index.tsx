@@ -29,7 +29,7 @@ export default function BugList() {
     if (show) {
       sketchInstance.noLoop();
       setBugs(
-        GAME_STATE.farm.value.colony.sort((a, b) => {
+        [...GAME_STATE.farm.value.colony].sort((a, b) => {
           if (filter.type === "createdAt") {
             return (
               (new Date(a.createdAt).getTime() -
@@ -39,11 +39,11 @@ export default function BugList() {
           }
           if (filter.type === "rarity") {
             const rarityA = a.genes.reduce(
-              (acc, gene) => acc + Math.pow(100 - gene.score, 2),
+              (acc, gene) => acc + Math.pow(100 - gene.score, 2) + Math.pow(100 - a.appearance.score, 3),
               0
             );
             const rarityB = b.genes.reduce(
-              (acc, gene) => acc + Math.pow(100 - gene.score, 2),
+              (acc, gene) => acc + Math.pow(100 - gene.score, 2) + Math.pow(100 - a.appearance.score, 3),
               0
             );
             return (rarityA - rarityB) * filter.order;
@@ -54,7 +54,10 @@ export default function BugList() {
     } else {
       sketchInstance.loop();
     }
-  }, [show]);
+  }, [show, filter]);
+  useEffect(() => {
+    console.log(bugs)
+  }, [bugs])
 
   const handleSellAll = async () => {
     try {
@@ -101,7 +104,7 @@ export default function BugList() {
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
   return (
     <>

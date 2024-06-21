@@ -4,11 +4,21 @@ import Button from "../common/button";
 import CreatePattern from "../create-pattern";
 import BugList from "../bug-list";
 import Market from "../market";
+import SelectTank from "../select-tank";
+import { useState } from "react";
 
 export default function GameBody() {
+  const [showSelectTank, setShowSelectTank] = useState(false);
   const handleSaveGif = () => {
     sketchInstance.saveGif("myGif", 6, {});
   };
+
+  const handleSelectTank = (x: ITank) => {
+    GAME_STATE.tank.value = x;
+    setShowSelectTank(false)
+  };
+
+  
 
   return (
     <div className="game-body relative">
@@ -16,18 +26,18 @@ export default function GameBody() {
         <canvas id="main-canvas" />
       </BorderContainer>
       <div className="absolute w-full -bottom-5 left-0 rounded-lg flex justify-between p-4 bg-green-200">
-        <Button
-          onClick={() => {
-            GAME_STATE.tank.value = null;
-          }}
-        >
-          Change Tank
-        </Button>
+        <Button onClick={() => setShowSelectTank(true)}>Change Tank</Button>
         <Button onClick={handleSaveGif}>Save Gif</Button>
         <CreatePattern />
         <BugList />
         <Market />
       </div>
+
+      <SelectTank
+        show={!!(GAME_STATE.user.value?._id && !GAME_STATE.tank.value?._id) || showSelectTank}
+        onSelectTank={handleSelectTank}
+        onClose={() => setShowSelectTank(false)}
+      />
     </div>
-  );
+  )
 }

@@ -33,9 +33,9 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
       GAME_STATE.appearance.value  = data
     }
 
-    GAME_STATE.user.value?._id && getListTanks()
+    GAME_STATE.user.value?._id && show && getListTanks()
     GAME_STATE.user.value?._id && getListAppearance()
-  }, [GAME_STATE.user.value])
+  }, [GAME_STATE.user.value, show])
 
   const handleNewTank = async () => {
     try {
