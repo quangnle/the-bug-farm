@@ -2,7 +2,6 @@ import { GAME_STATE, sketchInstance } from "@/core/gameState";
 import BorderContainer from "../border-container";
 import Button from "../common/button";
 import CreatePattern from "../create-pattern";
-import "./style.css";
 import BugList from "../bug-list";
 import Market from "../market";
 
