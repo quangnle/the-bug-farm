@@ -1,42 +1,46 @@
-import { useEffect, useMemo, useRef, useState } from "react"
-import Modal from "../common/modal"
-import BorderContainer from "../border-container"
-import api from "@/core/axios"
-import p5 from "p5"
-import { Signal, signal } from "@preact/signals"
-import Farm from "@/core/entity/farm"
-import Bug from "@/core/entity/bug"
-import { GAME_STATE, selectedObject, sketchInstance } from "@/core/gameState"
-import Button from "../common/button"
-import useList from "@/hooks/useList"
-import clsx from "clsx"
-import BugPattern from "../bug-pattern"
-import moment from "moment"
-import Chevron from "../common/chevron"
-import Loading from "../common/loading"
-import { handleError } from "@/utils/helpers"
+import api from "@/core/axios";
+import Bug from "@/core/entity/bug";
+import Farm from "@/core/entity/farm";
+import { GAME_STATE, selectedObject, sketchInstance } from "@/core/gameState";
+import useList from "@/hooks/useList";
+import { Signal, signal } from "@preact/signals";
+import clsx from "clsx";
+import moment from "moment";
+import p5 from "p5";
+import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import BorderContainer from "../border-container";
+import BugPattern from "../bug-pattern";
+import Button from "../common/button";
+import Chevron from "../common/chevron";
+import Loading from "../common/loading";
+import Modal from "../common/modal";
 
-const MARKET_SIZE = 480
+const MARKET_SIZE = 480;
 const marketFarm: Signal<Farm> = signal(
   new Farm(0, 0, MARKET_SIZE, MARKET_SIZE, "#77dd22")
-)
+);
 
 export default function Market() {
-  const canvasRef = useRef(null)
-  const p5Ref = useRef<p5 | null>(null)
-  const [show, setShow] = useState(false)
-  const [selected, setSelected] = useState<Bug | null>(null)
-  const [market, setMarket] = useState<ISale[]>([])
+  const canvasRef = useRef(null);
+  const p5Ref = useRef<p5 | null>(null);
+  const [show, setShow] = useState(false);
+  const [selected, setSelected] = useState<Bug | null>(null);
+  const [market, setMarket] = useState<ISale[]>([]);
 
-  const { data: list, loading, refresh: reloadList, pagination } = useList(api.getSales, {
-    lock: !GAME_STATE.user.value?._id
-  })
+  const {
+    data: list,
+    loading,
+    refresh: reloadList,
+    pagination,
+  } = useList(api.getSales, {
+    lock: !GAME_STATE.user.value?._id,
+  });
 
   useEffect(() => {
     if (list && list.length) {
-      marketFarm.value.colony = []
+      marketFarm.value.colony = [];
       if (p5Ref.current) {
-        const _market: ISale[] = []
+        const _market: ISale[] = [];
         list.forEach((x: ISale) => {
           const _bug = new Bug({
             ...x.bug,
@@ -45,107 +49,136 @@ export default function Market() {
             y: Math.random() * MARKET_SIZE,
             color: "#f00",
             p5: p5Ref.current as p5,
-          })
+          });
 
-          marketFarm.value.colony.push(_bug)
+          marketFarm.value.colony.push(_bug);
           _market.push({
             ...x,
-            bug: _bug
-          })
-        })
-        setMarket(_market)
+            bug: _bug,
+          });
+        });
+        setMarket(_market);
       }
     }
-  }, [list])
+  }, [list]);
 
   useEffect(() => {
     if (show) {
-      sketchInstance.noLoop()
-      reloadList()
+      sketchInstance.noLoop();
+      reloadList();
 
       p5Ref.current = new p5((s) => {
-        console.log("init p5")
+        console.log("init p5");
         s.setup = () => {
           canvasRef.current &&
-            s.createCanvas(MARKET_SIZE, MARKET_SIZE, canvasRef.current)
-        }
+            s.createCanvas(MARKET_SIZE, MARKET_SIZE, canvasRef.current);
+        };
         s.draw = () => {
-          s.clear()
-          marketFarm.value?.draw(p5Ref.current as p5)
-        }
+          s.clear();
+          marketFarm.value?.draw(p5Ref.current as p5);
+        };
         s.mousePressed = () => {
-          if (s.mouseY > marketFarm.value?.x && s.mouseY < marketFarm.value?.y + marketFarm.value?.height) {
-            marketFarm.value?.mousePressed(s.mouseButton, s.mouseX, s.mouseY, (bug) => {
-              setSelected(bug)
-            });
+          if (
+            s.mouseY > marketFarm.value?.x &&
+            s.mouseY < marketFarm.value?.y + marketFarm.value?.height
+          ) {
+            marketFarm.value?.mousePressed(
+              s.mouseButton,
+              s.mouseX,
+              s.mouseY,
+              (bug) => {
+                setSelected(bug);
+              }
+            );
           }
-        }
-      })
+        };
+      });
     } else {
-      sketchInstance.loop()
+      sketchInstance.loop();
     }
 
     return () => {
-      console.log("destroy p5")
-      p5Ref.current?.remove()
-    }
-  }, [show])
+      console.log("destroy p5");
+      p5Ref.current?.remove();
+    };
+  }, [show]);
 
-  const selectedSale = useMemo(() => market.find(x => x.bug._id === selected?._id), [market, selected])
+  // const selectedSale = useMemo(
+  //   () => market.find((x) => x.bug._id === selected?._id),
+  //   [market, selected]
+  // );
 
-  const handleBuy = async () => {
+  const handleBuy = async (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    sale: ISale
+  ) => {
+    e.stopPropagation();
     try {
-      if (!selectedSale || !GAME_STATE.tank.value?._id) return
-      await api.buyBug(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
-      removeBug()
-    } catch (error) {
-      handleError(error)
+      if (!GAME_STATE.tank.value?._id) return;
+      await api.buyBug(sale._id, {
+        tankId: GAME_STATE.tank.value?._id,
+      });
+      removeBug();
+    } catch (error: any) {
+      alert(error?.response?.data?.message);
     }
-  }
+  };
 
-  const handleUnBuy = async () => {
+  const handleUnBuy = async (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    sale: ISale
+  ) => {
+    e.stopPropagation();
     try {
-      if (!selectedSale || !GAME_STATE.tank.value?._id) return
-      await api.saleUnListting(selectedSale?._id, { tankId: GAME_STATE.tank.value?._id})
-      removeBug()
-    } catch (error) {
-      handleError(error)
+      if (!GAME_STATE.tank.value?._id) return;
+      await api.saleUnListting(sale._id, {
+        tankId: GAME_STATE.tank.value?._id,
+      });
+      removeBug();
+    } catch (error: any) {
+      alert(error?.response?.data?.message);
     }
-  }
-
+  };
 
   const removeBug = async () => {
     if (selected) {
-      marketFarm.value.colony = marketFarm.value.colony.filter((x) => x._id !== selected._id)
-      setMarket(market.filter((x) => x.bug._id !== selected._id))
-      setSelected(null)
+      marketFarm.value.colony = marketFarm.value.colony.filter(
+        (x) => x._id !== selected._id
+      );
+      setMarket(market.filter((x) => x.bug._id !== selected._id));
+      setSelected(null);
 
-      const { data: bug } = await api.getBug(selected._id)
-      GAME_STATE.farm.value?.colony.push(new Bug({
-        ...bug,
-        p5: sketchInstance,
-        size: 20,
-        x: Math.random() * 480,
-        y: Math.random() * 480,
-        color: "#f00"
-      }))
+      const { data: bug } = await api.getBug(selected._id);
+      GAME_STATE.farm.value?.colony.push(
+        new Bug({
+          ...bug,
+          p5: sketchInstance,
+          size: 20,
+          x: Math.random() * 480,
+          y: Math.random() * 480,
+          color: "#f00",
+        })
+      );
     }
-  }
+  };
 
-  const handleChangePage = (value) => {
-    if (!pagination?.total) return
-    const nextPage = (pagination?.page || 1) + value
-    console.log(nextPage, Math.round(pagination?.total / (pagination?.perPage || 10)))
+  const handleChangePage = (value: number) => {
+    if (!pagination?.total) return;
+    const nextPage = (pagination?.page || 1) + value;
+    console.log(
+      nextPage,
+      Math.round(pagination?.total / (pagination?.perPage || 10))
+    );
 
     if (
       nextPage <= 0 ||
       nextPage > Math.ceil(pagination?.total / (pagination?.perPage || 10))
     ) {
-      return
+      return;
     }
 
-    pagination?.onChange && pagination?.onChange(nextPage)
-  }
+    pagination?.onChange && pagination?.onChange(nextPage);
+  };
 
   return (
     <>
@@ -184,8 +217,8 @@ export default function Market() {
                       selected?._id === sale.bug._id && "bg-green-600"
                     )}
                     onClick={() => {
-                      setSelected(sale.bug)
-                      selectedObject.value = sale.bug
+                      setSelected(sale.bug);
+                      selectedObject.value = sale.bug;
                     }}
                   >
                     <div className="flex items-center gap-4">
@@ -211,9 +244,11 @@ export default function Market() {
                         <b>Price:</b> ${sale.price}
                       </p>
                       {GAME_STATE.user.value?._id === sale.seller ? (
-                        <Button onClick={handleUnBuy}>Cancel</Button>
+                        <Button onClick={(e) => handleUnBuy(e, sale)}>
+                          Cancel
+                        </Button>
                       ) : (
-                        <Button onClick={handleBuy}>Buy</Button>
+                        <Button onClick={(e) => handleBuy(e, sale)}>Buy</Button>
                       )}
                     </div>
                   </div>
@@ -224,5 +259,5 @@ export default function Market() {
         </Modal>
       )}
     </>
-  )
+  );
 }

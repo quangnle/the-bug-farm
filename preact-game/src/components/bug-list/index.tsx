@@ -11,9 +11,9 @@ import { sellBugEffect } from "@/core/effect"
 import moment from "moment"
 
 export default function BugList() {
-  const [show, setShow] = useState(false)
-  const [bugs, setBugs] = useState<Bug[]>([])
-  const [selectedBugs, setSelectedBugs] = useState<Bug[]>([])
+  const [show, setShow] = useState(false);
+  const [bugs, setBugs] = useState<Bug[]>([]);
+  const [selectedBugs, setSelectedBugs] = useState<Bug[]>([]);
 
   const [filter, setFilter] = useState<{
     type: "none" | "rarity" | "createdAt"
@@ -28,31 +28,35 @@ export default function BugList() {
       sketchInstance.noLoop()
       setBugs(GAME_STATE.farm.value.colony)
     } else {
-      sketchInstance.loop()
+      sketchInstance.loop();
     }
-  }, [show])
+  }, [show]);
 
   const handleSellAll = async () => {
     try {
-      if (selectedBugs.some((bug) => bug.appearance.name !== 'default')) {
-        if (!confirm('You have some special bugs in your sale, are you sure to sell them?')) {
-          return
+      if (selectedBugs.some((bug) => bug.appearance.name !== "default")) {
+        if (
+          !confirm(
+            "You have some special bugs in your sale, are you sure to sell them?"
+          )
+        ) {
+          return;
         }
       }
       await api.sellBugs({
         tankId: GAME_STATE.tank.value?._id,
         bugIds: selectedBugs.map((bug) => bug._id),
-      })
+      });
       GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
         (bug) => !selectedBugs.includes(bug)
-      )
-      setSelectedBugs([])
-      setBugs(GAME_STATE.farm.value.colony)
-      sellBugEffect(0, 0)
+      );
+      setSelectedBugs([]);
+      setBugs(GAME_STATE.farm.value.colony);
+      sellBugEffect(0, 0);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   const DISPLAY_BUG = useMemo(() => {
     return bugs.sort((a, b) => {
@@ -101,7 +105,7 @@ export default function BugList() {
                   }}>Direction: {filter.order === 1 ? 'Asc': 'Desc'}</Button>
                 </div>
                 {selectedBugs.length > 0 && (
-                  <Button onClick={handleSellAll}>Sell All</Button>
+                  <Button onClick={handleSellAll}>Sell</Button>
                 )}
               </div>
 
@@ -115,7 +119,7 @@ export default function BugList() {
                   const total = bug.genes.reduce(
                     (acc, gene) => acc + gene.score,
                     0
-                  )
+                  );
 
                   return (
                     <BorderContainer
@@ -127,11 +131,11 @@ export default function BugList() {
                       onClick={() => {
                         setSelectedBugs((prev) => {
                           if (prev.includes(bug)) {
-                            return prev.filter((b) => b !== bug)
+                            return prev.filter((b) => b !== bug);
                           } else {
-                            return [...prev, bug]
+                            return [...prev, bug];
                           }
-                        })
+                        });
                       }}
                     >
                       <div className="flex items-center gap-4">
@@ -160,7 +164,7 @@ export default function BugList() {
                         {moment((bug as unknown as IBug).createdAt).fromNow()}
                       </p>
                     </BorderContainer>
-                  )
+                  );
                 })}
               </div>
             </div>
@@ -168,5 +172,5 @@ export default function BugList() {
         </Modal>
       )}
     </>
-  )
+  );
 }
