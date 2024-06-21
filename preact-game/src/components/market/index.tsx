@@ -194,6 +194,7 @@ export default function Market() {
                         </p>
                       </div>
                     </div>
+                    <p className="pl-2">{sale.description}</p>
                     <div className="mt-auto flex justify-between">
                       <p className="text-[orange] text-2xl font-bold mt-auto pl-2">
                         <b>Price:</b> ${sale.price}
