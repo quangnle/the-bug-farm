@@ -1,5 +1,5 @@
-import BorderContainer from "../border-container"
-import './style.css'
+import BorderContainer from "../border-container";
+import "./style.css";
 
 export default function GameBody() {
   return (
@@ -8,5 +8,5 @@ export default function GameBody() {
         <canvas id="main-canvas" />
       </BorderContainer>
     </div>
-  )
+  );
 }

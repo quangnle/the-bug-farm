@@ -1,11 +1,11 @@
-import { useState } from "react"
-import { GAME_STATE } from "../../core/gameState"
-import api from "../../core/axios"
-import Modal from "../common/modal"
-import BorderContainer from "../border-container"
-import './style.css'
-import Button from "../common/button"
-import { handleError } from "@/utils/helpers"
+import { useState } from "react";
+import { GAME_STATE } from "../../core/gameState";
+import api from "../../core/axios";
+import Modal from "../common/modal";
+import BorderContainer from "../border-container";
+import "./style.css";
+import Button from "../common/button";
+import { handleError } from "@/utils/helpers";
 
 export default function LoginForm() {
   const [form, setForm] = useState(
@@ -15,46 +15,46 @@ export default function LoginForm() {
           username: "",
           password: "",
         }
-  )
-  const [loading, setLoading] = useState(false)
-  const [registerLoading, setRegisterLoading] = useState(false)
+  );
+  const [loading, setLoading] = useState(false);
+  const [registerLoading, setRegisterLoading] = useState(false);
 
   const handleSubmit = async (event: any) => {
-    event.preventDefault()
-    if (loading || registerLoading) return
+    event.preventDefault();
+    if (loading || registerLoading) return;
 
     try {
-      setLoading(true)
-      const { data } = await api.login(form)
+      setLoading(true);
+      const { data } = await api.login(form);
       if (data.user) {
-        GAME_STATE.user.value = data.user
+        GAME_STATE.user.value = data.user;
       }
     } catch (error) {
-      handleError(error)
+      handleError(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleRegister = async (event: any) => {
-    event.preventDefault()
-    if (loading || registerLoading) return
+    event.preventDefault();
+    if (loading || registerLoading) return;
 
     try {
-      setRegisterLoading(true)
-      const { data } = await api.register(form)
+      setRegisterLoading(true);
+      const { data } = await api.register(form);
       if (data) {
-        const { data: data2 } = await api.login(form)
+        const { data: data2 } = await api.login(form);
         if (data2.user) {
-          GAME_STATE.user.value = data2.user
+          GAME_STATE.user.value = data2.user;
         }
       }
     } catch (error) {
-      handleError(error)
+      handleError(error);
     } finally {
-      setRegisterLoading(false)
+      setRegisterLoading(false);
     }
-  }
+  };
 
   return (
     <>
@@ -99,7 +99,11 @@ export default function LoginForm() {
                 >
                   Login
                 </Button>
-                <Button onClick={handleRegister} loading={registerLoading} className="mt-8 btn-big">
+                <Button
+                  onClick={handleRegister}
+                  loading={registerLoading}
+                  className="mt-8 btn-big"
+                >
                   Register
                 </Button>
               </div>
@@ -108,5 +112,5 @@ export default function LoginForm() {
         </Modal>
       )}
     </>
-  )
+  );
 }
