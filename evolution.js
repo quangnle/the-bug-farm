@@ -30,23 +30,15 @@ class Evolution {
         // copy all the genes from the parent
         newBug.genes = [patterns[0]];
         // calculate the total score of all genes of the parent
-        const totalScoreParent = bug.genes.reduce((acc, g) => acc + g.score, 0);        
-        // create array of score intervals for each gene
-        const scoreIntervals = [];
-        let score = 0;
-        bug.genes.forEach(g => {            
-            scoreIntervals.push({g, lower: score, upper: score + g.score });
-            score += g.score;
-        });
+        const totalScoreParent = bug.genes.reduce((acc, g) => acc + g.score, 0);  
 
         // select a gene based on the score
         bug.genes.forEach( g => {
             // check if the gene is selected in the new bug
             const r = random(totalScoreParent);
-            const selectedGene = scoreIntervals.find(si => si.g.name === g.name && si.lower <= r && si.upper >= r);
-            if (selectedGene && selectedGene.g.name !== "default") {
+            if (r < g.score && g.name !== "default") {
                 // add the gene to the new bug
-                newBug.genes.push(selectedGene.g);
+                newBug.genes.push({...g});
             }
         });
 
