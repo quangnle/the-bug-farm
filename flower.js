@@ -108,18 +108,23 @@ class Flower {
         const pistilSize = this.pistilSize / 2;
         const petalSize = this.petalSize / 2;
 
+        if (this.numberOfPollens > 0) {
+            
+            const leafSize = this.pistilSize * 1.5;
+            const leafAngle = PI / 4;
+
+            for (let i = 0; i < 8; i++) {
+                ctx.save()
+                ctx.translate(x, y);
+                ctx.rotate(leafAngle * i);
+                ctx.fillStyle = "#009900";
+                ctx.fillRect(0, 0, leafSize, leafSize);
+                ctx.restore();
+            }
+        }
+
         ctx.save();
         ctx.translate(x, y);
-
-        //draw leaves
-        ctx.fillStyle = "#009900";
-        const leafSize = pistilSize * 1.5;
-        const leafAngle = Math.PI / 4;
-        for (let i = 0; i < 8; i++) {
-            //ctx.save();
-            ctx.rotate(leafAngle * i);
-            ctx.fillRect(0, 0, leafSize, leafSize);
-        }
 
         ctx.fillStyle = this.petalColor;
         const angle = (Math.PI * 2) / this.petalNumber;
