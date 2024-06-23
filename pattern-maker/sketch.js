@@ -1,3 +1,5 @@
+let mode = "MOVE";
+
 function setup(){
     const thecanvas = document.getElementById("canvasArea");
     createCanvas(500, 400, thecanvas);
@@ -61,27 +63,29 @@ function draw(){
             }
         }
     }
-
+    
     // draw the bug
-    drawBug(height + pattern[0].length, pattern[0].length, pattern[0].length, "#f00");    
-}
+    drawBug(height + pattern[0].length, pattern[0].length, pattern[0].length, "#f00"); 
 
-function mouseDragged(){
-    if (mouseButton === LEFT){
-        const rectSize = height / pattern[0].length;
-        const i = Math.floor(mouseY / rectSize);
-        const j = Math.floor(mouseX / rectSize);
-        //boundary check
-        if (i < 0 || i >= pattern.length || j < 0 || j >= pattern[i].length || pattern[i][j] === -1) return;
+    const i = Math.floor(mouseY / rectSize);
+    const j = Math.floor(mouseX / rectSize);
+    if (i < 0 || i >= pattern.length || j < 0 || j >= pattern[i].length || pattern[i][j] === -1) return;
 
+    if (mode === "DRAW"){        
         pattern[i][j] = selectedColor;
-    } else if (mouseButton === RIGHT){
-        const rectSize = height / pattern[0].length;
-        const i = Math.floor(mouseY / rectSize);
-        const j = Math.floor(mouseX / rectSize);
-        //boundary check
-        if (i < 0 || i >= pattern.length || j < 0 || j >= pattern[i].length || pattern[i][j] === -1) return;
-
+    } else if (mode === "ERASE"){
         pattern[i][j] = 0;
     }
+}
+
+function mousePressed(){
+    if(mouseButton === LEFT){
+        mode = "DRAW";
+    } else if (mouseButton === RIGHT){
+        mode = "ERASE";
+    }
+}
+
+function mouseReleased(){
+    mode = "MOVE";
 }
