@@ -346,7 +346,7 @@ class Bug {
         } else {
           ctx.fillStyle = "black";
         }
-        ctx.fillRect(j * size, i * size, size, size);
+        ctx.fillRect(j * size, i * size, size + 3, size + 3);
       }
     }
   }

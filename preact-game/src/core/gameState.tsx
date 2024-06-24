@@ -105,7 +105,7 @@ effect(() => {
         x: _x,
         y: _y,
         size: 20,
-        color: "#fff",
+        color: "#f00",
         p5: sketchInstance,
       });
       farm.value.colony.push(bug);
