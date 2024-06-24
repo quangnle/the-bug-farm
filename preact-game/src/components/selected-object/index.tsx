@@ -174,17 +174,17 @@ export default function SelectedObject() {
                 - {gene.name}: {Math.round((gene.score / total!) * 100)}%
               </p>
             ))}
-            <div className="mt-auto flex flex-wrap gap-2 justify-between">
-              <Button onClick={handleSellBug}>Sell</Button>
+            <div className="mt-auto flex flex-wrap gap-2 justify-between max-w-[252px]">
+              <BringToMarket />
               <Button onClick={() => setShowSelectTank(true)}>
                 Change tank
               </Button>
-              <BringToMarket />
               <SelectTank
                 show={showSelectTank}
                 onSelectTank={handleSelectTank}
                 onClose={() => setShowSelectTank(false)}
               />
+              <Button onClick={handleSellBug}>Sell</Button>
             </div>
           </>
         )}

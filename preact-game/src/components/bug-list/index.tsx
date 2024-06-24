@@ -96,11 +96,10 @@ export default function BugList() {
       const _selectedBugs = bugs
         .filter((bug) => bug.appearance.name === "default" && bug.genes.length === 1)
         .map((bug) => bug._id)
+        console.log(_selectedBugs)
       await api.sellBugs({
         tankId: GAME_STATE.tank.value?._id,
-        bugIds: bugs
-          .filter((bug) => bug.appearance.name === "default")
-          .map((bug) => bug._id),
+        bugIds: _selectedBugs
       })
       GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
         (bug) => !_selectedBugs.includes(bug._id)
