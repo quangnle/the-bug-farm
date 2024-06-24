@@ -6,6 +6,8 @@ export const SIZE = 20;
 export const CANVAS_SIZE = 400;
 export const CANVAS_WIDTH = 430;
 
+let mode = "MOVE"
+
 export const PATTERN = signal<Array<Array<number | string>>>(
   new Array(SIZE).fill(0).map(() => new Array(SIZE).fill(0))
 );
@@ -113,38 +115,26 @@ export const draw = (p5: p5) => {
     PATTERN.value[0].length,
     "#f00"
   );
+
+  const i = Math.floor(p5.mouseY / rectSize);
+    const j = Math.floor(p5.mouseX / rectSize);
+    if (i < 0 || i >= PATTERN.value.length || j < 0 || j >= PATTERN.value[i].length || PATTERN.value[i][j] === -1) return;
+
+    if (mode === "DRAW"){        
+        PATTERN.value[i][j] = SELECTED_COLOR.value;
+    } else if (mode === "ERASE"){
+        PATTERN.value[i][j] = 0;
+    }
 };
 
-export const mouseDragged = (p5: p5) => {
-  if (p5.mouseButton === p5.LEFT) {
-    const rectSize = CANVAS_SIZE / PATTERN.value[0].length;
-    const i = Math.floor(p5.mouseY / rectSize);
-    const j = Math.floor(p5.mouseX / rectSize);
-    //boundary check
-    if (
-      i < 0 ||
-      i >= PATTERN.value.length ||
-      j < 0 ||
-      j >= PATTERN.value[i].length ||
-      PATTERN.value[i][j] === -1
-    )
-      return;
-
-    PATTERN.value[i][j] = SELECTED_COLOR.value;
-  } else if (p5.mouseButton === p5.RIGHT) {
-    const rectSize = CANVAS_SIZE / PATTERN.value[0].length;
-    const i = Math.floor(p5.mouseY / rectSize);
-    const j = Math.floor(p5.mouseX / rectSize);
-    //boundary check
-    if (
-      i < 0 ||
-      i >= PATTERN.value.length ||
-      j < 0 ||
-      j >= PATTERN.value[i].length ||
-      PATTERN.value[i][j] === -1
-    )
-      return;
-
-    PATTERN.value[i][j] = 0;
+export const mousePressed = (p5: p5) => {
+  if(p5.mouseButton === p5.LEFT){
+      mode = "DRAW";
+  } else if (p5.mouseButton === p5.RIGHT){
+      mode = "ERASE";
   }
-};
+}
+
+export const mouseReleased = () => {
+  mode = "MOVE";
+}

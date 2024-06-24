@@ -8,6 +8,8 @@ import {
   SELECTED_COLOR,
   draw,
   mouseDragged,
+  mousePressed,
+  mouseReleased,
   setup,
 } from "./useCreatePattern";
 import { sketchInstance } from "@/core/gameState";
@@ -27,7 +29,8 @@ export default function CreatePattern() {
       p5Ref.current = new p5((s) => {
         s.setup = () => setup(s, canvasRef.current);
         s.draw = () => draw(s)
-        s.mouseDragged = () => mouseDragged(s)
+        s.mousePressed = () => mousePressed(s)
+        s.mouseReleased = () => mouseReleased()
       });
     } else {
       sketchInstance?.loop();
