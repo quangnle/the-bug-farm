@@ -7,6 +7,7 @@ import { GAME_STATE, selectedObject, sketchInstance } from "../gameState"
 import api from "../axios"
 import { BUG_SIZE, MAX_POPULATION, SPAWN_DURATION } from "../constants"
 import { plantFlower } from "@/components/flower-plant"
+import { handleError } from "@/utils/helpers"
 
 const distanceToReachFood = 10
 
@@ -217,6 +218,8 @@ class Farm {
           })
           this.addObject(flower)
         }
+      }).catch(error => {
+        handleError(error)
       })
   }
 

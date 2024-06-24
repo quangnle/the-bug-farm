@@ -1,3 +1,4 @@
+import { MAX_FLOWERS } from "@/core/constants";
 import { GAME_STATE, sketchInstance } from "@/core/gameState";
 import { useEffect, useState } from "react";
 
@@ -36,22 +37,8 @@ export default function GameHeader() {
         <div className="font-bold">
           Population: {staticData.population} / {GAME_STATE.tank.value?.size}
         </div>
-        <div className="font-bold">Flowers: {staticData.flowers}</div>
+        <div className="font-bold">Flowers: {staticData.flowers} / {MAX_FLOWERS}</div>
       </div>
-      {/* </div> */}
-      {/* <div className="flex gap-4">
-        <Button
-          onClick={() => {
-            GAME_STATE.tank.value = null;
-          }}
-        >
-          Change Tank
-        </Button>
-        <Button onClick={handleSaveGif}>Save Gif</Button>
-        <CreatePattern />
-        <BugList />
-        <Market />
-      </div> */}
     </div>
   );
 }

@@ -28,7 +28,6 @@ export default function FlowerPlant() {
   const handleChangeInput = (event) => {
     const { name} = event.target
     let { value } = event.target
-    console.log(name, value, name === 'petalNumber' || name === 'pistilSize' || name === 'petalSize')
     if (name === 'petalNumber' || name === 'pistilSize' || name === 'petalSize') {
       value = Math.min(10, Math.max(3, parseInt(value)))
     }

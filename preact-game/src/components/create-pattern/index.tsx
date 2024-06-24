@@ -26,7 +26,8 @@ export default function CreatePattern() {
       sketchInstance?.noLoop();
       p5Ref.current = new p5((s) => {
         s.setup = () => setup(s, canvasRef.current);
-        (s.draw = () => draw(s)), (s.mousePressed = () => mouseDragged(s));
+        s.draw = () => draw(s)
+        s.mouseDragged = () => mouseDragged(s)
       });
     } else {
       sketchInstance?.loop();

@@ -37,6 +37,7 @@ const drawBug = (p5: p5, x: number, y: number, size: number, color: string) => {
     for (let j = 0; j < PATTERN.value.length; j++) {
       if (PATTERN.value[j][i] !== 0 && PATTERN.value[j][i] !== -1) {
         p5.stroke(PATTERN.value[j][i] as string);
+        p5.strokeWeight(1.5);
         p5.point(i - size / 2, j - size / 2);
       }
     }
@@ -115,7 +116,6 @@ export const draw = (p5: p5) => {
 };
 
 export const mouseDragged = (p5: p5) => {
-  console.log(p5);
   if (p5.mouseButton === p5.LEFT) {
     const rectSize = CANVAS_SIZE / PATTERN.value[0].length;
     const i = Math.floor(p5.mouseY / rectSize);
