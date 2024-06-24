@@ -1,33 +1,33 @@
-import { useEffect, useMemo, useState } from "react";
-import Modal from "../common/modal";
-import BorderContainer from "../border-container";
-import Bug from "@/core/entity/bug";
-import { GAME_STATE, sketchInstance } from "@/core/gameState";
-import BugPattern from "../bug-pattern";
-import clsx from "clsx";
-import api from "@/core/axios";
-import Button from "../common/button";
-import { sellBugEffect } from "@/core/effect";
-import moment from "moment";
-import SelectTank from "../select-tank";
+import { useEffect, useMemo, useState } from "react"
+import Modal from "../common/modal"
+import BorderContainer from "../border-container"
+import Bug from "@/core/entity/bug"
+import { GAME_STATE, sketchInstance } from "@/core/gameState"
+import BugPattern from "../bug-pattern"
+import clsx from "clsx"
+import api from "@/core/axios"
+import Button from "../common/button"
+import { sellBugEffect } from "@/core/effect"
+import moment from "moment"
+import SelectTank from "../select-tank"
 
 export default function BugList() {
-  const [show, setShow] = useState(false);
-  const [bugs, setBugs] = useState<Bug[]>([]);
-  const [selectedBugs, setSelectedBugs] = useState<Bug[]>([]);
+  const [show, setShow] = useState(false)
+  const [bugs, setBugs] = useState<Bug[]>([])
+  const [selectedBugs, setSelectedBugs] = useState<Bug[]>([])
   const [showSelectTank, setShowSelectTank] = useState(false)
 
   const [filter, setFilter] = useState<{
-    type: "none" | "rarity" | "createdAt";
-    order: number;
+    type: "none" | "rarity" | "createdAt"
+    order: number
   }>({
     type: "rarity",
     order: 1,
-  });
+  })
 
   useEffect(() => {
     if (show) {
-      sketchInstance.noLoop();
+      sketchInstance.noLoop()
       setBugs(
         [...GAME_STATE.farm.value.colony].sort((a, b) => {
           if (filter.type === "createdAt") {
@@ -35,26 +35,32 @@ export default function BugList() {
               (new Date(a.createdAt).getTime() -
                 new Date(b.createdAt).getTime()) *
               filter.order
-            );
+            )
           }
           if (filter.type === "rarity") {
             const rarityA = a.genes.reduce(
-              (acc, gene) => acc + Math.pow(100 - gene.score, 2) + Math.pow(100 - a.appearance.score, 3),
+              (acc, gene) =>
+                acc +
+                Math.pow(100 - gene.score, 2) +
+                Math.pow(100 - a.appearance.score, 3),
               0
-            );
+            )
             const rarityB = b.genes.reduce(
-              (acc, gene) => acc + Math.pow(100 - gene.score, 2) + Math.pow(100 - a.appearance.score, 3),
+              (acc, gene) =>
+                acc +
+                Math.pow(100 - gene.score, 2) +
+                Math.pow(100 - a.appearance.score, 3),
               0
-            );
-            return (rarityA - rarityB) * filter.order;
+            )
+            return (rarityA - rarityB) * filter.order
           }
-          return 0;
+          return 0
         })
-      );
+      )
     } else {
-      sketchInstance.loop();
+      sketchInstance.loop()
     }
-  }, [show, filter]);
+  }, [show, filter])
   useEffect(() => {
     console.log(bugs)
   }, [bugs])
@@ -67,42 +73,70 @@ export default function BugList() {
             "You have some special bugs in your sale, are you sure to sell them?"
           )
         ) {
-          return;
+          return
         }
       }
       await api.sellBugs({
         tankId: GAME_STATE.tank.value?._id,
         bugIds: selectedBugs.map((bug) => bug._id),
-      });
+      })
       GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
         (bug) => !selectedBugs.includes(bug)
-      );
-      setSelectedBugs([]);
-      setBugs(GAME_STATE.farm.value.colony);
-      sellBugEffect(0, 0);
+      )
+      setSelectedBugs([])
+      setBugs(GAME_STATE.farm.value.colony)
+      sellBugEffect(0, 0)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
+
+  const handleSellAllDefault = async () => {
+    try {
+      const _selectedBugs = bugs
+        .filter((bug) => bug.appearance.name === "default" && bug.genes.length === 1)
+        .map((bug) => bug._id)
+      await api.sellBugs({
+        tankId: GAME_STATE.tank.value?._id,
+        bugIds: bugs
+          .filter((bug) => bug.appearance.name === "default")
+          .map((bug) => bug._id),
+      })
+      GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
+        (bug) => !_selectedBugs.includes(bug._id)
+      )
+      setBugs(GAME_STATE.farm.value.colony)
+      sellBugEffect(0, 0)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const handleSelectTank = async (tankId: ITank) => {
-    await handleChangeTank(selectedBugs.map((bug) => bug._id), tankId._id)
+    await handleChangeTank(
+      selectedBugs.map((bug) => bug._id),
+      tankId._id
+    )
     setShowSelectTank(false)
   }
 
   const handleChangeTank = async (bugs: string[], tankId: string) => {
     try {
-      await Promise.all(bugs.map(async (bug) => api.bugChangeTank(bug, {
-        tankId
-      })))
+      await Promise.all(
+        bugs.map(async (bug) =>
+          api.bugChangeTank(bug, {
+            tankId,
+          })
+        )
+      )
       GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
         (bug) => !selectedBugs.includes(bug)
-      );
-      setSelectedBugs([]);
-      setBugs(GAME_STATE.farm.value.colony);
-      sellBugEffect(0, 0);
+      )
+      setSelectedBugs([])
+      setBugs(GAME_STATE.farm.value.colony)
+      sellBugEffect(0, 0)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
 
@@ -138,17 +172,24 @@ export default function BugList() {
                     Direction: {filter.order === 1 ? "Asc" : "Desc"}
                   </Button>
                 </div>
-                {selectedBugs.length > 0 && (
-                  <div className="flex gap-2">
-                    <SelectTank
-                      show={showSelectTank}
-                      onSelectTank={handleSelectTank}
-                      onClose={() => setShowSelectTank(false)}
-                    />
-                    <Button onClick={() => setShowSelectTank(true)}>Change Tank</Button>
-                    <Button onClick={handleSellAll}>Sell</Button>
-                  </div>
-                )}
+                <div className="flex gap-2">
+                  {selectedBugs.length > 0 && (
+                    <>
+                      <SelectTank
+                        show={showSelectTank}
+                        onSelectTank={handleSelectTank}
+                        onClose={() => setShowSelectTank(false)}
+                      />
+                      <Button onClick={() => setShowSelectTank(true)}>
+                        Change Tank
+                      </Button>
+                      <Button onClick={handleSellAll}>Sell</Button>
+                    </>
+                  )}
+                  <Button onClick={handleSellAllDefault}>
+                    Sell all Default
+                  </Button>
+                </div>
               </div>
 
               <div
