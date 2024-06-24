@@ -1,140 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Bug Farm</title>
-    <style>
-        body {
-            font-family: Calibri, sans-serif;
-            font-size: 12px;
-        }
-        h4 {
-            font-family: Calibri, sans-serif;
-            font-size: 14px;
-        }
-        h5 {
-            font-family: Calibri, sans-serif;
-            font-size: 12px;
-        }
-        button {
-            font-family: Calibri, sans-serif;
-            font-size: 12px;
-        }
-    </style>
-</head>
-<body>
-    <div style="display: flex; column-count: 2; column-gap: 0px;">
-        <div name="game-area" style="float: left; width: auto;">            
-            <div id="sketch-holder"><canvas id="main-canvas"></canvas></div>
-            <p style="margin-bottom: 0; padding-bottom: 0;">Left click on a bug or a flower to select it. Right click in plant mode to plant a flower.</p>
-        </div>
-        <div name="control-area" style="float: left;">
-            <ul style="padding: 0px; margin:0px;">
-                <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
-                    <h4 style="text-align: center; background-color: forestgreen; margin-top:0px; margin-bottom: 3px;">Player Info - Legos</h4>                
-                    <ul style="list-style-type: none; padding-left: 10px;">
-                        <li>Money: <span style="margin-right: 2px;">$100</span></li>
-                        <li>Capacity: <span style="margin-right: 2px;">100</span></li>
-                        <li>Food left: <span style="margin-right: 2px;">10</span></li>
-                        <li>Population: <span style="margin-right: 2px;">1</span></li>
-                    </ul>
-                </li>
-                <!--Selected Object-->
-                <li style="display: block; background-color: aliceblue; width: 250px;  margin-bottom: 3px;">
-                    <h4 style="text-align: center; background-color: forestgreen; padding: 0px;  margin-top:0px; margin-bottom: 3px;">Information</h4>
-                    <div style="float: left; width: 55px; padding:2px">
-                        <canvas id="object-render-canvas" width="50" height="50"></canvas>
-                        <canvas id="bug-pattern-canvas" width="50" height="50"></canvas>
-                    </div>
-                    <div>
-                        <ul style="list-style: none;">
-                            <li style="display: block;"><textarea id="object-info" readonly rows="10" cols="20"></textarea>    </li>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The Bug Farm</title>
+        <style>
+            body {
+                font-family: Calibri, sans-serif;
+                font-size: 12px;
+            }
+            h4 {
+                font-family: Calibri, sans-serif;
+                font-size: 14px;
+            }
+            h5 {
+                font-family: Calibri, sans-serif;
+                font-size: 12px;
+            }
+            button {
+                font-family: Calibri, sans-serif;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="display: flex; column-count: 2; column-gap: 0px">
+            <div name="game-area" style="float: left; width: auto">
+                <div id="sketch-holder"><canvas id="main-canvas"></canvas></div>
+                <p style="margin-bottom: 0; padding-bottom: 0">
+                    Left click on a bug or a flower to select it. Right click in
+                    plant mode to plant a flower.
+                </p>
+            </div>
+            <div name="control-area" style="float: left">
+                <ul style="padding: 0px; margin: 0px">
+                    <li
+                        style="
+                            display: block;
+                            background-color: aliceblue;
+                            width: 250px;
+                            margin-bottom: 3px;
+                        "
+                    >
+                        <h4
+                            style="
+                                text-align: center;
+                                background-color: forestgreen;
+                                margin-top: 0px;
+                                margin-bottom: 3px;
+                            "
+                        >
+                            Player Info - Legos
+                        </h4>
+                        <ul style="list-style-type: none; padding-left: 10px">
+                            <li>
+                                Money:
+                                <span style="margin-right: 2px">$100</span>
+                            </li>
+                            <li>
+                                Capacity:
+                                <span style="margin-right: 2px">100</span>
+                            </li>
+                            <li>
+                                Food left:
+                                <span style="margin-right: 2px">10</span>
+                            </li>
+                            <li>
+                                Population:
+                                <span style="margin-right: 2px">1</span>
+                            </li>
                         </ul>
-                    </div>
-                    <button id="btn-sell-it" style="margin-left: 2px; visibility: hidden;" onclick="sellABug()" >Sell it</button>
-                    <button id="btn-bring-to-market"  style="visibility: hidden;">Bring it to the market</button>
-                    <button id="btn-remove-it" style="margin-left: 2px; visibility: hidden;" onclick="removeAFlower()">Remove it</button>
-                </li>
-                <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
-                    <h4 style="text-align: center; background-color: forestgreen; margin-top:0px; margin-bottom: 3px;">Flower Config</h4>
-                    <ul style="list-style-type: none; padding: 5px;">
-                        <li>Number of petals: <input type="number" id="petal-number" value="5" min="5" max="8" style="width: 25px;"></li>
-                        <li>
-                            <ul style="list-style-type: none; padding: 3px;">
-                                <li style="display: inline;">Pistil Color: <input type="color" id="pistil-color" value="#ff0000" style="width: 35px;"></li>
-                                <li style="display: inline;">Size: <input type="number" id="pistil-size" value="5" min="3" max="7" style="width: 25px;"></li>
+                        <button onclick="exportGIF()">Save GIF</button>
+                    </li>
+                    <!--Selected Object-->
+                    <li
+                        style="
+                            display: block;
+                            background-color: aliceblue;
+                            width: 250px;
+                            margin-bottom: 3px;
+                        "
+                    >
+                        <h4
+                            style="
+                                text-align: center;
+                                background-color: forestgreen;
+                                padding: 0px;
+                                margin-top: 0px;
+                                margin-bottom: 3px;
+                            "
+                        >
+                            Information
+                        </h4>
+                        <div style="float: left; width: 55px; padding: 2px">
+                            <canvas
+                                id="object-render-canvas"
+                                width="50"
+                                height="50"
+                            ></canvas>
+                            <canvas
+                                id="bug-pattern-canvas"
+                                width="50"
+                                height="50"
+                            ></canvas>
+                        </div>
+                        <div>
+                            <ul style="list-style: none">
+                                <li style="display: block">
+                                    <textarea
+                                        id="object-info"
+                                        readonly
+                                        rows="10"
+                                        cols="20"
+                                    ></textarea>
+                                </li>
                             </ul>
-                        </li>
-                        <li>
-                            <ul style="list-style-type: none; padding: 3px;">
-                                <li style="display: inline;">Petal Color: <input type="color" id="petal-color" value="#ffffff" style="width: 35px;"></li>
-                                <li style="display: inline;">Size: <input type="number" id="petal-size" value="5" min="3" max="7" style="width: 25px;"></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <button id="btn-show" onclick="show()" style="margin-left: 2px;">Start The Marching Show!!!</button>
-                </li>
-                <li style="display: block; background-color: aliceblue; width: 250px; margin-bottom: 3px;">
-                    <a href="./pattern-maker/pattern-maker.html" target="_blank">Design Your Own Pattern</a>
-            </ul>
-        </div>        
-    </div>
+                        </div>
+                        <button
+                            id="btn-sell-it"
+                            style="margin-left: 2px; visibility: hidden"
+                            onclick="sellABug()"
+                        >
+                            Sell it
+                        </button>
+                        <button
+                            id="btn-bring-to-market"
+                            style="visibility: hidden"
+                        >
+                            Bring it to the market
+                        </button>
+                        <button
+                            id="btn-remove-it"
+                            style="margin-left: 2px; visibility: hidden"
+                            onclick="removeAFlower()"
+                        >
+                            Remove it
+                        </button>
+                    </li>
+                    <li
+                        style="
+                            display: block;
+                            background-color: aliceblue;
+                            width: 250px;
+                            margin-bottom: 3px;
+                        "
+                    >
+                        <h4
+                            style="
+                                text-align: center;
+                                background-color: forestgreen;
+                                margin-top: 0px;
+                                margin-bottom: 3px;
+                            "
+                        >
+                            Flower Config
+                        </h4>
+                        <ul style="list-style-type: none; padding: 5px">
+                            <li>
+                                Number of petals:
+                                <input
+                                    type="number"
+                                    id="petal-number"
+                                    value="5"
+                                    min="5"
+                                    max="8"
+                                    style="width: 25px"
+                                />
+                            </li>
+                            <li>
+                                <ul style="list-style-type: none; padding: 3px">
+                                    <li style="display: inline">
+                                        Pistil Color:
+                                        <input
+                                            type="color"
+                                            id="pistil-color"
+                                            value="#ff0000"
+                                            style="width: 35px"
+                                        />
+                                    </li>
+                                    <li style="display: inline">
+                                        Size:
+                                        <input
+                                            type="number"
+                                            id="pistil-size"
+                                            value="5"
+                                            min="3"
+                                            max="7"
+                                            style="width: 25px"
+                                        />
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <ul style="list-style-type: none; padding: 3px">
+                                    <li style="display: inline">
+                                        Petal Color:
+                                        <input
+                                            type="color"
+                                            id="petal-color"
+                                            value="#ffffff"
+                                            style="width: 35px"
+                                        />
+                                    </li>
+                                    <li style="display: inline">
+                                        Size:
+                                        <input
+                                            type="number"
+                                            id="petal-size"
+                                            value="5"
+                                            min="3"
+                                            max="7"
+                                            style="width: 25px"
+                                        />
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <button
+                            id="btn-show"
+                            onclick="show()"
+                            style="margin-left: 2px"
+                        >
+                            Start The Marching Show!!!
+                        </button>
+                    </li>
+                    <li
+                        style="
+                            display: block;
+                            background-color: aliceblue;
+                            width: 250px;
+                            margin-bottom: 3px;
+                        "
+                    >
+                        <a
+                            href="./pattern-maker/pattern-maker.html"
+                            target="_blank"
+                            >Design Your Own Pattern</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-    <script src="patterns.js"></script>
-    <script src="evolution.js"></script>
-    <script src="bug.js"></script>
-    <script src="flower.js"></script>
-    <script src="route.js"></script>
-    <script src="farm.js"></script>    
-    <script src="control-panel.js"></script>  
-    <script src="sketch.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
-    <script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
+        <script src="patterns.js"></script>
+        <script src="evolution.js"></script>
+        <script src="bug.js"></script>
+        <script src="flower.js"></script>
+        <script src="route.js"></script>
+        <script src="farm.js"></script>
+        <script src="control-panel.js"></script>
+        <script src="sketch.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js"
+            integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script>
+            document.addEventListener("contextmenu", (event) =>
+                event.preventDefault()
+            );
 
-    const btnshow = document.getElementById("btn-show");
-    const objcvs = document.getElementById("object-render-canvas");
-    const patterncvs = document.getElementById("bug-pattern-canvas");
-    const objctx = objcvs.getContext("2d");
-    objctx.fillStyle = "#ffffff";
-    objctx.strokeStyle = "#000000";
-    objctx.fillRect(0, 0, 50, 50);
+            const btnshow = document.getElementById("btn-show");
+            const objcvs = document.getElementById("object-render-canvas");
+            const patterncvs = document.getElementById("bug-pattern-canvas");
+            const objctx = objcvs.getContext("2d");
+            objctx.fillStyle = "#ffffff";
+            objctx.strokeStyle = "#000000";
+            objctx.fillRect(0, 0, 50, 50);
 
-    function show() {
-        const flowers = farm.objects.filter(obj => obj instanceof Flower);
-        if (flowers.length > 1) {
-            if (btnshow.innerHTML === "Stop The Show") { // stop the show
-                btnshow.innerHTML = "Start The Marching Show!!!";
-                farm.mode = "play";
-                farm.route.stop();
-                farm.route = null;
-            } else { // start the show
-                btnshow.innerHTML = "Stop The Show";
-                farm.mode = "show";
-                farm.route = new Route(farm.colony, flowers);
-                farm.route.start();
+            function show() {
+                const flowers = farm.objects.filter(
+                    (obj) => obj instanceof Flower
+                );
+                if (flowers.length > 1) {
+                    if (btnshow.innerHTML === "Stop The Show") {
+                        // stop the show
+                        btnshow.innerHTML = "Start The Marching Show!!!";
+                        farm.mode = "play";
+                        farm.route.stop();
+                        farm.route = null;
+                    } else {
+                        // start the show
+                        btnshow.innerHTML = "Stop The Show";
+                        farm.mode = "show";
+                        farm.route = new Route(farm.colony, flowers);
+                        farm.route.start();
+                    }
+                }
             }
-        }
-    }
 
-    function sellABug() {
-        if (farm.colony.length === 1) return;
-        
-        farm.colony.forEach((bug, index) => {
-            if (bug === selectedObj) {
-                farm.colony.splice(index, 1);
-            }
-        });
-    }
+            function sellABug() {
+                if (farm.colony.length === 1) return;
 
-    function removeAFlower() {
-        farm.objects.forEach((obj, index) => {
-            if (obj === selectedObj) {
-                farm.objects.splice(index, 1);
+                farm.colony.forEach((bug, index) => {
+                    if (bug === selectedObj) {
+                        farm.colony.splice(index, 1);
+                    }
+                });
             }
-        });
-    }   
-    </script>
-</body>
+
+            function removeAFlower() {
+                farm.objects.forEach((obj, index) => {
+                    if (obj === selectedObj) {
+                        farm.objects.splice(index, 1);
+                    }
+                });
+            }
+
+            function exportGIF() {
+                p5.instance.saveGif("bugfarm.gif", 3);
+            }
+        </script>
+    </body>
 </html>
