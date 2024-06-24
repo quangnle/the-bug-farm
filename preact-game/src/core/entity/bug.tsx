@@ -246,6 +246,7 @@ class Bug {
           this.appearance.pattern[j][i] !== 0
         ) {
           this.p5.stroke(this.appearance.pattern[j][i]);
+          this.p5.strokeWeight(1.5)
           this.p5.point(i - this.size / 2, j - this.size / 2);
         }
       }

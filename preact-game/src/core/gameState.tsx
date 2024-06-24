@@ -35,6 +35,7 @@ const sketch = (s: p5) => {
     if (canvas) {
       bg = s.loadImage("/assets/bg-2.jpeg");
       s.createCanvas(FARM_WIDTH, FARM_HEIGHT, canvas);
+      s.pixelDensity(2)
     }
   };
   s.draw = () => {
@@ -104,7 +105,7 @@ effect(() => {
         x: _x,
         y: _y,
         size: 20,
-        color: "#f00",
+        color: "#fff",
         p5: sketchInstance,
       });
       farm.value.colony.push(bug);
@@ -113,7 +114,6 @@ effect(() => {
       const flower = new Flower({
         ...flo,
       });
-      console.log({ flower, flo });
       farm.value.addObject(flower);
     });
 
