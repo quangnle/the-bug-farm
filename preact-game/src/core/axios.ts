@@ -6,7 +6,7 @@ export const BASE_URL = 'https://api-bug-game.skyglab.tech'
 
 axios.defaults.baseURL = BASE_URL
 
-const getToken = () => {
+export const getToken = () => {
   try {
     const cache = JSON.parse(localStorage.getItem('token') || '{}')
  
@@ -19,7 +19,7 @@ const getToken = () => {
   return undefined
 }
 
-const setToken = (token) => {
+export const setToken = (token) => {
   console.log('setToken', token)
   localStorage.setItem('token', JSON.stringify(token))
 }

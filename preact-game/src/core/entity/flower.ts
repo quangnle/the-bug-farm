@@ -27,7 +27,7 @@ class Flower {
     petalNumber,
     numberOfPollens,
     hasPollen,
-    spawningTime
+    spawningTime,
   }: {
     _id: string
     x: number
@@ -65,6 +65,20 @@ class Flower {
   }
 
   draw(isSelected: boolean) {
+    // draw the leaves
+    if (this.numberOfPollens > 0) {
+      p5.fill("#009900")
+      const leafSize = this.pistilSize * 1.5
+      const leafAngle = p5.PI / 4
+      for (let i = 0; i < 8; i++) {
+        p5.push()
+        p5.translate(this.x, this.y)
+        p5.rotate(leafAngle * i)
+        p5.rect(0, 0, leafSize, leafSize)
+        p5.pop()
+      }
+    }
+
     // draw the petals
     p5.push()
     p5.translate(this.x, this.y)
@@ -93,7 +107,7 @@ class Flower {
     }
 
     if (this.spawningTime < 0) {
-        this.hasPollen = true
+      this.hasPollen = true
     }
 
     if (isSelected) {
@@ -119,6 +133,20 @@ class Flower {
   drawIcon(ctx, x, y) {
     const pistilSize = this.pistilSize / 2
     const petalSize = this.petalSize / 2
+
+    if (this.numberOfPollens > 0) {
+      const leafSize = this.pistilSize * 1.5
+      const leafAngle = Math.PI / 4
+
+      for (let i = 0; i < 8; i++) {
+        ctx.save()
+        ctx.translate(x, y)
+        ctx.rotate(leafAngle * i)
+        ctx.fillStyle = "#009900"
+        ctx.fillRect(0, 0, leafSize, leafSize)
+        ctx.restore()
+      }
+    }
 
     ctx.save()
     ctx.translate(x, y)

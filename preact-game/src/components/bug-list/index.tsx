@@ -42,14 +42,14 @@ export default function BugList() {
               (acc, gene) =>
                 acc +
                 Math.pow(100 - gene.score, 2) +
-                Math.pow(100 - a.appearance.score, 3),
+                Math.pow(90 - a.appearance.score, 3),
               0
             )
             const rarityB = b.genes.reduce(
               (acc, gene) =>
                 acc +
                 Math.pow(100 - gene.score, 2) +
-                Math.pow(100 - a.appearance.score, 3),
+                Math.pow(90 - b.appearance.score, 3),
               0
             )
             return (rarityA - rarityB) * filter.order

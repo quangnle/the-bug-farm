@@ -8,7 +8,7 @@ import SelectTank from "../select-tank";
 import { useState } from "react";
 import { CANVAS_SIZE, CANVAS_WIDTH } from "../create-pattern/useCreatePattern";
 
-export default function GameBody() {
+export default function GameBody({ loading } : { loading : boolean}) {
   const [showSelectTank, setShowSelectTank] = useState(false);
   const handleSaveGif = () => {
     sketchInstance.saveGif("myGif", 6, {});
@@ -17,9 +17,8 @@ export default function GameBody() {
   const handleSelectTank = (x: ITank) => {
     GAME_STATE.tank.value = x;
     setShowSelectTank(false)
+    localStorage.setItem("lastTank", x._id);
   };
-
-  
 
   return (
     <div className="game-body relative">
@@ -37,11 +36,11 @@ export default function GameBody() {
         <Market />
       </div>
 
-      <SelectTank
+      {!loading && <SelectTank
         show={!!(GAME_STATE.user.value?._id && !GAME_STATE.tank.value?._id) || showSelectTank}
         onSelectTank={handleSelectTank}
         onClose={() => setShowSelectTank(false)}
-      />
+      />}
     </div>
   )
 }
