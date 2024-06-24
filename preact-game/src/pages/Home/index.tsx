@@ -19,12 +19,6 @@ export default function Home() {
         const { data } = await api.me()
         if (data) {
           GAME_STATE.user.value = data
-
-          const lastTank = localStorage.getItem("lastTank") || ""
-          if (lastTank !== "") {
-            const { data: tank } = await api.getTank(lastTank)
-            GAME_STATE.tank.value = tank
-          }
         }
       } catch (error) {
         handleError(error)

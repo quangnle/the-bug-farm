@@ -33,7 +33,7 @@ const sketch = (s: p5) => {
   s.setup = () => {
     const canvas = document.getElementById("main-canvas");
     if (canvas) {
-      bg = s.loadImage("/assets/bg-2.jpeg");
+      bg = s.loadImage("/assets/grass.png");
       s.createCanvas(FARM_WIDTH, FARM_HEIGHT, canvas);
       s.pixelDensity(2)
     }
