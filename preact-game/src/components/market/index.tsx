@@ -120,10 +120,10 @@ export default function Market() {
     e.stopPropagation();
     try {
       if (!GAME_STATE.tank.value?._id) return;
-      await api.buyBug(sale._id, {
+      const { data: _sale } = await api.buyBug(sale._id, {
         tankId: GAME_STATE.tank.value?._id,
       });
-      removeBug();
+      removeSale(_sale);
     } catch (error: any) {
       alert(error?.response?.data?.message);
     }
@@ -136,27 +136,29 @@ export default function Market() {
     e.stopPropagation();
     try {
       if (!GAME_STATE.tank.value?._id) return;
-      await api.saleUnListting(sale._id, {
+      const { data: _sale } = await api.saleUnListting(sale._id, {
         tankId: GAME_STATE.tank.value?._id,
       });
-      removeBug();
+      removeSale(_sale);
     } catch (error: any) {
       alert(error?.response?.data?.message);
     }
   };
 
-  const removeBug = async () => {
-    if (selected) {
+  const removeSale = async (_sale: ISale) => {
+    if (_sale) {
       marketFarm.value.colony = marketFarm.value.colony.filter(
-        (x) => x._id !== selected._id
+        (x) => x._id !== _sale.bug
       );
-      setMarket(market.filter((x) => x.bug._id !== selected._id));
-      setSelected(null);
+      setMarket(market.filter((x) => x._id !== _sale._id));
+      setSelected(null)
 
-      const { data: bug } = await api.getBug(selected._id);
+      const { data: bug } = await api.getBug(_sale.bug);
       GAME_STATE.farm.value?.colony.push(
         new Bug({
           ...bug,
+          appearance: bug.appearance._id,
+          genes: bug.genes.map((x: Bug) => x._id),
           p5: sketchInstance,
           size: 20,
           x: Math.random() * CANVAS_SIZE,
