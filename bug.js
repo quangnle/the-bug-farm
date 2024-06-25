@@ -1,12 +1,19 @@
 class Bug {
     constructor(color, x, y, size, angle) {
         this.color = color;
-        this.x = x;
-        this.y = y;
         this.size = size;
         this.angle = angle;
+
+        // position
+        this.x = x;
+        this.y = y;
+
+        // velocity
         this.dx = Math.cos(this.angle);
         this.dy = Math.sin(this.angle);
+        // acceleration
+        this.ax = 0;
+        this.ay = 0;
         this.hunger = 500;
         this.mutationRate = 0.1;
         this.appearance = {
@@ -15,7 +22,7 @@ class Bug {
             score: 90,
         };
         this.genes = [];
-        this.foodSenseDistance = 150;
+        this.foodSenseDistance = 250;
         // add the default pattern
         this.genes.push({
             name: "default",
@@ -132,9 +139,10 @@ class Bug {
             }
         }
 
-        this.angle = atan2(this.target.y - this.y, this.target.x - this.x);
-        this.dx = cos(this.angle);
-        this.dy = sin(this.angle);
+        // this.angle = atan2(this.target.y - this.y, this.target.x - this.x);
+        // this.dx = cos(this.angle);
+        // this.dy = sin(this.angle);
+        this.seek(this.target);
     }
 
     pushedBy(otherBug) {
@@ -145,12 +153,35 @@ class Bug {
         this.y += sin(angle);
     }
 
+    applyForce(force) {
+        this.ax += force.x;
+        this.ay += force.y;
+    }
+
+    seek(target) {
+        const desired = createVector(target.x - this.x, target.y - this.y);
+        desired.setMag(1);
+        const steer = createVector(desired.x - this.dx, desired.y - this.dy);
+        steer.limit(0.01);
+        this.applyForce(steer);
+    }
+
     update() {
         // decrease the hungry counter
         this.hunger--;
-        // make the bug move towards the target
+
+        // apply acceleration to the velocity
+        this.dx += this.ax;
+        this.dy += this.ay;
+        this.angle = atan2(this.dy, this.dx);
+
+        // update position
         this.x += this.dx;
         this.y += this.dy;
+
+        // reset acceleration
+        this.ax = 0;
+        this.ay = 0;
     }
 
     draw(isSelected) {
