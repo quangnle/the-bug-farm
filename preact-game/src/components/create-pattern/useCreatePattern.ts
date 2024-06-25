@@ -1,16 +1,16 @@
 import { signal } from "@preact/signals";
 import p5 from "p5";
 
-export const SIZE = 20;
 
-export const CANVAS_SIZE = 400;
-export const CANVAS_WIDTH = 430;
+export const CANVAS_SIZE = 600;
+export const CANVAS_WIDTH = 630;
 
 let mode = "MOVE"
 
+export const SIZE = signal(20)
 export const PATTERN = signal<Array<Array<number | string>>>(
-  new Array(SIZE).fill(0).map(() => new Array(SIZE).fill(0))
-);
+  new Array(SIZE.value).fill(0).map(() => new Array(SIZE.value).fill(0))
+)
 export const SELECTED_COLOR = signal<string>("#ffffff");
 
 const drawBug = (p5: p5, x: number, y: number, size: number, color: string) => {
@@ -50,9 +50,9 @@ const drawBug = (p5: p5, x: number, y: number, size: number, color: string) => {
 const generateDefaultPattern = (p5: p5) => {
   // get value of the pattern size
   // generate 2d array with the size
-  PATTERN.value = new Array(SIZE);
-  for (let i = 0; i < SIZE; i++) {
-    PATTERN.value[i] = new Array(SIZE).fill(0);
+  PATTERN.value = new Array(SIZE.value);
+  for (let i = 0; i < SIZE.value; i++) {
+    PATTERN.value[i] = new Array(SIZE.value).fill(0);
   }
 
   const cx = PATTERN.value[0].length >> 1;

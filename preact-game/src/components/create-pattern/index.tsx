@@ -6,6 +6,7 @@ import p5 from "p5";
 import {
   PATTERN,
   SELECTED_COLOR,
+  SIZE,
   draw,
   mousePressed,
   mouseReleased,
@@ -18,6 +19,7 @@ import { handleError } from "@/utils/helpers";
 export default function CreatePattern() {
   const [show, setShow] = useState(false);
   const canvasRef = useRef(null);
+  const [size, setSize] = useState(20)
   const p5Ref = useRef<p5 | null>(null);
 
   const [drafts, setDrafts] = useState([])
@@ -75,7 +77,7 @@ export default function CreatePattern() {
           handleClose={() => setShow(false)}
           className="flex gap-2 flex-row"
         >
-          <BorderContainer className="w-[800px] h-[500px] p-4 bg-green-200 flex flex-col">
+          <BorderContainer className="p-4 bg-green-200 flex flex-col">
             <h1 className="text-center">Create Pattern</h1>
             <div className="flex flex-1 gap-2">
               <div className="">
@@ -90,8 +92,19 @@ export default function CreatePattern() {
                   }}
                   value={SELECTED_COLOR.value}
                 />
-                <Button className="mt-4" onClick={handleSubmit}>Save draft</Button>
+                <Button className="mt-4" onClick={handleSubmit}>
+                  Save draft
+                </Button>
 
+                <label className="mt-4">
+                  <span>Size: </span>
+                  <select onChange={(event) => {
+                    SIZE.value = parseInt(event.target.value)
+                  }}>
+                    <option value={20}>20</option>
+                    <option value={33}>33</option>
+                  </select>
+                </label>
                 <label className="mt-4">
                   <span className="font-bold">Pattern name: </span>
                   <input

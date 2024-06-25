@@ -22,13 +22,14 @@ export default function GameBody({ loading } : { loading : boolean}) {
 
   return (
     <div className="game-body relative">
-      <BorderContainer className="">
-        <canvas id="main-canvas" style={{
-          width: CANVAS_WIDTH,
-          height: CANVAS_SIZE,
-        }} />
-      </BorderContainer>
-      <div className="absolute w-full -bottom-5 left-0 rounded-lg flex justify-between p-4 bg-green-200">
+        <canvas
+          id="main-canvas"
+          style={{
+            width: CANVAS_WIDTH,
+            height: CANVAS_SIZE,
+          }}
+        />
+      <div className="absolute w-full -bottom-20 left-0 rounded-lg flex justify-between p-4 bg-green-200">
         <Button onClick={() => setShowSelectTank(true)}>Change Tank</Button>
         <Button onClick={handleSaveGif}>Save Gif</Button>
         <CreatePattern />
@@ -36,11 +37,16 @@ export default function GameBody({ loading } : { loading : boolean}) {
         <Market />
       </div>
 
-      {!loading && <SelectTank
-        show={!!(GAME_STATE.user.value?._id && !GAME_STATE.tank.value?._id) || showSelectTank}
-        onSelectTank={handleSelectTank}
-        onClose={() => setShowSelectTank(false)}
-      />}
+      {!loading && (
+        <SelectTank
+          show={
+            !!(GAME_STATE.user.value?._id && !GAME_STATE.tank.value?._id) ||
+            showSelectTank
+          }
+          onSelectTank={handleSelectTank}
+          onClose={() => setShowSelectTank(false)}
+        />
+      )}
     </div>
   )
 }
