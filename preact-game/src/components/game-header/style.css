@@ -1,0 +1,28 @@
+.holder {
+  width: 200px;
+  aspect-ratio: 285 / 112;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  padding-left: 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  background-size: 200px;
+}
+
+.holder p {
+  flex: 1;
+  font-size: 1.25rem;
+  padding-bottom: 24px;
+  text-align: center;
+}
+
+.money-holder {
+  background-image: url('/assets/holders/money-holder.png');
+}
+.bug-holder {
+  background-image: url('/assets/holders/bug-holder.png');
+}
+.flower-holder {
+  background-image: url('/assets/holders/flower-holder.png');
+}
