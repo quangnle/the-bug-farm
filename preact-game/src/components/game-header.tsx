@@ -29,16 +29,24 @@ export default function GameHeader() {
   };
 
   return (
-    <div className="flex items-center justify-between bg-green-200 gap-8 p-6 px-8">
+    <div className="flex items-center justify-between bg-green-200 gap-8 p-4 px-8 pl-72">
       {/* <div className="flex justify-between items-center gap-8"> */}
+      <img
+        src="/assets/PrettyBugs.png"
+        width={300}
+        className="absolute -left-10 -top-20"
+      />
       <h1 className="h1">{GAME_STATE.user.value?.username}</h1>
       <div className="flex gap-8">
+        <div className="font-bold">Tank: {GAME_STATE.tank.value?.name}</div>
         <div className="font-bold">Money: ${staticData.money}</div>
         <div className="font-bold">
           Population: {staticData.population} / {GAME_STATE.tank.value?.size}
         </div>
-        <div className="font-bold">Flowers: {staticData.flowers} / {MAX_FLOWERS}</div>
+        <div className="font-bold">
+          Flowers: {staticData.flowers} / {MAX_FLOWERS}
+        </div>
       </div>
     </div>
-  );
+  )
 }
