@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Pattern Maker</title>
+    </head>
+    <body>
+        <h1>Pattern Converter</h1>
+        <div name="left-column" style="float: left; width: 450px">
+            <div style="margin-bottom: 10px">
+                <input
+                    id="pattern-size"
+                    type="number"
+                    value="20"
+                    min="9"
+                    max="20"
+                    style="width: 40px"
+                />
+                <button onclick="generateDefaultPattern()">Refresh</button>
+            </div>
+            <div id="sketch-holder">
+                <canvas id="canvasArea"></canvas>
+                <!-- color picker -->
+                <input
+                    type="color"
+                    id="color-picker"
+                    onchange="updateColor();"
+                    value="#000000"
+                />
+            </div>
+        </div>
+        <div name="right-column" style="float: left">
+            <ul
+                style="
+                    list-style-type: none;
+                    margin-left: 0px;
+                    padding-left: 0px;
+                "
+            >
+                <li style="display: inline">
+                    <textarea id="imported" rows="10" cols="60"></textarea>
+                </li>
+                <li style="display: inline">
+                    <button onclick="importArray()">Import</button>
+                </li>
+            </ul>
+            <ul
+                style="
+                    list-style-type: none;
+                    margin-left: 0px;
+                    padding-left: 0px;
+                "
+            >
+                <li style="display: inline">
+                    <input
+                        id="pattern-name"
+                        type="text"
+                        placeholder="pattern name"
+                    />
+                </li>
+                <li style="display: inline">
+                    <button onclick="exportArray()">Export</button>
+                </li>
+            </ul>
+            <textarea id="code" rows="10" cols="60"></textarea>
+            <p>
+                <i
+                    >Copy this code & paste into 'patterns.js' file of the main
+                    project</i
+                >
+            </p>
+        </div>
+
+        <script src="sketch.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js"
+            integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script>
+            document.addEventListener("contextmenu", (event) =>
+                event.preventDefault()
+            );
+
+            let pattern = [];
+            let selectedColor = document.getElementById("color-picker").value;
+
+            function updateColor() {
+                selectedColor = document.getElementById("color-picker").value;
+            }
+
+            function importArray() {
+                const imported = document.getElementById("imported").value;
+                const importedPattern = JSON.parse(imported);
+                const size = importedPattern.length;
+
+                generateDefaultPattern();
+
+                // copy imported pattern to the default pattern in the center
+                const cx = pattern[0].length >> 1;
+                const cy = pattern.length >> 1;
+                const r = importedPattern.length >> 1;
+                for (let i = 0; i < importedPattern.length; i++) {
+                    for (let j = 0; j < importedPattern[i].length; j++) {
+                        const ny = cy + i - r;
+                        const nx = cx + j - r;
+                        if (
+                            nx >= 0 &&
+                            nx < pattern.length &&
+                            ny >= 0 &&
+                            ny < pattern[0].length &&
+                            pattern[ny][nx] !== -1 &&
+                            importedPattern[i][j] !== -1
+                        ) {
+                            pattern[cy + i - r][cx + j - r] =
+                                importedPattern[i][j];
+                        }
+                    }
+                }
+            }
+
+            function generateDefaultPattern() {
+                // get value of the pattern size
+                const size = document.getElementById("pattern-size").value * 1;
+                // generate 2d array with the size
+                pattern = new Array(size);
+                for (let i = 0; i < size; i++) {
+                    pattern[i] = new Array(size).fill(0);
+                }
+
+                const cx = pattern[0].length >> 1;
+                const cy = pattern.length >> 1;
+                const r = pattern.length >> 1;
+                for (let i = 0; i < pattern.length; i++) {
+                    for (let j = 0; j < pattern[i].length; j++) {
+                        let d = Math.floor(dist(j, i, cx, cy));
+                        if (d >= r) {
+                            pattern[i][j] = -1;
+                        }
+                    }
+                }
+            }
+
+            function exportArray() {
+                var code = document.getElementById("code");
+                var patternName = document.getElementById("pattern-name").value;
+                const content = `const pattern_${patternName} = ${JSON.stringify(
+                    pattern
+                )};`;
+                code.value = content;
+            }
+        </script>
+    </body>
+</html>
