@@ -188,11 +188,28 @@ class Bug {
         push();
         // draw the bug
         translate(this.x, this.y);
-        rotate(this.angle + PI / 2);
+        rotate(this.angle + PI / 2 + 0.1 * sin(frameCount * 0.1));
 
         // draw the head
         fill(50);
         ellipse(0, this.size * -0.4, this.size * 0.5, this.size * 0.5);
+
+        // draw two antennae on the head end with two dots
+        stroke(0);
+        line(
+            -this.size * 0.0,
+            this.size * -0.4,
+            -this.size * 0.1,
+            this.size * -0.8
+        );
+        line(
+            this.size * 0.0,
+            this.size * -0.4,
+            this.size * 0.1,
+            this.size * -0.8
+        );
+        ellipse(-this.size * 0.1, this.size * -0.8, 2, 2);
+        ellipse(this.size * 0.1, this.size * -0.8, 2, 2);
 
         // draw 2 dots on the head to represent eyes
         stroke(255);
@@ -282,6 +299,17 @@ class Bug {
             Math.PI * 2
         );
         ctx.fill();
+
+        // draw 2 hairs on the head
+        ctx.strokeStyle = "#000";
+        ctx.beginPath();
+        ctx.moveTo(-size * 0.2, 2 * size * -0.4);
+        ctx.lineTo(-size * 0.2, 2 * size * -0.4 - 5);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(size * 0.2, 2 * size * -0.4);
+        ctx.lineTo(size * 0.2, 2 * size * -0.4 - 5);
+        ctx.stroke();
 
         // draw 2 dots on the head to represent eyes
         ctx.fillStyle = "#fff";

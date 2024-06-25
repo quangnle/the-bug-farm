@@ -7,7 +7,8 @@ class Flower {
         y,
         pistilSize,
         pistilColor,
-        petalSize,
+        petalWidth,
+        petalHeight,
         petalColor,
         petalNumber
     ) {
@@ -15,7 +16,8 @@ class Flower {
         this.y = y;
         this.pistilSize = pistilSize;
         this.pistilColor = pistilColor;
-        this.petalSize = petalSize;
+        this.petalWidth = petalWidth;
+        this.petalHeight = petalHeight;
         this.petalColor = petalColor;
         this.petalNumber = petalNumber;
         this.hasPollen = false;
@@ -56,8 +58,12 @@ class Flower {
         for (let i = 0; i < this.petalNumber; i++) {
             const x = cos(angle * i) * this.pistilSize;
             const y = sin(angle * i) * this.pistilSize;
+            push();
+            translate(x, y);
+            rotate(angle * i);
             fill(this.petalColor);
-            ellipse(x, y, this.petalSize, this.petalSize);
+            ellipse(0, 0, this.petalHeight, this.petalWidth);
+            pop();
         }
 
         // draw the pistil
@@ -109,12 +115,11 @@ class Flower {
         const petalSize = this.petalSize / 2;
 
         if (this.numberOfPollens > 0) {
-            
             const leafSize = this.pistilSize * 1.5;
             const leafAngle = PI / 4;
 
             for (let i = 0; i < 8; i++) {
-                ctx.save()
+                ctx.save();
                 ctx.translate(x, y);
                 ctx.rotate(leafAngle * i);
                 ctx.fillStyle = "#009900";
