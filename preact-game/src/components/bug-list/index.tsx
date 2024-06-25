@@ -219,7 +219,7 @@ export default function BugList() {
                         onClose={() => setShowSelectTank(false)}
                       />
                       <Button onClick={() => setShowSelectTank(true)}>
-                        Change Tank
+                        Switch Tank
                       </Button>
                       <Button onClick={() => !loading && handleSellAll()}>
                         Sell

@@ -67,29 +67,69 @@ export default function FlowerPlant() {
       <ul className="plant-control">
         <li>
           <span>Number of petals</span>
-          <input type="number" name="petalNumber" value={flower.petalNumber} onChange={handleChangeInput} id="petal-number" min="3" max="10" />
+          <input
+            type="number"
+            name="petalNumber"
+            value={flower.petalNumber}
+            onChange={handleChangeInput}
+            id="petal-number"
+            min="3"
+            max="10"
+          />
         </li>
         <li>
           <span>Pistil Color</span>
-          <input type="color" name="pistilColor" value={flower.pistilColor} onChange={handleChangeInput} id="pistil-color" />
+          <input
+            type="color"
+            name="pistilColor"
+            value={flower.pistilColor}
+            onChange={handleChangeInput}
+            id="pistil-color"
+          />
         </li>
         <li>
           <span>Size</span>
-          <input type="number" name="pistilSize" value={flower.pistilSize} onChange={handleChangeInput} id="pistil-size" min="3" max="10" />
+          <input
+            type="number"
+            name="pistilSize"
+            value={flower.pistilSize}
+            onChange={handleChangeInput}
+            id="pistil-size"
+            min="3"
+            max="10"
+          />
         </li>
         <li>
           <span>Petal Color</span>
-          <input type="color" name="petalColor" value={flower.petalColor} onChange={handleChangeInput} id="petal-color" />
+          <input
+            type="color"
+            name="petalColor"
+            value={flower.petalColor}
+            onChange={handleChangeInput}
+            id="petal-color"
+          />
         </li>
         <li>
           <span>Size</span>
-          <input type="number" name="petalSize" value={flower.petalSize} onChange={handleChangeInput} id="petal-size" min="3" max="10" />
+          <input
+            type="number"
+            name="petalSize"
+            value={flower.petalSize}
+            onChange={handleChangeInput}
+            id="petal-size"
+            min="3"
+            max="10"
+          />
         </li>
       </ul>
       <div className="flex flex-col justify-end mt-auto">
-        <p className="mb-2 text-sm">Right-click to plant a flower (cost $7)</p>
-        <PlantSwitch className="ml-auto" />
-        <Button className="mt-2" onClick={toggleShow}>{marchingShow ? 'Stop the Show!!!' : 'Start The Marching Show!!!'}</Button>
+        <div className="flex items-center mt-4 justify-end gap-4">
+          <p className="text-sm">Switch mode</p>
+          <PlantSwitch className="ml-auto" />
+        </div>
+        <Button className="mt-2" onClick={toggleShow}>
+          {marchingShow ? "Stop the Show!!!" : "Start The Marching Show!!!"}
+        </Button>
       </div>
     </div>
   )

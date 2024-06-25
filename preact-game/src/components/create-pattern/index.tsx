@@ -160,7 +160,9 @@ export default function CreatePattern() {
                     <div>
                       <div className="">Name: {draft.name}</div>
                       <div className="flex">
-                        <Button onClick={() => handleLoadDraft(draft)}>Load</Button>
+                        <Button onClick={() => handleLoadDraft(draft)}>
+                          Load
+                        </Button>
                       </div>
                     </div>
                   </div>

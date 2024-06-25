@@ -1,5 +1,4 @@
 import { GAME_STATE, sketchInstance } from "@/core/gameState";
-import BorderContainer from "../border-container";
 import Button from "../common/button";
 import CreatePattern from "../create-pattern";
 import BugList from "../bug-list";
@@ -30,7 +29,7 @@ export default function GameBody({ loading } : { loading : boolean}) {
           }}
         />
       <div className="absolute w-full -bottom-20 left-0 rounded-lg flex justify-between p-4 bg-green-200">
-        <Button onClick={() => setShowSelectTank(true)}>Change Tank</Button>
+        <Button onClick={() => setShowSelectTank(true)}>Switch Tank</Button>
         <Button onClick={handleSaveGif}>Save Gif</Button>
         <CreatePattern />
         <BugList />

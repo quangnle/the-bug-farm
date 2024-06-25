@@ -180,7 +180,7 @@ export default function SelectedObject() {
             <div className="mt-auto flex flex-wrap gap-2 justify-between max-w-[252px]">
               <BringToMarket />
               <Button onClick={() => setShowSelectTank(true)}>
-                Change tank
+                Switch tank
               </Button>
               <SelectTank
                 show={showSelectTank}
