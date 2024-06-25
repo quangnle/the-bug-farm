@@ -14,10 +14,11 @@
 }
 
 html {
-  font-family: "UTM Cookies", sans-serif;
+  font-family: "Jost", sans-serif;
 }
 
 h1 {
+  font-family: "UTM Cookies";
   line-height: 1em;
   color: #fec425;
   font-weight: bold;
