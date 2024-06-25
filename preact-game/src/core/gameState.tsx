@@ -92,8 +92,8 @@ effect(() => {
   const fetchTank = async () => {
     if (!tank.value?._id) return;
 
-    const { data } = await api.getTank(tank.value?._id);
     const { data: listBugs } = await api.getAllBugs({ tankId: tank.value?._id })
+    const { data: listFlowers } = await api.getAllFlowers({ tankId: tank.value?._id })
 
     farm.value = new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22");
 
@@ -111,7 +111,7 @@ effect(() => {
       });
       farm.value.colony.push(bug);
     });
-    data.flowers.forEach((flo: Flower) => {
+    listFlowers.forEach((flo: Flower) => {
       const flower = new Flower({
         ...flo,
       });

@@ -49,6 +49,7 @@ const api = {
   getAllAppearances: async () => axios.get("/appearances/default"),
   createAppearance: async (payload) => axios.post("/appearances", payload),
 
+  getAllFlowers: async (params) => axios.get("/flowers", { params }),
   plantFlower: async (payload) => axios.post("/flowers", payload),
   removeFlower: async (id) => axios.delete(`/flowers/${id}`),
 
