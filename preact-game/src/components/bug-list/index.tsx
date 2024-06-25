@@ -70,11 +70,11 @@ export default function BugList() {
     bugs.map((bug) => {
       let matchedGenes = 0;
       genes.map((gene) => {
-        if (bug.genes.find((_gene) => _gene._id === gene._id)) {
+        if (bug.genes.find((_gene) => _gene.name === gene.name)) {
           matchedGenes++;
         }
       });
-      if (matchedGenes === genes.length)
+      if (matchedGenes === genes.length && bug.genes.length === matchedGenes)
         setSelectedBugs((prev) => [...prev, bug]);
     });
     setShowFilter(false);

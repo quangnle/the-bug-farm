@@ -28,14 +28,15 @@ const FilterGeneModal: FC<IProp> = ({
     const uniqueArr = bugGeneArr
       .filter(
         (item, index) =>
-          bugGeneArr.findIndex((gene) => gene._id === item._id) === index
+          bugGeneArr.findIndex((gene) => gene.name === item.name) === index
       )
       .map((gene) => gene);
+
     return uniqueArr.map((gene) => (
-      <Field key={gene._id} className="flex items-center gap-2">
+      <Field key={gene.name} className="flex items-center gap-2">
         <Checkbox
           checked={Boolean(
-            selectedGenes.find((_gene) => _gene._id === gene._id)
+            selectedGenes.find((_gene) => _gene.name === gene.name)
           )}
           onChange={(checked) => {
             if (checked) {
