@@ -68,12 +68,14 @@ export default function BugList() {
   const handleSelectByGenes = (genes: IAppearance[]) => {
     setSelectedBugs([]);
     bugs.map((bug) => {
+      let matchedGenes = 0;
       genes.map((gene) => {
         if (bug.genes.find((_gene) => _gene._id === gene._id)) {
-          console.log(bugs.indexOf(bug));
-          setSelectedBugs((prev) => [...prev, bug]);
+          matchedGenes++;
         }
       });
+      if (matchedGenes === genes.length)
+        setSelectedBugs((prev) => [...prev, bug]);
     });
     setShowFilter(false);
   };
@@ -169,13 +171,12 @@ export default function BugList() {
   return (
     <>
       <Button onClick={() => setShow(true)}>Inventory</Button>
-      {showFilter && (
-        <FilterGeneModal
-          handleSelectByGenes={handleSelectByGenes}
-          handleClose={() => setShowFilter(false)}
-          bugs={bugs}
-        />
-      )}
+      <FilterGeneModal
+        showFilter={showFilter}
+        handleSelectByGenes={handleSelectByGenes}
+        handleClose={() => setShowFilter(false)}
+        bugs={bugs}
+      />
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="bg-black/60 w-[80vw]">
@@ -192,7 +193,7 @@ export default function BugList() {
                       }));
                     }}
                   >
-                    Filter by: {filter.type}
+                    Sort by: {filter.type}
                   </Button>
                   <Button
                     onClick={() => {
@@ -202,7 +203,7 @@ export default function BugList() {
                       }));
                     }}
                   >
-                    Direction: {filter.order === 1 ? "Asc" : "Desc"}
+                    Order By: {filter.order === 1 ? "Asc" : "Desc"}
                   </Button>
                   {selectedBugs.length > 0 && (
                     <Button onClick={() => setSelectedBugs([])}>
@@ -211,6 +212,7 @@ export default function BugList() {
                   )}
                 </div>
                 <div className="flex gap-2">
+                  <Button onClick={() => setShowFilter(true)}>Filter</Button>
                   {selectedBugs.length > 0 && (
                     <>
                       <SelectTank
@@ -222,11 +224,13 @@ export default function BugList() {
                         Change Tank
                       </Button>
                       <Button onClick={() => !loading && handleSellAll()}>
-                        Sell
+                        Sell all selected
                       </Button>
+                      {/* <Button onClick={() => !loading && handleSellAll()}>
+                        Sell
+                      </Button> */}
                     </>
                   )}
-                  <Button onClick={() => setShowFilter(true)}>Filter</Button>
                   <Button onClick={handleSellAllDefault}>
                     Sell all Default
                   </Button>
