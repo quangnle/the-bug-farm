@@ -43,7 +43,7 @@ const sketch = (s: p5) => {
   };
   s.draw = () => {
     s.clear();
-    s.image(bg, 20, 20, 760, 760);
+    s.image(bg, 24, 24, 752, 752);
     s.background(border);
     farm.value?.draw(s);
     coroutineCallbacks.value.forEach(
