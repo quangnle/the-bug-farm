@@ -63,6 +63,20 @@ export default function BugList() {
       sketchInstance.loop();
     }
   }, [show, filter]);
+
+  const handleSelectByGenes = (genes: IAppearance[]) => {
+    setSelectedBugs([]);
+    bugs.map((bug) => {
+      genes.map((gene) => {
+        if (bug.genes.find((_gene) => _gene._id === gene._id)) {
+          console.log(bugs.indexOf(bug));
+          setSelectedBugs((prev) => [...prev, bug]);
+        }
+      });
+    });
+    setShowFilter(false);
+  };
+
   const handleSellAll = async () => {
     try {
       if (selectedBugs.some((bug) => bug.appearance.name !== "default")) {
@@ -97,6 +111,7 @@ export default function BugList() {
         )
         .map((bug) => bug._id);
       console.log(_selectedBugs);
+      if (_selectedBugs.length === 0) return;
       await api.sellBugs({
         tankId: GAME_STATE.tank.value?._id,
         bugIds: _selectedBugs,
@@ -143,7 +158,11 @@ export default function BugList() {
     <>
       <Button onClick={() => setShow(true)}>Inventory</Button>
       {showFilter && (
-        <FilterGeneModal handleClose={() => setShowFilter(false)} bugs={bugs} />
+        <FilterGeneModal
+          handleSelectByGenes={handleSelectByGenes}
+          handleClose={() => setShowFilter(false)}
+          bugs={bugs}
+        />
       )}
       {show && (
         <Modal handleClose={() => setShow(false)}>
@@ -173,6 +192,11 @@ export default function BugList() {
                   >
                     Direction: {filter.order === 1 ? "Asc" : "Desc"}
                   </Button>
+                  {selectedBugs.length > 0 && (
+                    <Button onClick={() => setSelectedBugs([])}>
+                      Unselect
+                    </Button>
+                  )}
                 </div>
                 <div className="flex gap-2">
                   {selectedBugs.length > 0 && (
