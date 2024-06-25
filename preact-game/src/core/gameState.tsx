@@ -93,10 +93,11 @@ effect(() => {
     if (!tank.value?._id) return;
 
     const { data } = await api.getTank(tank.value?._id);
+    const { data: listBugs } = await api.getAllBugs({ tankId: tank.value?._id })
 
     farm.value = new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22");
 
-    data.bugs.forEach((x: Bug & { appearance: string; genes: string[] }) => {
+    listBugs.forEach((x: Bug) => {
       const _x = Math.random() * (FARM_WIDTH - 100) + 100;
       const _y = Math.random() * (FARM_HEIGHT - 100) + 100;
 

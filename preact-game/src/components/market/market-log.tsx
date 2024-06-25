@@ -37,7 +37,7 @@ export default function MarketLog({
           <tr className="border">
             <td className="p-2">
               <div className="bg-[red] w-16">
-                <BugPattern appc={x.appearance} />
+                <BugPattern app={x.appearance} />
               </div>
             </td>
             <td className="p-2">

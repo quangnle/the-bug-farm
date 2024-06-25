@@ -43,8 +43,8 @@ class Bug {
     name: string;
     size: number;
     angle: number;
-    appearance: string;
-    genes: string[];
+    appearance: IAppearance;
+    genes: IAppearance[];
     createdAt: string;
     p5: p5;
   }) {
@@ -61,27 +61,15 @@ class Bug {
     this.mutationRate = 0.1;
     this.p5 = p5;
     this.createdAt = createdAt;
-
-    const _appearance =
-      GAME_STATE.appearance.value.find(
-        (x: any) => x._id === defaultAppearance
-      ) || PATTERN_DEFAULT;
-    this.appearance = _appearance;
-    this.genes = [];
     this.foodSenseDistance = 150;
     this.target = null;
 
+    this.appearance = defaultAppearance;
+    this.genes = defaultGenes
+
+    // this.genes = [];
+
     // add the default pattern
-    if (defaultGenes.length === 0) {
-      this.genes.push(PATTERN_DEFAULT); // Add missing variable or replace with a default value
-    } else {
-      defaultGenes.forEach((x: string) => {
-        const _find = GAME_STATE.appearance.value.find(
-          (app: any) => app._id === x
-        );
-        this.genes.push(_find || PATTERN_DEFAULT);
-      });
-    }
   }
 
   getBoundingBox(): IBoundary {

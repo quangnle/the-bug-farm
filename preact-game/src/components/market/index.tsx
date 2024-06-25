@@ -1,36 +1,35 @@
-import api from "@/core/axios";
-import Bug from "@/core/entity/bug";
-import Farm from "@/core/entity/farm";
-import { GAME_STATE, selectedObject, sketchInstance } from "@/core/gameState";
-import useList from "@/hooks/useList";
-import { Signal, signal } from "@preact/signals";
-import clsx from "clsx";
-import moment from "moment";
-import p5 from "p5";
-import { MouseEvent, useEffect, useRef, useState } from "react";
-import BorderContainer from "../border-container";
-import BugPattern from "../bug-pattern";
-import Button from "../common/button";
-import Chevron from "../common/chevron";
-import Loading from "../common/loading";
-import Modal from "../common/modal";
-import MarketLog from "./market-log";
-import { getSaleGenesInfo } from "@/core/utils";
-import { CANVAS_SIZE } from "../create-pattern/useCreatePattern";
-import Tooltip from "../common/toolip";
+import api from "@/core/axios"
+import Bug from "@/core/entity/bug"
+import Farm from "@/core/entity/farm"
+import { GAME_STATE, selectedObject, sketchInstance } from "@/core/gameState"
+import useList from "@/hooks/useList"
+import { Signal, signal } from "@preact/signals"
+import clsx from "clsx"
+import moment from "moment"
+import p5 from "p5"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import BorderContainer from "../border-container"
+import BugPattern from "../bug-pattern"
+import Button from "../common/button"
+import Chevron from "../common/chevron"
+import Loading from "../common/loading"
+import Modal from "../common/modal"
+import { getSaleGenesInfo } from "@/core/utils"
+import { CANVAS_SIZE } from "../create-pattern/useCreatePattern"
+import Tooltip from "../common/toolip"
 
-const MARKET_SIZE = 400;
+const MARKET_SIZE = 400
 const marketFarm: Signal<Farm> = signal(
   new Farm(0, 0, MARKET_SIZE, MARKET_SIZE, "#77dd22")
-);
+)
 
 export default function Market() {
-  const canvasRef = useRef(null);
-  const p5Ref = useRef<p5 | null>(null);
-  const [show, setShow] = useState(false);
-  const [selected, setSelected] = useState<Bug | null>(null);
-  const [market, setMarket] = useState<ISale[]>([]);
-  const [tab, setTab] = useState<'market' | 'logs'>('market')
+  const canvasRef = useRef(null)
+  const p5Ref = useRef<p5 | null>(null)
+  const [show, setShow] = useState(false)
+  const [selected, setSelected] = useState<Bug | null>(null)
+  const [market, setMarket] = useState<ISale[]>([])
+  const [tab, setTab] = useState<"market" | "logs">("market")
 
   const {
     data: list,
@@ -39,13 +38,13 @@ export default function Market() {
     pagination,
   } = useList(api.getSales, {
     lock: !GAME_STATE.user.value?._id,
-  });
+  })
 
   useEffect(() => {
     if (list && list.length) {
-      marketFarm.value.colony = [];
+      marketFarm.value.colony = []
       if (p5Ref.current) {
-        const _market: ISale[] = [];
+        const _market: ISale[] = []
         list.forEach((x: ISale) => {
           const _bug = new Bug({
             ...x.bug,
@@ -54,34 +53,34 @@ export default function Market() {
             y: Math.random() * MARKET_SIZE,
             color: "#f00",
             p5: p5Ref.current as p5,
-          });
+          })
 
-          marketFarm.value.colony.push(_bug);
+          marketFarm.value.colony.push(_bug)
           _market.push({
             ...x,
             bug: _bug,
-          });
-        });
-        setMarket(_market);
+          })
+        })
+        setMarket(_market)
       }
     }
-  }, [list]);
+  }, [list])
 
   useEffect(() => {
     if (show) {
-      sketchInstance.noLoop();
-      reloadList();
+      sketchInstance.noLoop()
+      reloadList()
 
       p5Ref.current = new p5((s) => {
-        console.log("init p5");
+        console.log("init p5")
         s.setup = () => {
           canvasRef.current &&
-            s.createCanvas(MARKET_SIZE, MARKET_SIZE, canvasRef.current);
-        };
+            s.createCanvas(MARKET_SIZE, MARKET_SIZE, canvasRef.current)
+        }
         s.draw = () => {
-          s.clear();
-          marketFarm.value?.draw(p5Ref.current as p5);
-        };
+          s.clear()
+          marketFarm.value?.draw(p5Ref.current as p5)
+        }
         s.mousePressed = () => {
           if (
             s.mouseY > marketFarm.value?.x &&
@@ -92,21 +91,21 @@ export default function Market() {
               s.mouseX,
               s.mouseY,
               (bug) => {
-                setSelected(bug);
+                setSelected(bug)
               }
-            );
+            )
           }
-        };
-      });
+        }
+      })
     } else {
-      sketchInstance.loop();
+      sketchInstance.loop()
     }
 
     return () => {
-      console.log("destroy p5");
-      p5Ref.current?.remove();
-    };
-  }, [show]);
+      console.log("destroy p5")
+      p5Ref.current?.remove()
+    }
+  }, [show])
 
   // const selectedSale = useMemo(
   //   () => market.find((x) => x.bug._id === selected?._id),
@@ -117,43 +116,43 @@ export default function Market() {
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     sale: ISale
   ) => {
-    e.stopPropagation();
+    e.stopPropagation()
     try {
-      if (!GAME_STATE.tank.value?._id) return;
+      if (!GAME_STATE.tank.value?._id) return
       const { data: _sale } = await api.buyBug(sale._id, {
         tankId: GAME_STATE.tank.value?._id,
-      });
-      removeSale(_sale);
+      })
+      removeSale(_sale)
     } catch (error: any) {
-      alert(error?.response?.data?.message);
+      alert(error?.response?.data?.message)
     }
-  };
+  }
 
   const handleUnBuy = async (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     sale: ISale
   ) => {
-    e.stopPropagation();
+    e.stopPropagation()
     try {
-      if (!GAME_STATE.tank.value?._id) return;
+      if (!GAME_STATE.tank.value?._id) return
       const { data: _sale } = await api.saleUnListting(sale._id, {
         tankId: GAME_STATE.tank.value?._id,
-      });
-      removeSale(_sale);
+      })
+      removeSale(_sale)
     } catch (error: any) {
-      alert(error?.response?.data?.message);
+      alert(error?.response?.data?.message)
     }
-  };
+  }
 
   const removeSale = async (_sale: ISale) => {
     if (_sale) {
       marketFarm.value.colony = marketFarm.value.colony.filter(
         (x) => x._id !== _sale.bug
-      );
-      setMarket(market.filter((x) => x._id !== _sale._id));
+      )
+      setMarket(market.filter((x) => x._id !== _sale._id))
       setSelected(null)
 
-      const { data: bug } = await api.getBug(_sale.bug);
+      const { data: bug } = await api.getBug(_sale.bug)
       GAME_STATE.farm.value?.colony.push(
         new Bug({
           ...bug,
@@ -165,27 +164,27 @@ export default function Market() {
           y: Math.random() * CANVAS_SIZE,
           color: "#f00",
         })
-      );
+      )
     }
-  };
+  }
 
   const handleChangePage = (value: number) => {
-    if (!pagination?.total) return;
-    const nextPage = (pagination?.page || 1) + value;
+    if (!pagination?.total) return
+    const nextPage = (pagination?.page || 1) + value
     console.log(
       nextPage,
       Math.round(pagination?.total / (pagination?.perPage || 10))
-    );
+    )
 
     if (
       nextPage <= 0 ||
       nextPage > Math.ceil(pagination?.total / (pagination?.perPage || 10))
     ) {
-      return;
+      return
     }
 
-    pagination?.onChange && pagination?.onChange(nextPage);
-  };
+    pagination?.onChange && pagination?.onChange(nextPage)
+  }
 
   return (
     <>
@@ -259,7 +258,7 @@ export default function Market() {
                   >
                     <div className="flex items gap-4">
                       <div className="w-16 h-16 bg-red-600">
-                        <BugPattern appc={sale.bug.appearance._id} />
+                        <BugPattern app={sale.bug.appearance} />
                       </div>
                       <div className="py-2 flex-1">
                         <p>
