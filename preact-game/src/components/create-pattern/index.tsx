@@ -130,7 +130,7 @@ export default function CreatePattern() {
                     }}
                   >
                     <option value={20}>20</option>
-                    <option value={33}>33</option>
+                    <option value={25}>25</option>
                   </select>
                 </label>
                 <label className="mt-4">
