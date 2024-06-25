@@ -1,16 +1,17 @@
-import { signal } from "@preact/signals";
+import { sketchInstance } from "@/core/gameState";
+import { effect, signal } from "@preact/signals";
 import p5 from "p5";
 
-export const SIZE = 20;
 
-export const CANVAS_SIZE = 400;
-export const CANVAS_WIDTH = 430;
+export const CANVAS_SIZE = 600;
+export const CANVAS_WIDTH = 660;
 
 let mode = "MOVE"
 
+export const SIZE = signal(20)
 export const PATTERN = signal<Array<Array<number | string>>>(
-  new Array(SIZE).fill(0).map(() => new Array(SIZE).fill(0))
-);
+  new Array(SIZE.value).fill(0).map(() => new Array(SIZE.value).fill(0))
+)
 export const SELECTED_COLOR = signal<string>("#ffffff");
 
 const drawBug = (p5: p5, x: number, y: number, size: number, color: string) => {
@@ -47,12 +48,12 @@ const drawBug = (p5: p5, x: number, y: number, size: number, color: string) => {
   p5.pop();
 };
 
-const generateDefaultPattern = (p5: p5) => {
+const generateDefaultPattern = () => {
   // get value of the pattern size
   // generate 2d array with the size
-  PATTERN.value = new Array(SIZE);
-  for (let i = 0; i < SIZE; i++) {
-    PATTERN.value[i] = new Array(SIZE).fill(0);
+  PATTERN.value = new Array(SIZE.value);
+  for (let i = 0; i < SIZE.value; i++) {
+    PATTERN.value[i] = new Array(SIZE.value).fill(0);
   }
 
   const cx = PATTERN.value[0].length >> 1;
@@ -60,7 +61,7 @@ const generateDefaultPattern = (p5: p5) => {
   const r = PATTERN.value.length >> 1;
   for (let i = 0; i < PATTERN.value.length; i++) {
     for (let j = 0; j < PATTERN.value[i].length; j++) {
-      let d = Math.floor(p5.dist(j, i, cx, cy));
+      let d = Math.floor(sketchInstance.dist(j, i, cx, cy));
       if (d >= r) {
         PATTERN.value[i][j] = -1;
       }
@@ -69,13 +70,26 @@ const generateDefaultPattern = (p5: p5) => {
 };
 
 export const setup = (p5: p5, canvas: HTMLCanvasElement | null) => {
-  console.log("init create pattern p5");
   canvas && p5.createCanvas(CANVAS_WIDTH, CANVAS_SIZE, canvas);
-  generateDefaultPattern(p5);
+  generateDefaultPattern();
 };
+
+effect(() => {
+  SIZE.value && generateDefaultPattern()
+})
+
+export const handleLoadDraft = (draft) => {
+  console.log(draft)
+  for (let i = 0; i < PATTERN.value.length; i++) {
+    for (let j = 0; j < PATTERN.value[i].length; j++) {
+      PATTERN.value[i][j] = draft.pattern[i][j]
+    }
+  }
+}
 
 export const draw = (p5: p5) => {
   // draw the pattern
+  p5.clear()
   const rectSize = CANVAS_SIZE / PATTERN.value[0].length;
   for (let i = 0; i < PATTERN.value.length; i++) {
     for (let j = 0; j < PATTERN.value[i].length; j++) {
@@ -99,6 +113,9 @@ export const draw = (p5: p5) => {
         );
       } else if (PATTERN.value[i][j] === 0) {
         p5.fill(255);
+        if (i === Math.round(SIZE.value / 2) - 1 || j === Math.round(SIZE.value / 2) - 1) {
+          p5.fill(255, 253, 208)
+        }
         p5.rect(j * rectSize, i * rectSize, rectSize, rectSize);
       } else {
         p5.fill(PATTERN.value[i][j] as string);

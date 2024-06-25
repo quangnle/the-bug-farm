@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { GAME_STATE } from "../../core/gameState"
-import BorderContainer from "../border-container"
 import api from "../../core/axios"
 import Modal from "../common/modal"
 import Loading from "../common/loading"
 import { handleError } from "@/utils/helpers"
+import "./style.css"
 
 const MAX_TANK = 5
 
@@ -53,8 +53,7 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
     <>
       {show && (
         <Modal handleClose={onClose}>
-          <BorderContainer className="w-full h-full bg-white p-8 text-center min-w-[650px]">
-            <h1 className="mb-8">Tank List</h1>
+          <div className="tank-holder">
             {loading ? (
               <div className="h-40 flex items-center">
                 <Loading className="scale-150" />
@@ -63,7 +62,7 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
               <div className="flex flex-wrap items-center justify-center gap-4 max-w-[700px]">
                 {tanks.slice(0, MAX_TANK).map((x) => (
                   <div
-                    className="flex gap-4 p-4 border-4 border-dashed hover:border-[burlywood] hover:bg-[burlywood]/20 rounded-xl cursor-pointer w-[240px] aspect-[3/2]"
+                    className="flex gap-4 p-4 border-4 border-dashed hover:border-[orange]/50 hover:bg-[burlywood]/20 rounded-xl cursor-pointer w-[240px] aspect-[3/2]"
                     onClick={() => onSelectTank(x)}
                   >
                     <div className="text-xl text-left">
@@ -91,7 +90,7 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
                 ))}
               </div>
             )}
-          </BorderContainer>
+          </div>
         </Modal>
       )}
     </>

@@ -2,18 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'UTM Cookies';
+  src: url('./assets/fonts/UTM-Cookies.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
 }
 
 html {
-  font-family: "Chakra Petch", sans-serif;
+  font-family: "Jost", sans-serif;
 }
 
 h1 {
-  line-height:1em;
-  color:#fec425;
-  font-weight:bold;
+  font-family: "UTM Cookies";
+  line-height: 1em;
+  color: #fec425;
+  font-weight: bold;
   font-size: 2.5rem;
   margin-bottom: 8px;
   text-shadow: 0px 0px 0 rgb(125, 62, -97), 1px 1px 0 rgb(38, -25, -184), 2px 2px 1px rgba(0, 0, 0, 0.6), 2px 2px 1px rgba(0, 0, 0, 0.5), 0px 0px 1px rgba(0, 0, 0, .2);
