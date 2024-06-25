@@ -1,5 +1,5 @@
 import { MAX_FLOWERS } from "@/core/constants";
-import { GAME_STATE, sketchInstance } from "@/core/gameState";
+import { GAME_STATE } from "@/core/gameState";
 import { useEffect, useState } from "react";
 import "./style.css";
 
@@ -25,10 +25,6 @@ export default function GameHeader() {
     };
   }, []);
 
-  const handleSaveGif = () => {
-    sketchInstance.saveGif("myGif", 6, {});
-  };
-
   return (
     <div className="flex items-center justify-between gap-4 pl-72 relative">
       <img
@@ -51,5 +47,5 @@ export default function GameHeader() {
         </div>
       </div>
     </div>
-  )
+  );
 }
