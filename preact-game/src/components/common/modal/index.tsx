@@ -3,6 +3,7 @@ import { HTMLAttributes, FC } from "react";
 import Backdrop from "./backdrop";
 import { createPortal } from "react-dom";
 import "./style.css";
+import clsx from "clsx";
 
 interface IProp extends HTMLAttributes<HTMLDivElement> {
   handleClose?: () => void;
@@ -29,12 +30,12 @@ const dropIn = {
   },
 };
 
-const Modal: FC<IProp> = ({ children, handleClose }) => {
+const Modal: FC<IProp> = ({ children, className, handleClose }) => {
   return createPortal(
     <Backdrop onClick={() => handleClose && handleClose()}>
       <motion.div
         onClick={(e) => e.stopPropagation()}
-        className="modal"
+        className={clsx("modal", className)}
         variants={dropIn}
         initial="hidden"
         animate="visible"

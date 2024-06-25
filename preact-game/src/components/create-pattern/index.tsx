@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import Button from "../common/button";
-import Modal from "../common/modal";
-import BorderContainer from "../border-container";
+import { useEffect, useRef, useState } from "react"
+import Button from "../common/button"
+import Modal from "../common/modal"
+import BorderContainer from "../border-container"
 import p5 from "p5";
 import {
   PATTERN,
   SELECTED_COLOR,
   draw,
-  mouseDragged,
   mousePressed,
   mouseReleased,
   setup,
@@ -20,6 +19,8 @@ export default function CreatePattern() {
   const [show, setShow] = useState(false);
   const canvasRef = useRef(null);
   const p5Ref = useRef<p5 | null>(null);
+
+  const [drafts, setDrafts] = useState([])
 
   const [name, setName] = useState("");
 
@@ -57,11 +58,23 @@ export default function CreatePattern() {
     }
   };
 
+  useEffect(() => {
+    try {
+      const _drafts = JSON.parse(localStorage.getItem("drafts") || "[]")
+      setDrafts(_drafts)
+    } catch (error ){
+      handleError(error)
+    }
+  }, [])
+
   return (
     <>
       <Button onClick={() => setShow(true)}>Create pattern</Button>
       {show && (
-        <Modal handleClose={() => setShow(false)}>
+        <Modal
+          handleClose={() => setShow(false)}
+          className="flex gap-2 flex-row"
+        >
           <BorderContainer className="w-[800px] h-[500px] p-4 bg-green-200 flex flex-col">
             <h1 className="text-center">Create Pattern</h1>
             <div className="flex flex-1 gap-2">
@@ -73,10 +86,11 @@ export default function CreatePattern() {
                   type="color"
                   id="color-picker"
                   onChange={(event) => {
-                    SELECTED_COLOR.value = event.target.value;
+                    SELECTED_COLOR.value = event.target.value
                   }}
                   value={SELECTED_COLOR.value}
                 />
+                <Button className="mt-4" onClick={handleSubmit}>Save draft</Button>
 
                 <label className="mt-4">
                   <span className="font-bold">Pattern name: </span>
@@ -92,8 +106,11 @@ export default function CreatePattern() {
               </div>
             </div>
           </BorderContainer>
+          <BorderContainer className="w-[200px] bg-green-200 flex items-center justify-center p-4">
+            {drafts.length === 0 ? <p className="text-xl">No draft</p> : <></>}
+          </BorderContainer>
         </Modal>
       )}
     </>
-  );
+  )
 }
