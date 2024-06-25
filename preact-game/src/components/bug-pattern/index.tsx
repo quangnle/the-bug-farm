@@ -1,16 +1,11 @@
-import { PATTERN_DEFAULT } from "@/core/constants"
-import { GAME_STATE } from "@/core/gameState"
-import { drawSvg } from "@/core/utils"
 import { useEffect, useRef } from "react"
 
-export default function BugPattern({ appc }: { appc?: string }) {
+export default function BugPattern({ app }: { app: IAppearance }) {
   const canvasRef = useRef(null)
 
   useEffect(() => {
     if (canvasRef.current) {
-      const { pattern } =
-        GAME_STATE.appearance.value.find((x) => x._id === appc) ||
-        PATTERN_DEFAULT
+      const { pattern } = app
 
       const ctx = (canvasRef.current as HTMLCanvasElement).getContext("2d")
       if (!ctx) return
@@ -32,7 +27,7 @@ export default function BugPattern({ appc }: { appc?: string }) {
         }
       }
     }
-  }, [appc])
+  }, [app])
 
   return (
     <canvas

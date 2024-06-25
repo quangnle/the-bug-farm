@@ -6,6 +6,14 @@ export const BASE_URL = 'https://api-bug-game.skyglab.tech'
 
 axios.defaults.baseURL = BASE_URL
 
+const APIS_WILL_UPDATE_USER = [
+  'buy',
+  'sell',
+  'flower',
+  'appearances',
+  'sales/listing'
+]
+
 export const getToken = () => {
   try {
     const cache = JSON.parse(localStorage.getItem('token') || '{}')
@@ -36,7 +44,7 @@ const api = {
     }),
   getTank: async (id) => axios.get(`/tanks/${id}`, {}),
   createTank: async (name) => axios.post("/tanks", { name }),
-  getAllBugs: async () => axios.get("/bugs"),
+  getAllBugs: async (params) => axios.get("/bugs", { params }),
   getBug: async (id) => axios.get(`/bugs/${id}`),
   getAllAppearances: async () => axios.get("/appearances/default"),
   createAppearance: async (payload) => axios.post("/appearances", payload),
@@ -83,10 +91,7 @@ axios.interceptors.response.use(
   (response) => {
     if (
       GAME_STATE.user.value &&
-      (response.request.responseURL.includes("buy") ||
-        response.request.responseURL.includes("sell") ||
-        response.request.responseURL.includes("flower") ||
-        response.request.responseURL.includes("appearances"))
+      (APIS_WILL_UPDATE_USER.some(x => response.request.responseURL.includes(x)))
     ) {
       api.me().then(({ data }) => {
         GAME_STATE.user.value.money = data.money

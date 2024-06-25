@@ -159,13 +159,16 @@ export default function SelectedObject() {
 
         {selectedObject.value instanceof Bug && (
           <BorderContainer className="border-2 w-24 h-24 bg-[red]">
-            <BugPattern appc={selectedObject.value.appearance._id} />
+            <BugPattern app={selectedObject.value.appearance} />
           </BorderContainer>
         )}
       </div>
       <div className="flex flex-col h-full">
         {selectedObject.value instanceof Bug && (
           <>
+            {import.meta.env.MODE === "development" && (
+              <p>{selectedObject.value._id}</p>
+            )}
             <p className="border-b border-black border-dashed">
               List of genes:{" "}
             </p>

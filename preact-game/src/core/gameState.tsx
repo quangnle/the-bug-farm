@@ -33,7 +33,7 @@ const sketch = (s: p5) => {
   s.setup = () => {
     const canvas = document.getElementById("main-canvas");
     if (canvas) {
-      bg = s.loadImage("/assets/bg-2.jpeg");
+      bg = s.loadImage("/assets/grass.png");
       s.createCanvas(FARM_WIDTH, FARM_HEIGHT, canvas);
       s.pixelDensity(2)
     }
@@ -93,10 +93,11 @@ effect(() => {
     if (!tank.value?._id) return;
 
     const { data } = await api.getTank(tank.value?._id);
+    const { data: listBugs } = await api.getAllBugs({ tankId: tank.value?._id })
 
     farm.value = new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22");
 
-    data.bugs.forEach((x: Bug & { appearance: string; genes: string[] }) => {
+    listBugs.forEach((x: Bug) => {
       const _x = Math.random() * (FARM_WIDTH - 100) + 100;
       const _y = Math.random() * (FARM_HEIGHT - 100) + 100;
 
