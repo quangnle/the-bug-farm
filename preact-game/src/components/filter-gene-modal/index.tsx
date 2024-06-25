@@ -8,6 +8,7 @@ import { useState } from "react";
 
 interface IProp {
   bugs: Bug[];
+  showFilter: boolean;
   handleSelectByGenes?: (genes: IAppearance[]) => void;
   handleClose?: () => void;
 }
@@ -16,6 +17,7 @@ const FilterGeneModal: FC<IProp> = ({
   handleClose,
   bugs,
   handleSelectByGenes,
+  showFilter,
 }) => {
   const [selectedGenes, setSelectedGenes] = useState<IAppearance[]>([]);
 
@@ -26,12 +28,16 @@ const FilterGeneModal: FC<IProp> = ({
     const uniqueArr = bugGeneArr
       .filter(
         (item, index) =>
-          bugGeneArr.findIndex((gene) => gene._id === item._id) === index
+          bugGeneArr.findIndex((gene) => gene.name === item.name) === index
       )
       .map((gene) => gene);
+
     return uniqueArr.map((gene) => (
-      <Field key={gene._id} className="flex items-center gap-2">
+      <Field key={gene.name} className="flex items-center gap-2">
         <Checkbox
+          checked={Boolean(
+            selectedGenes.find((_gene) => _gene.name === gene.name)
+          )}
           onChange={(checked) => {
             if (checked) {
               setSelectedGenes((prev: IAppearance[]) => [...prev, gene]);
@@ -62,23 +68,27 @@ const FilterGeneModal: FC<IProp> = ({
   };
 
   return (
-    <Modal handleClose={handleClose}>
-      <BorderContainer className="bg-black/60 p-4">
-        <h1 className="font-bold text-center mb-6">Filter to select</h1>
-        <div className="flex flex-col gap-2">{handleFilterGenes()}</div>
-        <div className="flex justify-end mt-4">
-          <Button
-            onClick={() =>
-              selectedGenes.length > 0 &&
-              handleSelectByGenes &&
-              handleSelectByGenes(selectedGenes)
-            }
-          >
-            Select
-          </Button>
-        </div>
-      </BorderContainer>
-    </Modal>
+    <>
+      {showFilter && (
+        <Modal handleClose={handleClose}>
+          <BorderContainer className="bg-black/60 p-4">
+            <h1 className="font-bold text-center mb-6">Filter to select</h1>
+            <div className="flex flex-col gap-2">{handleFilterGenes()}</div>
+            <div className="flex justify-end mt-4">
+              <Button
+                onClick={() =>
+                  selectedGenes.length > 0 &&
+                  handleSelectByGenes &&
+                  handleSelectByGenes(selectedGenes)
+                }
+              >
+                Select
+              </Button>
+            </div>
+          </BorderContainer>
+        </Modal>
+      )}
+    </>
   );
 };
 
