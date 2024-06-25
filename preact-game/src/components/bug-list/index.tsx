@@ -16,6 +16,7 @@ export default function BugList() {
   const [bugs, setBugs] = useState<Bug[]>([])
   const [selectedBugs, setSelectedBugs] = useState<Bug[]>([])
   const [showSelectTank, setShowSelectTank] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const [filter, setFilter] = useState<{
     type: "none" | "rarity" | "createdAt"
@@ -67,6 +68,10 @@ export default function BugList() {
 
   const handleSellAll = async () => {
     try {
+      setLoading(true)
+      if (selectedBugs.length === 0) {
+        alert('No bug selected')
+      }
       if (selectedBugs.some((bug) => bug.appearance.name !== "default")) {
         if (
           !confirm(
@@ -88,15 +93,21 @@ export default function BugList() {
       sellBugEffect(0, 0)
     } catch (error) {
       console.error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
   const handleSellAllDefault = async () => {
     try {
+      setLoading(true)
       const _selectedBugs = bugs
         .filter((bug) => bug.appearance.name === "default" && bug.genes.length === 1)
         .map((bug) => bug._id)
         console.log(_selectedBugs)
+      if (_selectedBugs.length === 0) {
+        alert('No bug selected')
+      }
       await api.sellBugs({
         tankId: GAME_STATE.tank.value?._id,
         bugIds: _selectedBugs
@@ -108,6 +119,8 @@ export default function BugList() {
       sellBugEffect(0, 0)
     } catch (error) {
       console.error(error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -182,10 +195,10 @@ export default function BugList() {
                       <Button onClick={() => setShowSelectTank(true)}>
                         Change Tank
                       </Button>
-                      <Button onClick={handleSellAll}>Sell</Button>
+                      <Button onClick={() => !loading && handleSellAll()}>Sell</Button>
                     </>
                   )}
-                  <Button onClick={handleSellAllDefault}>
+                  <Button onClick={() => !loading && handleSellAllDefault()}>
                     Sell all Default
                   </Button>
                 </div>

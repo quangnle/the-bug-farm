@@ -28,15 +28,14 @@ export default function BringToMarket () {
 
   const feeInStore = useMemo(
     () =>
-      form.price <=
-      (MARKET_CONFIG.priceWillGetFeePercentage ||
-        form.price *
-          (MARKET_CONFIG.percentageFeeInSale / 100) *
-          form.numberOfDaysSent)
-        ? MARKET_CONFIG.minimumFeeInSale * form.numberOfDaysSent
-        : form.price *
-          (MARKET_CONFIG.percentageFeeInSale / 100) *
-          form.numberOfDaysSent,
+      Math.round(
+        form.price * (MARKET_CONFIG.percentageFeeInSale / 100) <=
+          MARKET_CONFIG.minimumFeeInSale
+          ? MARKET_CONFIG.minimumFeeInSale * form.numberOfDaysSent
+          : form.price *
+              (MARKET_CONFIG.percentageFeeInSale / 100) *
+              form.numberOfDaysSent
+      ),
     [form.price, form.numberOfDaysSent]
   )
 

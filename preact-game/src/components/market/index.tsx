@@ -156,8 +156,6 @@ export default function Market() {
       GAME_STATE.farm.value?.colony.push(
         new Bug({
           ...bug,
-          appearance: bug.appearance._id,
-          genes: bug.genes.map((x: Bug) => x._id),
           p5: sketchInstance,
           size: 20,
           x: Math.random() * CANVAS_SIZE,

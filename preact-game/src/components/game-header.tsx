@@ -38,12 +38,16 @@ export default function GameHeader() {
       />
       <h1 className="h1">{GAME_STATE.user.value?.username}</h1>
       <div className="flex gap-8">
-        <div className="font-bold">Tank: {GAME_STATE.tank.value?.name}</div>
-        <div className="font-bold">Money: ${staticData.money}</div>
-        <div className="font-bold">
-          Population: {staticData.population} / {GAME_STATE.tank.value?.size}
+        <div className="flex items-end font-bold">Tank: {GAME_STATE.tank.value?.name}</div>
+        <div className="font-bold flex items-end gap-2 text-xl">
+          <img src="/assets/icons/coin.png" width={32} />
+          <span>{staticData.money}</span>
         </div>
-        <div className="font-bold">
+        <div className="font-bold flex items-end gap-2 text-xl">
+          <img src="/assets/icons/bug.png" width={32} />
+          <span>{staticData.population} / {GAME_STATE.tank.value?.size}</span>
+        </div>
+        <div className="font-bold flex items-end">
           Flowers: {staticData.flowers} / {MAX_FLOWERS}
         </div>
       </div>

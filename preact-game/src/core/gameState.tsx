@@ -23,7 +23,7 @@ const sketch = (s: p5) => {
   console.log("init p5");
   let bg: any;
   s.preload = () => {
-    GAME_ASSET.diamond = s.loadImage("/assets/diamond.png");
+    GAME_ASSET.diamond = s.loadImage("/assets/icons/coin.png");
 
     // Sound
     GAME_ASSET.cashout = new Audio();
