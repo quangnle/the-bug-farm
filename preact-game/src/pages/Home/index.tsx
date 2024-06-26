@@ -42,11 +42,6 @@ export default function Home() {
           <div className="flex gap-8">
             <GameBody loading={loading} />
             <div className="flex flex-col gap-8 flex-1 min-w-[300px]">
-              <div className="flex justify-around">
-                <BugList />
-                <Market />
-                <IconButtons icon="menu" />
-              </div>
               <BorderContainer className="flex-1 p-4 bg-green-200">
                 <SelectedObject />
               </BorderContainer>
