@@ -47,6 +47,7 @@ const api = {
   getAllBugs: async (params) => axios.get("/bugs", { params }),
   getBug: async (id) => axios.get(`/bugs/${id}`),
   getAllAppearances: async () => axios.get("/appearances/default"),
+  getUserAppearances: async () => axios.get("/appearances/default-of-user"),
   createAppearance: async (payload) => axios.post("/appearances", payload),
   updateAppearance: async (
     id: string,
@@ -65,6 +66,10 @@ const api = {
 
   getSales: async (params?: { sellerId?: string } & ICommonGetListParams) => {
     const { data } = await axios.get("/sales", { params });
+    return data as IListPagination<ISale>;
+  },
+  getSalesHistory: async (params?: {} & ICommonGetListParams) => {
+    const { data } = await axios.get("/sales/history", { params });
     return data as IListPagination<ISale>;
   },
   saleListing: async (payload: {
