@@ -23,7 +23,7 @@ export default function CreatePattern() {
   const p5Ref = useRef<p5 | null>(null);
   const [currentEditPattern, setCurrentEditPattern] = useState("");
   const [drafts, setDrafts] = useState([]);
-
+  const [userPatterns, setUserPatterns] = useState<IAppearance[]>([]);
   const [name, setName] = useState("");
 
   useEffect(() => {
@@ -72,6 +72,19 @@ export default function CreatePattern() {
       handleError(error);
     }
   };
+
+  const fetchAppearancesOfUser = async () => {
+    try {
+      const { data } = await api.getUserAppearances();
+      setUserPatterns(data);
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
+  useEffect(() => {
+    if (GAME_STATE.user.value) fetchAppearancesOfUser();
+  }, [GAME_STATE.user.value]);
 
   useEffect(() => {
     try {
@@ -132,14 +145,14 @@ export default function CreatePattern() {
 
   return (
     <>
-      <Button onClick={() => setShow(true)}>Create pattern</Button>
+      <Button onClick={() => setShow(true)}>Customise</Button>
       {show && (
         <Modal
           handleClose={() => setShow(false)}
           className="flex gap-2 flex-row"
         >
           <BorderContainer className="p-4 bg-green-200 flex flex-col">
-            <h1 className="text-center">Create Pattern</h1>
+            <h1 className="text-center">Customise</h1>
             <div className="flex flex-1 gap-2">
               <div className="">
                 <canvas ref={canvasRef}></canvas>
@@ -175,24 +188,32 @@ export default function CreatePattern() {
                     onChange={(event) => setName(event.target.value)}
                   />
                 </label>
-                {(GAME_STATE.user.value?._id === "6672c34d6823ebd43c8ea8a9" ||
+                {/* {(GAME_STATE.user.value?._id === "6672c34d6823ebd43c8ea8a9" ||
                   GAME_STATE.user.value?._id ===
-                    "66540a69de9028f574c478fb") && (
-                  <label className="mt-4">
-                    <span className="font-bold">Pattern name: </span>
-                    <select
-                      onChange={(e) => setCurrentEditPattern(e.target.value)}
-                      value={currentEditPattern}
-                    >
-                      <option value="">---</option>
-                      {GAME_STATE.appearance.value.map((appearance) => (
-                        <option value={appearance._id}>
-                          {appearance.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                )}
+                    "66540a69de9028f574c478fb") && ( */}
+                <label className="mt-4">
+                  <span className="font-bold">Pattern name: </span>
+                  <select
+                    onChange={(e) => setCurrentEditPattern(e.target.value)}
+                    value={currentEditPattern}
+                  >
+                    <option value="">---</option>
+                    {GAME_STATE.user.value?._id ===
+                      "6672c34d6823ebd43c8ea8a9" ||
+                    GAME_STATE.user.value?._id === "66540a69de9028f574c478fb"
+                      ? GAME_STATE.appearance.value.map((appearance) => (
+                          <option value={appearance._id}>
+                            {appearance.name}
+                          </option>
+                        ))
+                      : userPatterns.map((appearance) => (
+                          <option value={appearance._id}>
+                            {appearance.name}
+                          </option>
+                        ))}
+                  </select>
+                </label>
+                {/* )} */}
                 <div className="flex flex-col gap-4 mt-auto">
                   <div className="flex items-center gap-4">
                     <Button onClick={handleSubmit}>Create Pattern</Button>
