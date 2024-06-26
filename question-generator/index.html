@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Question Generator</title>
+    </head>
+    <body>
+        <p id="question"></p>
+        <p id="answers"></p>
+        <button onclick="generateQuestion()">Generate Question</button>
+        <script src="speller.js"></script>
+        <script src="compare-question.js"></script>
+        <script src="computation-question.js"></script>
+        <script src="question-generator.js"></script>
+        <script>
+            function generateQuestion() {
+                let questionGenerator = new QuestionGenerator("vn");
+                questionGenerator.addQuestionType(
+                    new CompareQuestion(questionGenerator.speller)
+                );
+                questionGenerator.addQuestionType(
+                    new ComputationQuestion(questionGenerator.speller)
+                );
+                let question = questionGenerator.generateQuestion();
+
+                document.getElementById("question").innerHTML = question[0];
+                document.getElementById("answers").innerHTML =
+                    question[2].join(", ");
+            }
+        </script>
+    </body>
+</html>
