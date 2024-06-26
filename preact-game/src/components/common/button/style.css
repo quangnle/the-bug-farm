@@ -15,6 +15,10 @@ button.btn.btn-big {
   --button_padding: 0.75rem 1.5rem;
   --button_font_size: 1.25rem;
 }
+button.btn.danger {
+  --button_color: #e8e8e8;
+  --button_outline_color: #7a0012;
+}
 
 .btn--top {
   display: block;

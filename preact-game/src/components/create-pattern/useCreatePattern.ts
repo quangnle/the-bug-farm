@@ -8,7 +8,7 @@ export const CANVAS_WIDTH = 660;
 
 let mode = "MOVE"
 
-export const SIZE = signal(20)
+export const SIZE = signal(25)
 export const PATTERN = signal<Array<Array<number | string>>>(
   new Array(SIZE.value).fill(0).map(() => new Array(SIZE.value).fill(0))
 )

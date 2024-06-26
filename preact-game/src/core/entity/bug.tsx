@@ -53,7 +53,7 @@ class Bug {
     this.color = color;
     this.x = x;
     this.y = y;
-    this.size = size;
+    this.size = defaultAppearance.pattern.length;
     this.angle = angle;
     this.dx = Math.cos(this.angle);
     this.dy = Math.sin(this.angle);

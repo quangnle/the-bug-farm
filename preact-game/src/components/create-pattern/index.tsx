@@ -95,6 +95,12 @@ export default function CreatePattern() {
     setDrafts(newDrafts)
   }
 
+  const handleDeleteDraft = (draft) => {
+    const newDrafts = drafts.filter((d) => d !== draft)
+    localStorage.setItem("drafts", JSON.stringify(newDrafts))
+    setDrafts(newDrafts)
+  }
+
   return (
     <>
       <Button onClick={() => setShow(true)}>Create pattern</Button>
@@ -159,9 +165,12 @@ export default function CreatePattern() {
                     </div>
                     <div>
                       <div className="">Name: {draft.name}</div>
-                      <div className="flex">
+                      <div className="flex flex-col gap-2">
                         <Button onClick={() => handleLoadDraft(draft)}>
                           Load
+                        </Button>
+                        <Button className="danger" onClick={() => handleDeleteDraft(draft)}>
+                          Delete
                         </Button>
                       </div>
                     </div>
