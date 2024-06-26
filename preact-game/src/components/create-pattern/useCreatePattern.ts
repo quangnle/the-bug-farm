@@ -2,16 +2,15 @@ import { sketchInstance } from "@/core/gameState";
 import { effect, signal } from "@preact/signals";
 import p5 from "p5";
 
-
 export const CANVAS_SIZE = 600;
 export const CANVAS_WIDTH = 660;
 
-let mode = "MOVE"
+let mode = "MOVE";
 
-export const SIZE = signal(25)
+export const SIZE = signal(25);
 export const PATTERN = signal<Array<Array<number | string>>>(
   new Array(SIZE.value).fill(0).map(() => new Array(SIZE.value).fill(0))
-)
+);
 export const SELECTED_COLOR = signal<string>("#ffffff");
 
 const drawBug = (p5: p5, x: number, y: number, size: number, color: string) => {
@@ -75,21 +74,24 @@ export const setup = (p5: p5, canvas: HTMLCanvasElement | null) => {
 };
 
 effect(() => {
-  SIZE.value && generateDefaultPattern()
-})
+  SIZE.value && generateDefaultPattern();
+});
 
 export const handleLoadDraft = (draft) => {
-  console.log(draft)
+  if (draft.name === "" && draft.pattern.length === 0) {
+    generateDefaultPattern();
+    return;
+  }
   for (let i = 0; i < PATTERN.value.length; i++) {
     for (let j = 0; j < PATTERN.value[i].length; j++) {
-      PATTERN.value[i][j] = draft.pattern[i][j]
+      PATTERN.value[i][j] = draft.pattern[i][j];
     }
   }
-}
+};
 
 export const draw = (p5: p5) => {
   // draw the pattern
-  p5.clear()
+  p5.clear();
   const rectSize = CANVAS_SIZE / PATTERN.value[0].length;
   for (let i = 0; i < PATTERN.value.length; i++) {
     for (let j = 0; j < PATTERN.value[i].length; j++) {
@@ -113,8 +115,11 @@ export const draw = (p5: p5) => {
         );
       } else if (PATTERN.value[i][j] === 0) {
         p5.fill(255);
-        if (i === Math.round(SIZE.value / 2) - 1 || j === Math.round(SIZE.value / 2) - 1) {
-          p5.fill(255, 253, 208)
+        if (
+          i === Math.round(SIZE.value / 2) - 1 ||
+          j === Math.round(SIZE.value / 2) - 1
+        ) {
+          p5.fill(255, 253, 208);
         }
         p5.rect(j * rectSize, i * rectSize, rectSize, rectSize);
       } else {
@@ -134,24 +139,31 @@ export const draw = (p5: p5) => {
   );
 
   const i = Math.floor(p5.mouseY / rectSize);
-    const j = Math.floor(p5.mouseX / rectSize);
-    if (i < 0 || i >= PATTERN.value.length || j < 0 || j >= PATTERN.value[i].length || PATTERN.value[i][j] === -1) return;
+  const j = Math.floor(p5.mouseX / rectSize);
+  if (
+    i < 0 ||
+    i >= PATTERN.value.length ||
+    j < 0 ||
+    j >= PATTERN.value[i].length ||
+    PATTERN.value[i][j] === -1
+  )
+    return;
 
-    if (mode === "DRAW"){        
-        PATTERN.value[i][j] = SELECTED_COLOR.value;
-    } else if (mode === "ERASE"){
-        PATTERN.value[i][j] = 0;
-    }
+  if (mode === "DRAW") {
+    PATTERN.value[i][j] = SELECTED_COLOR.value;
+  } else if (mode === "ERASE") {
+    PATTERN.value[i][j] = 0;
+  }
 };
 
 export const mousePressed = (p5: p5) => {
-  if(p5.mouseButton === p5.LEFT){
-      mode = "DRAW";
-  } else if (p5.mouseButton === p5.RIGHT){
-      mode = "ERASE";
+  if (p5.mouseButton === p5.LEFT) {
+    mode = "DRAW";
+  } else if (p5.mouseButton === p5.RIGHT) {
+    mode = "ERASE";
   }
-}
+};
 
 export const mouseReleased = () => {
   mode = "MOVE";
-}
+};

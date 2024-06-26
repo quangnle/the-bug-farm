@@ -1,79 +1,91 @@
-import { useEffect, useRef, useState } from "react"
-import Button from "../common/button"
-import Modal from "../common/modal"
-import BorderContainer from "../border-container"
-import p5 from "p5"
+import api from "@/core/axios";
+import { GAME_STATE, sketchInstance } from "@/core/gameState";
+import { handleError } from "@/utils/helpers";
+import p5 from "p5";
+import { useEffect, useRef, useState } from "react";
+import BorderContainer from "../border-container";
+import BugPatternWithoutApp from "../bug-pattern/bug-pattern-without-app";
+import Button from "../common/button";
+import Modal from "../common/modal";
 import {
   PATTERN,
   SELECTED_COLOR,
-  SIZE,
   draw,
   handleLoadDraft,
   mousePressed,
   mouseReleased,
   setup,
-} from "./useCreatePattern"
-import { sketchInstance } from "@/core/gameState"
-import api from "@/core/axios"
-import { handleError } from "@/utils/helpers"
-import BugPatternWithoutApp from "../bug-pattern/bug-pattern-without-app"
+} from "./useCreatePattern";
 
 export default function CreatePattern() {
-  const [show, setShow] = useState(false)
-  const canvasRef = useRef(null)
-  const p5Ref = useRef<p5 | null>(null)
+  const [show, setShow] = useState(false);
+  const canvasRef = useRef(null);
+  const p5Ref = useRef<p5 | null>(null);
+  const [currentEditPattern, setCurrentEditPattern] = useState("");
+  const [drafts, setDrafts] = useState([]);
 
-  const [drafts, setDrafts] = useState([])
-
-  const [name, setName] = useState("")
+  const [name, setName] = useState("");
 
   useEffect(() => {
     if (show) {
-      sketchInstance?.noLoop()
+      sketchInstance?.noLoop();
       p5Ref.current = new p5((s) => {
-        s.setup = () => setup(s, canvasRef.current)
-        s.draw = () => draw(s)
-        s.mousePressed = () => mousePressed(s)
-        s.mouseReleased = () => mouseReleased()
-      })
+        s.setup = () => setup(s, canvasRef.current);
+        s.draw = () => draw(s);
+        s.mousePressed = () => mousePressed(s);
+        s.mouseReleased = () => mouseReleased();
+      });
     } else {
-      sketchInstance?.loop()
-      p5Ref.current?.remove()
+      sketchInstance?.loop();
+      p5Ref.current?.remove();
     }
     return () => {
-      p5Ref.current?.remove()
-    }
-  }, [show])
+      p5Ref.current?.remove();
+    };
+  }, [show]);
 
   const handleSubmit = async () => {
     try {
       if (!name) {
-        alert("Required pattern name")
-        return
+        alert("Required pattern name");
+        return;
       }
       await api.createAppearance({
         name,
         pattern: PATTERN.value,
-      })
-      setShow(false)
+      });
+      setShow(false);
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
-  }
+  };
+
+  const handleUpdatePattern = async () => {
+    try {
+      await api.updateAppearance(currentEditPattern, {
+        pattern: PATTERN.value,
+      });
+      fetchAllAppearances();
+      setCurrentEditPattern("");
+      setShow(false);
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   useEffect(() => {
     try {
-      const _drafts = JSON.parse(localStorage.getItem("drafts") || "[]")
-      setDrafts(_drafts)
+      const _drafts = JSON.parse(localStorage.getItem("drafts") || "[]");
+      setDrafts(_drafts);
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
-  }, [])
+  }, []);
 
   const handleSaveDraft = () => {
     if (!name) {
-      alert("Required pattern name")
-      return
+      alert("Required pattern name");
+      return;
     }
     const newDrafts = [
       ...drafts,
@@ -81,7 +93,7 @@ export default function CreatePattern() {
         name,
         pattern: PATTERN.value,
       },
-    ]
+    ];
     localStorage.setItem(
       "drafts",
       JSON.stringify([
@@ -91,15 +103,32 @@ export default function CreatePattern() {
           pattern: PATTERN.value,
         },
       ])
-    )
-    setDrafts(newDrafts)
-  }
+    );
+    setDrafts(newDrafts);
+  };
+
+  const fetchAllAppearances = async () => {
+    const { data } = await api.getAllAppearances();
+    GAME_STATE.appearance.value = data;
+  };
 
   const handleDeleteDraft = (draft) => {
-    const newDrafts = drafts.filter((d) => d !== draft)
-    localStorage.setItem("drafts", JSON.stringify(newDrafts))
-    setDrafts(newDrafts)
-  }
+    const newDrafts = drafts.filter((d) => d !== draft);
+    localStorage.setItem("drafts", JSON.stringify(newDrafts));
+    setDrafts(newDrafts);
+  };
+
+  useEffect(() => {
+    if (currentEditPattern) {
+      const findPattern = GAME_STATE.appearance.value.find(
+        (appearance) => appearance._id === currentEditPattern
+      );
+      handleLoadDraft({
+        name: findPattern ? findPattern?.name : "",
+        pattern: findPattern ? findPattern?.pattern : [],
+      });
+    }
+  }, [currentEditPattern, GAME_STATE, show]);
 
   return (
     <>
@@ -120,7 +149,7 @@ export default function CreatePattern() {
                   type="color"
                   id="color-picker"
                   onChange={(event) => {
-                    SELECTED_COLOR.value = event.target.value
+                    SELECTED_COLOR.value = event.target.value;
                   }}
                   value={SELECTED_COLOR.value}
                 />
@@ -128,17 +157,17 @@ export default function CreatePattern() {
                   Save draft
                 </Button>
 
-                <label className="mt-4">
+                {/* <label className="mt-4">
                   <span>Size: </span>
                   <select
                     onChange={(event) => {
-                      SIZE.value = parseInt(event.target.value)
+                      SIZE.value = parseInt(event.target.value);
                     }}
                   >
                     <option value={20}>20</option>
                     <option value={25}>25</option>
                   </select>
-                </label>
+                </label> */}
                 <label className="mt-4">
                   <span className="font-bold">Pattern name: </span>
                   <input
@@ -146,9 +175,34 @@ export default function CreatePattern() {
                     onChange={(event) => setName(event.target.value)}
                   />
                 </label>
-                <div className="flex items-center gap-4 mt-auto">
-                  <Button onClick={handleSubmit}>Create Pattern</Button>
-                  <p className="text-md">It cost $200</p>
+                {(GAME_STATE.user.value?._id === "6672c34d6823ebd43c8ea8a9" ||
+                  GAME_STATE.user.value?._id ===
+                    "66540a69de9028f574c478fb") && (
+                  <label className="mt-4">
+                    <span className="font-bold">Pattern name: </span>
+                    <select
+                      onChange={(e) => setCurrentEditPattern(e.target.value)}
+                      value={currentEditPattern}
+                    >
+                      <option value="">---</option>
+                      {GAME_STATE.appearance.value.map((appearance) => (
+                        <option value={appearance._id}>
+                          {appearance.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+                <div className="flex flex-col gap-4 mt-auto">
+                  <div className="flex items-center gap-4">
+                    <Button onClick={handleSubmit}>Create Pattern</Button>
+                    <p className="text-md">It cost $200</p>
+                  </div>
+                  {currentEditPattern && (
+                    <Button onClick={() => handleUpdatePattern()}>
+                      Update Pattern
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -169,7 +223,10 @@ export default function CreatePattern() {
                         <Button onClick={() => handleLoadDraft(draft)}>
                           Load
                         </Button>
-                        <Button className="danger" onClick={() => handleDeleteDraft(draft)}>
+                        <Button
+                          className="danger"
+                          onClick={() => handleDeleteDraft(draft)}
+                        >
                           Delete
                         </Button>
                       </div>
@@ -182,5 +239,5 @@ export default function CreatePattern() {
         </Modal>
       )}
     </>
-  )
+  );
 }
