@@ -187,7 +187,7 @@ export default function SelectedObject() {
                 onSelectTank={handleSelectTank}
                 onClose={() => setShowSelectTank(false)}
               />
-              <Button onClick={handleSellBug}>Sell</Button>
+              <Button onClick={handleSellBug}>Sell (+$1)</Button>
             </div>
           </>
         )}

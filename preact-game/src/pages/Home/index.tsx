@@ -9,6 +9,9 @@ import api from "@/core/axios"
 import { GAME_STATE } from "@/core/gameState"
 import GameHeader from "@/components/game-header"
 import SelectedObject from "@/components/selected-object"
+import IconButtons from "@/components/icon-buttons"
+import BugList from "@/components/bug-list"
+import Market from "@/components/market"
 
 export default function Home() {
   const [loading, setLoading] = useState(true)
@@ -39,6 +42,11 @@ export default function Home() {
           <div className="flex gap-8">
             <GameBody loading={loading} />
             <div className="flex flex-col gap-8 flex-1 min-w-[300px]">
+              <div className="flex justify-around">
+                <BugList />
+                <Market />
+                <IconButtons icon="menu" />
+              </div>
               <BorderContainer className="flex-1 p-4 bg-green-200">
                 <SelectedObject />
               </BorderContainer>

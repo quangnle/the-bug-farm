@@ -32,8 +32,6 @@ export default function GameBody({ loading } : { loading : boolean}) {
         <Button onClick={() => setShowSelectTank(true)}>Switch Tank</Button>
         <Button onClick={handleSaveGif}>Save Gif</Button>
         <CreatePattern />
-        <BugList />
-        <Market />
       </div>
 
       {!loading && (
