@@ -16,7 +16,7 @@ type ITank = {
 type IAppearance = {
   _id?: string
   name: string
-  pattern: number[][]
+  pattern: Array<Array<number | string>>
   score: number
 }
 
