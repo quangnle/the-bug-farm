@@ -1,0 +1,14 @@
+.icon-btn {
+  @apply flex items-center justify-center w-20 aspect-square;
+  background-image: url('/assets/holders/button-holder.png');
+  background-size: contain;
+  background-repeat: no-repeat
+}
+
+.icon-btn img {
+  @apply w-10 duration-200;
+}
+
+.icon-btn:hover img {
+  @apply w-12 duration-200;
+}

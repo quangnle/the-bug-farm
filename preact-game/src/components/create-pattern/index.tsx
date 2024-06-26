@@ -145,14 +145,14 @@ export default function CreatePattern() {
 
   return (
     <>
-      <Button onClick={() => setShow(true)}>Create pattern</Button>
+      <Button onClick={() => setShow(true)}>Customise</Button>
       {show && (
         <Modal
           handleClose={() => setShow(false)}
           className="flex gap-2 flex-row"
         >
           <BorderContainer className="p-4 bg-green-200 flex flex-col">
-            <h1 className="text-center">Create Pattern</h1>
+            <h1 className="text-center">Customise</h1>
             <div className="flex flex-1 gap-2">
               <div className="">
                 <canvas ref={canvasRef}></canvas>

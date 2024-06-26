@@ -11,6 +11,7 @@ import Button from "../common/button";
 import Modal from "../common/modal";
 import FilterGeneModal from "../filter-gene-modal";
 import SelectTank from "../select-tank";
+import IconButtons from "../icon-buttons";
 
 export default function BugList() {
   const [show, setShow] = useState(false);
@@ -170,7 +171,7 @@ export default function BugList() {
 
   return (
     <>
-      <Button onClick={() => setShow(true)}>Inventory</Button>
+      <IconButtons onClick={() => setShow(true)} icon="inventory" />
       <FilterGeneModal
         showFilter={showFilter}
         handleSelectByGenes={handleSelectByGenes}
@@ -190,7 +191,7 @@ export default function BugList() {
                       setFilter((prev) => ({
                         ...prev,
                         type: prev.type === "rarity" ? "createdAt" : "rarity",
-                      }));
+                      }))
                     }}
                   >
                     Sort by: {filter.type}
@@ -200,7 +201,7 @@ export default function BugList() {
                       setFilter((prev) => ({
                         ...prev,
                         order: prev.order * -1,
-                      }));
+                      }))
                     }}
                   >
                     Order By: {filter.order === 1 ? "Asc" : "Desc"}
@@ -247,7 +248,7 @@ export default function BugList() {
                   const total = bug.genes.reduce(
                     (acc, gene) => acc + gene.score,
                     0
-                  );
+                  )
 
                   return (
                     <BorderContainer
@@ -259,11 +260,11 @@ export default function BugList() {
                       onClick={() => {
                         setSelectedBugs((prev) => {
                           if (prev.includes(bug)) {
-                            return prev.filter((b) => b !== bug);
+                            return prev.filter((b) => b !== bug)
                           } else {
-                            return [...prev, bug];
+                            return [...prev, bug]
                           }
-                        });
+                        })
                       }}
                     >
                       <div className="flex items-center gap-4">
@@ -292,7 +293,7 @@ export default function BugList() {
                         {moment((bug as unknown as IBug).createdAt).fromNow()}
                       </p>
                     </BorderContainer>
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -300,5 +301,5 @@ export default function BugList() {
         </Modal>
       )}
     </>
-  );
+  )
 }
