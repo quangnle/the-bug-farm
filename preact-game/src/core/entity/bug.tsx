@@ -55,7 +55,7 @@ class Bug {
     this.color = color
     this.x = x
     this.y = y
-    this.size = defaultAppearance.pattern.length
+    this.size = (defaultAppearance.pattern.length >> 1) << 1
     this.angle = angle
     // velocity
     this.dx = Math.cos(this.angle)
