@@ -3,7 +3,7 @@ import { Signal, effect, signal } from "@preact/signals";
 import Flower from "./entity/flower";
 import Bug from "./entity/bug";
 import Farm from "./entity/farm";
-import { FARM_HEIGHT, FARM_WIDTH } from "./constants";
+import { FARM_BORDER, FARM_HEIGHT, FARM_WIDTH } from "./constants";
 import api, { BASE_URL } from "./axios";
 import { CoroutineCallback } from "./coroutine";
 
@@ -20,6 +20,7 @@ export const GAME_ASSET: Record<string, any> = {
   diamond: null,
   cashout: null,
 };
+export const DEV_MODE = signal<boolean>(false)
 
 const sketch = (s: p5) => {
   console.log("init p5");
@@ -45,7 +46,13 @@ const sketch = (s: p5) => {
   };
   s.draw = () => {
     s.clear();
-    s.image(bg, 24, 24, 752, 752);
+    s.image(
+      bg,
+      FARM_BORDER,
+      FARM_BORDER,
+      FARM_WIDTH - FARM_BORDER * 2,
+      FARM_HEIGHT - FARM_BORDER * 2
+    )
     s.background(border);
     farm.value?.draw(s);
     coroutineCallbacks.value.forEach(
@@ -104,10 +111,10 @@ effect(() => {
     });
 
     farm.value = new Farm(
-      0,
-      0,
-      FARM_WIDTH,
-      FARM_HEIGHT,
+      FARM_BORDER,
+      FARM_BORDER,
+      FARM_WIDTH - FARM_BORDER * 2,
+      FARM_HEIGHT - FARM_BORDER * 2,
       "#77dd22",
       selectedObject
     );
@@ -149,3 +156,15 @@ effect(() => {
 
   fetchTank();
 });
+
+
+
+const toggleDevmode = (e) => {
+  if (e.key === "z" && farm.value) {
+    console.log('enable dev mode')
+    DEV_MODE.value = !DEV_MODE.value
+  }
+}
+
+document.removeEventListener("keydown", toggleDevmode)
+document.addEventListener("keydown", toggleDevmode)
