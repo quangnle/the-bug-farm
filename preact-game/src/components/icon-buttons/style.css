@@ -5,10 +5,10 @@
   background-repeat: no-repeat
 }
 
-.icon-btn img {
-  @apply w-10 duration-200;
+.icon-btn .icon-button__img {
+  @apply w-12 duration-200;
 }
 
-.icon-btn:hover img {
-  @apply w-12 duration-200;
+.icon-btn:hover .icon-button__img {
+  @apply w-14 duration-200;
 }

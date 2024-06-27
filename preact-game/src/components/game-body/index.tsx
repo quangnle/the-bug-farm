@@ -1,26 +1,21 @@
-import { GAME_STATE, sketchInstance } from "@/core/gameState";
-import Button from "../common/button";
-import CreatePattern from "../create-pattern";
-import BugList from "../bug-list";
-import Market from "../market";
-import SelectTank from "../select-tank";
-import { useState } from "react";
-import { CANVAS_SIZE, CANVAS_WIDTH } from "../create-pattern/useCreatePattern";
+import BugList from "../bug-list"
+import Market from "../market"
+import { CANVAS_SIZE, CANVAS_WIDTH } from "../create-pattern/useCreatePattern"
+import Menu from "../menu"
 
-export default function GameBody({ loading } : { loading : boolean}) {
-  const [showSelectTank, setShowSelectTank] = useState(false);
-  const handleSaveGif = () => {
-    sketchInstance.saveGif("myGif", 6, {});
-  };
-
-  const handleSelectTank = (x: ITank) => {
-    GAME_STATE.tank.value = x;
-    setShowSelectTank(false)
-    localStorage.setItem("lastTank", x._id);
-  };
-
+export default function GameBody({ loading }: { loading: boolean }) {
   return (
     <div className="game-body relative">
+      <div className="flex gap-4">
+        <div className="flex flex-col gap-4 py-4">
+          {!loading && (
+            <>
+              <BugList />
+              <Market />
+              <Menu />
+            </>
+          )}
+        </div>
         <canvas
           id="main-canvas"
           style={{
@@ -28,22 +23,7 @@ export default function GameBody({ loading } : { loading : boolean}) {
             height: CANVAS_SIZE,
           }}
         />
-      <div className="absolute w-full -bottom-20 left-0 rounded-lg flex justify-between p-4 bg-green-200">
-        <Button onClick={() => setShowSelectTank(true)}>Switch Tank</Button>
-        <Button onClick={handleSaveGif}>Save Gif</Button>
-        <CreatePattern />
       </div>
-
-      {!loading && (
-        <SelectTank
-          show={
-            !!(GAME_STATE.user.value?._id && !GAME_STATE.tank.value?._id) ||
-            showSelectTank
-          }
-          onSelectTank={handleSelectTank}
-          onClose={() => setShowSelectTank(false)}
-        />
-      )}
     </div>
   )
 }

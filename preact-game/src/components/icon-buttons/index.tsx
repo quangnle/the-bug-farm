@@ -9,7 +9,7 @@ type buttonProps = {
 export default function IconButtons({ icon,...props }: buttonProps) {
   return (
     <button {...props} className={clsx("icon-btn", props.className)}>
-      <img src={`/assets/${icon}.png`} />
+      {props.children || <img src={`/assets/${icon}.png`} className='icon-button__img' />}
     </button>
   )
 }
