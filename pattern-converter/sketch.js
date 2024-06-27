@@ -1,4 +1,5 @@
 let mode = "MOVE";
+let drawMode = "DRAW";
 
 function setup() {
     const thecanvas = document.getElementById("canvasArea");
@@ -96,14 +97,51 @@ function draw() {
         pattern[i][j] = selectedColor;
     } else if (mode === "ERASE") {
         pattern[i][j] = 0;
+    } else if (mode === "FILL") {
+        fillPattern(pattern, i, j, selectedColor);
+    }
+}
+
+function fillPattern(pattern, x, y, color) {
+    const oldColor = pattern[x][y];
+    if (oldColor === color || pattern[x][y] === -1) return;
+
+    const stack = [[x, y]];
+    const dx = [0, 0, 1, -1];
+    const dy = [1, -1, 0, 0];
+
+    while (stack.length > 0) {
+        const [i, j] = stack.pop();
+        pattern[i][j] = color;
+        for (let k = 0; k < 4; k++) {
+            const ni = i + dx[k];
+            const nj = j + dy[k];
+            if (
+                ni >= 0 &&
+                ni < pattern.length &&
+                nj >= 0 &&
+                nj < pattern[ni].length &&
+                pattern[ni][nj] === oldColor
+            ) {
+                stack.push([ni, nj]);
+            }
+        }
     }
 }
 
 function mousePressed() {
     if (mouseButton === LEFT) {
-        mode = "DRAW";
+        mode = drawMode;
     } else if (mouseButton === RIGHT) {
         mode = "ERASE";
+    }
+}
+
+function keyPressed() {
+    if (key === "f") {
+        drawMode = "FILL";
+    } else if (key === "d") {
+        drawMode = "DRAW";
     }
 }
 
