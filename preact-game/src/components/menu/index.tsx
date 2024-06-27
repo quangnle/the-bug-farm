@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../common/modal";
 import IconButtons from "../icon-buttons";
-import { GAME_STATE, sketchInstance } from "@/core/gameState";
+import { BGM_ENABLE, GAME_STATE, sketchInstance } from "@/core/gameState";
 import SelectTank from "../select-tank";
 import "./style.css"
 import CreatePattern from "../create-pattern";

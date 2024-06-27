@@ -10,6 +10,7 @@ import { CoroutineCallback } from "./coroutine";
 export const selectedObject: Signal<Bug | Flower | null> = signal(null);
 export const needVerifyQuestion: Signal<boolean> = signal(false);
 
+export const BGM_ENABLE = signal<boolean>(false);
 export const coroutineCallbacks = signal<Array<CoroutineCallback>>([]);
 const user: Signal<IUser | null> = signal(null);
 const tank: Signal<ITank | null> = signal(null);
@@ -20,6 +21,7 @@ const appearance: Signal<IAppearance[]> = signal([]);
 export const GAME_ASSET: Record<string, any> = {
   diamond: null,
   cashout: null,
+  bgm: null
 };
 export const DEV_MODE = signal<boolean>(false)
 
@@ -34,11 +36,15 @@ const sketch = (s: p5) => {
     GAME_ASSET.cashout = new Audio();
     GAME_ASSET.cashout.src = "/sounds/cash.mp3";
     GAME_ASSET.cashout.preload = "auto";
+
+    GAME_ASSET.bgm = new Audio();
+    GAME_ASSET.bgm.src = "/sounds/bgm-2.mp3";
+    GAME_ASSET.bgm.preload = "auto";
   };
   s.setup = () => {
     const canvas = document.getElementById("main-canvas");
     if (canvas) {
-      bg = s.loadImage("/assets/grass.png");
+      bg = s.loadImage("/assets/bg-football.png");
       border = s.loadImage("/assets/holders/game-holder.png");
 
       s.createCanvas(FARM_WIDTH, FARM_HEIGHT, canvas);
@@ -104,6 +110,7 @@ effect(() => {
   const fetchTank = async () => {
     if (!tank.value?._id) return;
 
+    BGM_ENABLE.value = true
     const { data: listBugs } = await api.getAllBugs({
       tankId: tank.value?._id,
     });
@@ -158,11 +165,16 @@ effect(() => {
       }
     };
   };
-
   fetchTank();
 });
 
-
+effect(() => {
+  if (BGM_ENABLE.value) {
+    GAME_ASSET.bgm?.play()
+  } else {
+    GAME_ASSET.bgm?.pause()
+  }
+})
 
 const toggleDevmode = (e) => {
   if (e.key === "z" && farm.value) {
