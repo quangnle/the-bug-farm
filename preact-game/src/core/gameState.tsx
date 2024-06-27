@@ -14,7 +14,7 @@ const user: Signal<IUser | null> = signal(null);
 const tank: Signal<ITank | null> = signal(null);
 const farm: Signal<Farm> = signal(
   new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22", selectedObject)
-)
+);
 const appearance: Signal<IAppearance[]> = signal([]);
 export const GAME_ASSET: Record<string, any> = {
   diamond: null,
@@ -40,7 +40,7 @@ const sketch = (s: p5) => {
       border = s.loadImage("/assets/holders/game-holder.png");
 
       s.createCanvas(FARM_WIDTH, FARM_HEIGHT, canvas);
-      s.pixelDensity(2)
+      s.pixelDensity(2);
     }
   };
   s.draw = () => {
@@ -96,10 +96,21 @@ effect(() => {
   const fetchTank = async () => {
     if (!tank.value?._id) return;
 
-    const { data: listBugs } = await api.getAllBugs({ tankId: tank.value?._id })
-    const { data: listFlowers } = await api.getAllFlowers({ tankId: tank.value?._id })
+    const { data: listBugs } = await api.getAllBugs({
+      tankId: tank.value?._id,
+    });
+    const { data: listFlowers } = await api.getAllFlowers({
+      tankId: tank.value?._id,
+    });
 
-    farm.value = new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22", selectedObject);
+    farm.value = new Farm(
+      0,
+      0,
+      FARM_WIDTH,
+      FARM_HEIGHT,
+      "#77dd22",
+      selectedObject
+    );
 
     listBugs.forEach((x: Bug) => {
       const _x = Math.random() * (FARM_WIDTH - 100) + 100;
