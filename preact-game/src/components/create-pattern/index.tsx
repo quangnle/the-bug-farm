@@ -49,6 +49,7 @@ export default function CreatePattern({
       p5Ref.current?.remove();
     }
     return () => {
+      sketchInstance?.loop();
       p5Ref.current?.remove();
     };
   }, [show]);
