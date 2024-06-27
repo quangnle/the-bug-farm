@@ -6,12 +6,14 @@ export const BASE_URL = "https://api-bug-game.skyglab.tech";
 
 axios.defaults.baseURL = BASE_URL;
 
+let controller: AbortController 
+
 const APIS_WILL_UPDATE_USER = [
-  "buy",
-  "sell",
-  "flower",
-  "appearances",
-  "sales/listing",
+  "patch|buy",
+  "delete|sell",
+  "post|flowers",
+  "post|appearances",
+  "post|sales/listing",
 ];
 
 export const getToken = () => {
@@ -33,7 +35,12 @@ export const setToken = (token) => {
 };
 
 const api = {
-  me: async () => axios.get("/auth/me"),
+  me: async () => {
+    const { data } = await axios.get("/auth/me", {
+      signal: controller.signal
+    })
+    return data as IUser
+  },
   login: async ({ username, password }) =>
     axios.post("/auth/login", { username, password }),
   register: async ({ username, password }) =>
@@ -97,16 +104,25 @@ axios.interceptors.request.use(async (config) => {
 });
 
 axios.interceptors.response.use(
-  (response) => {
+  async (response) => {
     if (
       GAME_STATE.user.value &&
       APIS_WILL_UPDATE_USER.some((x) =>
-        response.request.responseURL.includes(x)
+        {
+          const [method, path] = x.split('|')
+          
+          return method === response.config.method && response.request.responseURL.includes(path)
+        }
       )
     ) {
-      api.me().then(({ data }) => {
+      if (controller) {
+        controller.abort()
+      }
+      controller = new AbortController()
+      const data = await api.me()
+      if (data) {
         GAME_STATE.user.value.money = data.money;
-      });
+      }
     }
     if (typeof window === "undefined") {
       return response;
