@@ -10,9 +10,6 @@ export default function Menu() {
   const [show, setShow] = useState(false);
 
   const [showSelectTank, setShowSelectTank] = useState(false);
-  const handleSaveGif = () => {
-    sketchInstance.saveGif("myGif", 6, {});
-  };
 
   const handleSelectTank = (x: ITank) => {
     GAME_STATE.tank.value = x;
@@ -53,12 +50,8 @@ export default function Menu() {
             <CreatePattern closeMenu={() => setShow(false)} />
 
             <button
-              onClick={() => {
-                setShow(false);
-                handleSaveGif();
-              }}
             >
-              Save Gif
+              Setting
             </button>
 
             <button onClick={handleLogout}>Logout</button>
