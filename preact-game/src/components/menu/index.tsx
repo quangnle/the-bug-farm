@@ -22,6 +22,13 @@ export default function Menu () {
     localStorage.setItem("lastTank", x._id)
   }
 
+  const handleLogout = () => {
+    GAME_STATE.user.value = null
+    GAME_STATE.tank.value = null
+    localStorage.removeItem("token")
+    localStorage.removeItem("lastTank")
+  }
+
   return (
     <>
       <IconButtons icon="menu" className="group" onClick={() => setShow(true)}>
@@ -32,10 +39,11 @@ export default function Menu () {
       </IconButtons>
       {show && (
         <Modal handleClose={() => setShow(false)}>
-          <BorderContainer className="p-4 bg-white">
+          <BorderContainer className="flex flex-col gap-4 p-4 bg-white">
             <Button onClick={() => setShowSelectTank(true)}>Switch Tank</Button>
             <Button onClick={handleSaveGif}>Save Gif</Button>
             <CreatePattern />
+            <Button onClick={handleLogout}>Logout</Button>
           </BorderContainer>
         </Modal>
       )}
