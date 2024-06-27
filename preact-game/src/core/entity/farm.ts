@@ -3,7 +3,12 @@ import Flower from "./flower";
 import Route from "./route";
 
 import p5 from "p5";
-import { GAME_STATE, needVerifyQuestion, sketchInstance } from "../gameState";
+import {
+  DEV_MODE,
+  GAME_STATE,
+  needVerifyQuestion,
+  sketchInstance,
+} from "../gameState";
 import api from "../axios";
 import { BUG_SIZE, MAX_POPULATION, SPAWN_DURATION } from "../constants";
 import { plantFlower } from "@/components/flower-plant";
@@ -23,9 +28,7 @@ class Farm {
   obstacles: IBoundary[];
   mode: string;
   route: Route | null;
-  boundingBox: boolean;
   selectedObject: Signal<Bug | Flower | null>;
-  needVerifyQuestion: boolean;
 
   constructor(
     x: number,
@@ -41,12 +44,10 @@ class Farm {
     this.height = height;
     this.color = color;
     this.colony = [];
-    this.needVerifyQuestion = false;
     this.objects = [];
     this.obstacles = [];
     this.mode = "play";
     this.route = null;
-    this.boundingBox = false;
     this.selectedObject = selectedObject;
   }
 
@@ -65,6 +66,13 @@ class Farm {
     // fill(this.color);
     // rect(this.x, this.y, this.width, this.height);
     p5.strokeWeight(1);
+
+    if (DEV_MODE.value) {
+      p5.noFill();
+      p5.stroke("#0f0");
+      p5.rect(this.x, this.y, this.width, this.height);
+      p5.stroke("#000");
+    }
   }
 
   drawObjects(p5: p5) {
@@ -141,10 +149,14 @@ class Farm {
       if (idleBugIndices[idx] === 0) bug.update();
 
       // draw the bug's bounding box
-      if (this.boundingBox) {
+      if (DEV_MODE.value) {
         p5.noFill();
         p5.stroke("#f00");
         p5.rect(bug.x - bug.size / 2, bug.y - bug.size / 2, bug.size, bug.size);
+
+        p5.stroke("#00f");
+        p5.line(bug.x, bug.y, bug.target.x, bug.target.y);
+
         p5.stroke("#000");
       }
 

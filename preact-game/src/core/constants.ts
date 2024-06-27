@@ -1,6 +1,8 @@
 
 export const FARM_WIDTH = 800;
 export const FARM_HEIGHT = 800;
+export const FARM_BORDER = 48
+export const FARM_BORDER_SCALE = 1.5
 
 export const MAX_POPULATION = 50
 export const BUG_SIZE = 20

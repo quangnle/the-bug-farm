@@ -12,6 +12,7 @@ import {
   SELECTED_COLOR,
   draw,
   handleLoadDraft,
+  keyPressed,
   mousePressed,
   mouseReleased,
   setup,
@@ -43,6 +44,7 @@ export default function CreatePattern({
         s.draw = () => draw(s);
         s.mousePressed = () => mousePressed(s);
         s.mouseReleased = () => mouseReleased();
+        s.keyPressed = () => keyPressed(s);
       });
     } else {
       sketchInstance?.loop();
