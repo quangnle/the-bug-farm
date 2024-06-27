@@ -49,10 +49,12 @@ export default function MarketLog({
     <>
       <table className="table-auto text-white border-collapse border w-full">
         <thead>
-          <th className="p-2">Pattern</th>
-          <th className="p-2">#ID</th>
-          <th className="p-2 text-center">Price</th>
-          <th className="p-2 text-center">Status</th>
+          <tr>
+            <th className="p-2">Pattern</th>
+            <th className="p-2">#ID</th>
+            <th className="p-2 text-center">Price</th>
+            <th className="p-2 text-center">Status</th>
+          </tr>
         </thead>
         <tbody>
           {list.map((x: ISale) => (
@@ -91,5 +93,5 @@ export default function MarketLog({
         />
       </div>
     </>
-  );
+  )
 }
