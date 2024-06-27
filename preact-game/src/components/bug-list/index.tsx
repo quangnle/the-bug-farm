@@ -185,32 +185,29 @@ export default function BugList() {
               <h1 className="font-bold text-center mb-6">Inventory</h1>
               <div className="h-20 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <Button
+                  {/* <Button
                     className="w-[200px]"
                     onClick={() => {
                       setFilter((prev) => ({
                         ...prev,
                         type: prev.type === "rarity" ? "createdAt" : "rarity",
-                      }))
+                      }));
                     }}
                   >
                     Sort by: {filter.type}
-                  </Button>
+                  </Button> */}
                   <Button
                     onClick={() => {
                       setFilter((prev) => ({
                         ...prev,
                         order: prev.order * -1,
-                      }))
+                      }));
                     }}
                   >
-                    Order By: {filter.order === 1 ? "Asc" : "Desc"}
+                    {filter.order === 1
+                      ? "Ascending rarity"
+                      : "Descending rarit"}
                   </Button>
-                  {selectedBugs.length > 0 && (
-                    <Button onClick={() => setSelectedBugs([])}>
-                      Unselect
-                    </Button>
-                  )}
                 </div>
                 <div className="flex gap-2">
                   <Button onClick={() => setShowFilter(true)}>Filter</Button>
@@ -227,14 +224,17 @@ export default function BugList() {
                       <Button onClick={() => !loading && handleSellAll()}>
                         Sell all selected
                       </Button>
+                      <Button onClick={() => setSelectedBugs([])}>
+                        Unselect
+                      </Button>
                       {/* <Button onClick={() => !loading && handleSellAll()}>
                         Sell
                       </Button> */}
                     </>
                   )}
-                  <Button onClick={handleSellAllDefault}>
+                  {/* <Button onClick={handleSellAllDefault}>
                     Sell all Default
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
 
@@ -248,7 +248,7 @@ export default function BugList() {
                   const total = bug.genes.reduce(
                     (acc, gene) => acc + gene.score,
                     0
-                  )
+                  );
 
                   return (
                     <BorderContainer
@@ -260,11 +260,11 @@ export default function BugList() {
                       onClick={() => {
                         setSelectedBugs((prev) => {
                           if (prev.includes(bug)) {
-                            return prev.filter((b) => b !== bug)
+                            return prev.filter((b) => b !== bug);
                           } else {
-                            return [...prev, bug]
+                            return [...prev, bug];
                           }
-                        })
+                        });
                       }}
                     >
                       <div className="flex items-center gap-4">
@@ -288,12 +288,12 @@ export default function BugList() {
                           </ul>
                         </div>
                       </div>
-                      <p className="text-right">
+                      {/* <p className="text-right">
                         Hatch:{" "}
                         {moment((bug as unknown as IBug).createdAt).fromNow()}
-                      </p>
+                      </p> */}
                     </BorderContainer>
-                  )
+                  );
                 })}
               </div>
             </div>
@@ -301,5 +301,5 @@ export default function BugList() {
         </Modal>
       )}
     </>
-  )
+  );
 }

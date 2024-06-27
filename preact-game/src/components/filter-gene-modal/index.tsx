@@ -4,7 +4,7 @@ import { FC } from "preact/compat";
 import BorderContainer from "../border-container";
 import Button from "../common/button";
 import Modal from "../common/modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IProp {
   bugs: Bug[];
@@ -20,6 +20,21 @@ const FilterGeneModal: FC<IProp> = ({
   showFilter,
 }) => {
   const [selectedGenes, setSelectedGenes] = useState<IAppearance[]>([]);
+  useEffect(() => {
+    selectedGenes.map((selectedGenes) => {
+      let genesCount = 0;
+      bugs.map((bug) => {
+        const findGeneInSelectedGene = bug.genes.find(
+          (gene) => gene.name === selectedGenes.name
+        );
+        if (findGeneInSelectedGene) genesCount++;
+      });
+      if (genesCount === 0)
+        setSelectedGenes((prev: IAppearance[]) =>
+          prev.filter((prevGene) => prevGene.name !== selectedGenes.name)
+        );
+    });
+  }, [bugs]);
 
   const handleFilterGenes = () => {
     let bugGenes = new Set<IAppearance>();
