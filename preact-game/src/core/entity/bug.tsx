@@ -56,7 +56,7 @@ class Bug {
     this.x = x
     this.y = y
     this.size = (defaultAppearance.pattern.length >> 1) << 1
-    this.angle = angle
+    this.angle = Math.random() * Math.PI * 2
     // velocity
     this.dx = Math.cos(this.angle)
     this.dy = Math.sin(this.angle)
