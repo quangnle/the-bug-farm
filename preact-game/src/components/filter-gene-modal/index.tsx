@@ -20,6 +20,7 @@ const FilterGeneModal: FC<IProp> = ({
   showFilter,
 }) => {
   const [selectedGenes, setSelectedGenes] = useState<IAppearance[]>([]);
+  console.log(selectedGenes);
   useEffect(() => {
     selectedGenes.map((selectedGenes) => {
       let genesCount = 0;
@@ -58,7 +59,7 @@ const FilterGeneModal: FC<IProp> = ({
               setSelectedGenes((prev: IAppearance[]) => [...prev, gene]);
             } else {
               setSelectedGenes((prev: IAppearance[]) =>
-                prev.filter((x) => x !== gene)
+                prev.filter((x) => x.name !== gene.name)
               );
             }
           }}
