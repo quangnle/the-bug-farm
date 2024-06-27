@@ -3,11 +3,12 @@ import Flower from "./flower"
 import Route from "./route"
 
 import p5 from "p5"
-import { GAME_STATE, selectedObject, sketchInstance } from "../gameState"
+import { GAME_STATE, sketchInstance } from "../gameState"
 import api from "../axios"
 import { BUG_SIZE, MAX_POPULATION, SPAWN_DURATION } from "../constants"
 import { plantFlower } from "@/components/flower-plant"
 import { handleError } from "@/utils/helpers"
+import { Signal } from "@preact/signals"
 
 const distanceToReachFood = 10
 
@@ -23,13 +24,15 @@ class Farm {
   mode: string
   route: Route | null
   boundingBox: boolean
+  selectedObject: Signal<Bug | Flower | null>
 
   constructor(
     x: number,
     y: number,
     width: number,
     height: number,
-    color: string
+    color: string,
+    selectedObject: Signal<Bug | Flower | null>
   ) {
     this.x = x
     this.y = y
@@ -42,6 +45,7 @@ class Farm {
     this.mode = "play"
     this.route = null
     this.boundingBox = false
+    this.selectedObject = selectedObject
   }
 
   addObject(obj: Flower) {
@@ -64,7 +68,7 @@ class Farm {
   drawObjects(p5: p5) {
     // draw objects
     this.objects.forEach((object) => {
-      if (selectedObject.value === object) {
+      if (this.selectedObject.value === object) {
         object.draw(true)
       } else {
         object.draw(false)
@@ -143,7 +147,7 @@ class Farm {
       }
 
       // draw the bug
-      if (selectedObject.value === bug) {
+      if (this.selectedObject.value === bug) {
         bug.draw(true)
       } else {
         bug.draw(false)
@@ -179,7 +183,7 @@ class Farm {
                   color: flower.pistilColor,
                   x: bug.x,
                   y: bug.y,
-                  p5: bug.p5
+                  p5: bug.p5,
                 })
                 colony.push(newBug)
                 // handleUpdateInformation()
@@ -198,14 +202,14 @@ class Farm {
   }
 
   plantAFlower(x: number, y: number) {
-    const _flower = {...plantFlower.value}
+    const _flower = { ...plantFlower.value }
 
     api
       .plantFlower({
         tank: GAME_STATE.tank.value?._id,
         x,
         y,
-        ..._flower
+        ..._flower,
       })
       .then((res) => {
         if (res.data._id) {
@@ -218,7 +222,8 @@ class Farm {
           })
           this.addObject(flower)
         }
-      }).catch(error => {
+      })
+      .catch((error) => {
         handleError(error)
       })
   }
@@ -255,8 +260,13 @@ class Farm {
   //   }
   // }
 
-  mousePressed(mouseButton: 'left' | 'right', mouseX: number, mouseY: number, onBugClick?: (value: Bug) => void) {
-    if (mouseButton === 'right') {
+  mousePressed(
+    mouseButton: "left" | "right",
+    mouseX: number,
+    mouseY: number,
+    onBugClick?: (value: Bug) => void
+  ) {
+    if (mouseButton === "right") {
       // check if mouse position is out of the canvas
       if (
         mouseX < this.x + BUG_SIZE ||
@@ -288,21 +298,23 @@ class Farm {
     }
 
     // left click on the bug to select it
-    if (mouseButton === 'left') {
+    if (mouseButton === "left") {
+      console.log('selected',this.selectedObject)
       // check if mouse position is on a bug
       this.colony.forEach((bug) => {
         const d = sketchInstance.dist(mouseX, mouseY, bug.x, bug.y)
-        if (d < bug.size) {
-          selectedObject.value = bug
+        if (d < bug.size && this.selectedObject) {
+          this.selectedObject.value = bug
           onBugClick && onBugClick(bug)
         }
       })
 
       // check if mouse position is on a flower
-      this.objects.forEach((obj, index) => {
+      this.objects.forEach((obj) => {
         if (obj instanceof Flower) {
           const d = sketchInstance.dist(mouseX, mouseY, obj.x, obj.y)
-          if (d < obj.pistilSize + obj.petalSize / 2) selectedObject.value = obj
+          if (d < obj.pistilSize + obj.petalSize / 2 && this.selectedObject)
+            this.selectedObject.value = obj
         }
       })
     }

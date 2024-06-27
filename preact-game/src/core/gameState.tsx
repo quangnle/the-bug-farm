@@ -7,12 +7,14 @@ import { FARM_HEIGHT, FARM_WIDTH } from "./constants";
 import api, { BASE_URL } from "./axios";
 import { CoroutineCallback } from "./coroutine";
 
+export const selectedObject: Signal<Bug | Flower | null> = signal(null);
+
 export const coroutineCallbacks = signal<Array<CoroutineCallback>>([]);
 const user: Signal<IUser | null> = signal(null);
 const tank: Signal<ITank | null> = signal(null);
 const farm: Signal<Farm> = signal(
-  new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22")
-);
+  new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22", selectedObject)
+)
 const appearance: Signal<IAppearance[]> = signal([]);
 export const GAME_ASSET: Record<string, any> = {
   diamond: null,
@@ -83,8 +85,6 @@ const sketch = (s: p5) => {
 
 export const sketchInstance = new p5(sketch);
 
-export const selectedObject: Signal<Bug | Flower | null> = signal(null);
-
 export const GAME_STATE = {
   user,
   tank,
@@ -99,7 +99,7 @@ effect(() => {
     const { data: listBugs } = await api.getAllBugs({ tankId: tank.value?._id })
     const { data: listFlowers } = await api.getAllFlowers({ tankId: tank.value?._id })
 
-    farm.value = new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22");
+    farm.value = new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22", selectedObject);
 
     listBugs.forEach((x: Bug) => {
       const _x = Math.random() * (FARM_WIDTH - 100) + 100;

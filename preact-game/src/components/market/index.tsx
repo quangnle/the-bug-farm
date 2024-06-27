@@ -1,7 +1,7 @@
 import api from "@/core/axios";
 import Bug from "@/core/entity/bug";
 import Farm from "@/core/entity/farm";
-import { GAME_STATE, selectedObject, sketchInstance } from "@/core/gameState";
+import { GAME_STATE, sketchInstance } from "@/core/gameState";
 import useList from "@/hooks/useList";
 import { Signal, signal } from "@preact/signals";
 import clsx from "clsx";
@@ -16,13 +16,13 @@ import Loading from "../common/loading";
 import Modal from "../common/modal";
 import { getSaleGenesInfo } from "@/core/utils";
 import { CANVAS_SIZE } from "../create-pattern/useCreatePattern";
-import Tooltip from "../common/toolip";
 import MarketLog from "./market-log";
 import IconButtons from "../icon-buttons";
 
+const selectedObject = signal<Bug | null>(null);
 const MARKET_SIZE = 400;
 const marketFarm: Signal<Farm> = signal(
-  new Farm(0, 0, MARKET_SIZE, MARKET_SIZE, "#77dd22")
+  new Farm(0, 0, MARKET_SIZE, MARKET_SIZE, "#77dd22", selectedObject)
 );
 
 export default function Market() {
