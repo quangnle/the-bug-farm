@@ -8,6 +8,7 @@ import api, { BASE_URL } from "./axios";
 import { CoroutineCallback } from "./coroutine";
 
 export const selectedObject: Signal<Bug | Flower | null> = signal(null);
+export const needVerifyQuestion: Signal<boolean> = signal(false);
 
 export const coroutineCallbacks = signal<Array<CoroutineCallback>>([]);
 const user: Signal<IUser | null> = signal(null);
