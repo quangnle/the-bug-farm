@@ -6,8 +6,10 @@ export const CANVAS_SIZE = 600;
 export const CANVAS_WIDTH = 660;
 
 let mode = "MOVE";
+let drawMode = "DRAW";
 
 export const SIZE = signal(25);
+export let PREV_PATTERN :Array<Array<number | string>> = []
 export const PATTERN = signal<Array<Array<number | string>>>(
   new Array(SIZE.value).fill(0).map(() => new Array(SIZE.value).fill(0))
 );
@@ -44,6 +46,7 @@ const drawBug = (p5: p5, x: number, y: number, size: number, color: string) => {
       }
     }
   }
+
   p5.pop();
 };
 
@@ -149,16 +152,51 @@ export const draw = (p5: p5) => {
   )
     return;
 
+  
   if (mode === "DRAW") {
     PATTERN.value[i][j] = SELECTED_COLOR.value;
   } else if (mode === "ERASE") {
     PATTERN.value[i][j] = 0;
+  } else if (mode === "FILL") {
+    fillPattern(PATTERN.value, i, j, SELECTED_COLOR.value);
   }
 };
 
+const fillPattern = (
+  pattern: Array<Array<number | string>>,
+  x: number,
+  y: number,
+  color: string
+) => {
+  const oldColor = pattern[x][y]
+  if (oldColor === color || pattern[x][y] === -1) return
+
+  const stack = [[x, y]]
+  const dx = [0, 0, 1, -1]
+  const dy = [1, -1, 0, 0]
+
+  while (stack.length > 0) {
+    const [i, j] = stack.pop()
+    pattern[i][j] = color
+    for (let k = 0; k < 4; k++) {
+      const ni = i + dx[k]
+      const nj = j + dy[k]
+      if (
+        ni >= 0 &&
+        ni < pattern.length &&
+        nj >= 0 &&
+        nj < pattern[ni].length &&
+        pattern[ni][nj] === oldColor
+      ) {
+        stack.push([ni, nj])
+      }
+    }
+  }
+}
+
 export const mousePressed = (p5: p5) => {
   if (p5.mouseButton === p5.LEFT) {
-    mode = "DRAW";
+    mode = drawMode;
   } else if (p5.mouseButton === p5.RIGHT) {
     mode = "ERASE";
   }
@@ -167,3 +205,15 @@ export const mousePressed = (p5: p5) => {
 export const mouseReleased = () => {
   mode = "MOVE";
 };
+
+export const keyPressed = (p5: p5) => {
+  console.log(p5.key)
+  switch (p5.key) {
+    case "f": 
+      drawMode = "FILL"
+      break
+    case "d":
+      drawMode = "DRAW"
+      break
+  }
+}
