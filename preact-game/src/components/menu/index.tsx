@@ -7,20 +7,19 @@ import SelectTank from "../select-tank";
 import BorderContainer from "../border-container";
 import CreatePattern from "../create-pattern";
 
-export default function Menu () {
-  const [show, setShow] = useState(false)
+export default function Menu() {
+  const [show, setShow] = useState(false);
 
-
-  const [showSelectTank, setShowSelectTank] = useState(false)
+  const [showSelectTank, setShowSelectTank] = useState(false);
   const handleSaveGif = () => {
-    sketchInstance.saveGif("myGif", 6, {})
-  }
+    sketchInstance.saveGif("myGif", 6, {});
+  };
 
   const handleSelectTank = (x: ITank) => {
-    GAME_STATE.tank.value = x
-    setShowSelectTank(false)
-    localStorage.setItem("lastTank", x._id)
-  }
+    GAME_STATE.tank.value = x;
+    setShowSelectTank(false);
+    localStorage.setItem("lastTank", x._id);
+  };
 
   return (
     <>
@@ -32,10 +31,24 @@ export default function Menu () {
       </IconButtons>
       {show && (
         <Modal handleClose={() => setShow(false)}>
-          <BorderContainer className="p-4 bg-white">
-            <Button onClick={() => setShowSelectTank(true)}>Switch Tank</Button>
-            <Button onClick={handleSaveGif}>Save Gif</Button>
-            <CreatePattern />
+          <BorderContainer className="flex gap-5 p-4 bg-white">
+            <Button
+              onClick={() => {
+                setShow(false);
+                setShowSelectTank(true);
+              }}
+            >
+              Switch Tank
+            </Button>
+            <Button
+              onClick={() => {
+                setShow(false);
+                handleSaveGif();
+              }}
+            >
+              Save Gif
+            </Button>
+            <CreatePattern closeMenu={() => setShow(false)} />
           </BorderContainer>
         </Modal>
       )}
@@ -49,5 +62,5 @@ export default function Menu () {
         onClose={() => setShowSelectTank(false)}
       />
     </>
-  )
+  );
 }

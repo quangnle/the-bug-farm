@@ -204,13 +204,10 @@ export default function BugList() {
                       }));
                     }}
                   >
-                    Order By: {filter.order === 1 ? "Asc" : "Desc"}
+                    {filter.order === 1
+                      ? "Ascending rarity"
+                      : "Descending rarit"}
                   </Button>
-                  {selectedBugs.length > 0 && (
-                    <Button onClick={() => setSelectedBugs([])}>
-                      Unselect
-                    </Button>
-                  )}
                 </div>
                 <div className="flex gap-2">
                   <Button onClick={() => setShowFilter(true)}>Filter</Button>
@@ -226,6 +223,9 @@ export default function BugList() {
                       </Button>
                       <Button onClick={() => !loading && handleSellAll()}>
                         Sell all selected
+                      </Button>
+                      <Button onClick={() => setSelectedBugs([])}>
+                        Unselect
                       </Button>
                       {/* <Button onClick={() => !loading && handleSellAll()}>
                         Sell

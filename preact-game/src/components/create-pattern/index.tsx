@@ -17,7 +17,11 @@ import {
   setup,
 } from "./useCreatePattern";
 
-export default function CreatePattern() {
+export default function CreatePattern({
+  closeMenu,
+}: {
+  closeMenu: () => void;
+}) {
   const [show, setShow] = useState(false);
   const canvasRef = useRef(null);
   const p5Ref = useRef<p5 | null>(null);
@@ -25,6 +29,11 @@ export default function CreatePattern() {
   const [drafts, setDrafts] = useState([]);
   const [userPatterns, setUserPatterns] = useState<IAppearance[]>([]);
   const [name, setName] = useState("");
+
+  const handleClose = () => {
+    setShow(false);
+    closeMenu();
+  };
 
   useEffect(() => {
     if (show) {
@@ -54,7 +63,7 @@ export default function CreatePattern() {
         name,
         pattern: PATTERN.value,
       });
-      setShow(false);
+      handleClose();
     } catch (error) {
       handleError(error);
     }
@@ -67,7 +76,7 @@ export default function CreatePattern() {
       });
       fetchAllAppearances();
       setCurrentEditPattern("");
-      setShow(false);
+      handleClose();
     } catch (error) {
       handleError(error);
     }
@@ -147,10 +156,7 @@ export default function CreatePattern() {
     <>
       <Button onClick={() => setShow(true)}>Customise</Button>
       {show && (
-        <Modal
-          handleClose={() => setShow(false)}
-          className="flex gap-2 flex-row"
-        >
+        <Modal handleClose={handleClose} className="flex gap-2 flex-row">
           <BorderContainer className="p-4 bg-green-200 flex flex-col">
             <h1 className="text-center">Customise</h1>
             <div className="flex flex-1 gap-2">
