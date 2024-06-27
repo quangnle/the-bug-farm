@@ -1,57 +1,61 @@
 type IUser = {
-  _id: string
-  username: string
-  money: number
-}
+  _id: string;
+  username: string;
+  money: number;
+};
 
 type ITank = {
-  _id: string
-  name: string
-  userId: string
-  size: number
-  noBug?: number
-  noFlower?: number
-}
+  _id: string;
+  name: string;
+  userId: string;
+  size: number;
+  noBug?: number;
+  noFlower?: number;
+};
 
 type IAppearance = {
-  _id?: string
-  name: string
-  pattern: Array<Array<number | string>>
-  score: number
-}
+  _id?: string;
+  name: string;
+  pattern: Array<Array<number | string>>;
+  score: number;
+};
+
+type IQuestion = {
+  _id?: string;
+  description: string;
+  answers: string[];
+};
 
 type IPoint = {
-  x: number
-  y: number
-}
+  x: number;
+  y: number;
+};
 
 type IBoundary = {
-  left: number
-  right: number
-  top: number
-  bottom: number
-}
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+};
 
-type IRoute =  {
-  
-}
+type IRoute = {};
 
 type IBug = {
-  _id: string
-  appearance: string
-  createdAt: Moment | string
-  updatedAt: Moment | string
-}
+  _id: string;
+  appearance: string;
+  createdAt: Moment | string;
+  updatedAt: Moment | string;
+};
 
 type ISale = {
-  _id: string
-  bug: Bug
-  price: number
-  genes: IAppearance[]
-  appearance: string
+  _id: string;
+  bug: Bug;
+  price: number;
+  genes: IAppearance[];
+  appearance: string;
 
-  geneHash: string
-  seller: string
-  description: string
-  status: string
-}
+  geneHash: string;
+  seller: string;
+  description: string;
+  status: string;
+};

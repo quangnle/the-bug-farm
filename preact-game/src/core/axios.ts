@@ -6,7 +6,7 @@ export const BASE_URL = "https://api-bug-game.skyglab.tech";
 
 axios.defaults.baseURL = BASE_URL;
 
-let controller: AbortController 
+let controller: AbortController;
 
 const APIS_WILL_UPDATE_USER = [
   "patch|buy",
@@ -37,9 +37,9 @@ export const setToken = (token) => {
 const api = {
   me: async () => {
     const { data } = await axios.get("/auth/me", {
-      signal: controller.signal
-    })
-    return data as IUser
+      signal: controller.signal,
+    });
+    return data as IUser;
   },
   login: async ({ username, password }) =>
     axios.post("/auth/login", { username, password }),
@@ -49,6 +49,9 @@ const api = {
     axios.get("/tanks", {
       params: { userId, sortField: "createdAt", sortOrder: "asc" },
     }),
+  getQuestions: async () => axios.get("/questions/my-question"),
+  answerQuestion: async (id: string, payload: { answer: string }) =>
+    axios.patch(`/questions/${id}`, payload),
   getTank: async (id) => axios.get(`/tanks/${id}`, {}),
   createTank: async (name) => axios.post("/tanks", { name }),
   getAllBugs: async (params) => axios.get("/bugs", { params }),
@@ -107,19 +110,20 @@ axios.interceptors.response.use(
   async (response) => {
     if (
       GAME_STATE.user.value &&
-      APIS_WILL_UPDATE_USER.some((x) =>
-        {
-          const [method, path] = x.split('|')
-          
-          return method === response.config.method && response.request.responseURL.includes(path)
-        }
-      )
+      APIS_WILL_UPDATE_USER.some((x) => {
+        const [method, path] = x.split("|");
+
+        return (
+          method === response.config.method &&
+          response.request.responseURL.includes(path)
+        );
+      })
     ) {
       if (controller) {
-        controller.abort()
+        controller.abort();
       }
-      controller = new AbortController()
-      const data = await api.me()
+      controller = new AbortController();
+      const data = await api.me();
       if (data) {
         GAME_STATE.user.value.money = data.money;
       }

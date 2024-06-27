@@ -1,40 +1,40 @@
-import LoginForm from "@/components/login-form"
-import BorderContainer from "../../components/border-container"
-import "./style.css"
-import GameBody from "@/components/game-body"
-import FlowerPlant from "@/components/flower-plant"
-import { useEffect, useState } from "react"
-import { handleError } from "@/utils/helpers"
-import api from "@/core/axios"
-import { GAME_STATE } from "@/core/gameState"
-import GameHeader from "@/components/game-header"
-import SelectedObject from "@/components/selected-object"
-import IconButtons from "@/components/icon-buttons"
-import BugList from "@/components/bug-list"
-import Market from "@/components/market"
+import FlowerPlant from "@/components/flower-plant";
+import GameBody from "@/components/game-body";
+import GameHeader from "@/components/game-header";
+import LoginForm from "@/components/login-form";
+import SelectedObject from "@/components/selected-object";
+import api from "@/core/axios";
+import { GAME_STATE, needVerifyQuestion } from "@/core/gameState";
+// import { needVerifyQuestion } from "@/core/entity/farm";
+import { handleError } from "@/utils/helpers";
+import { useEffect, useState } from "react";
+import BorderContainer from "../../components/border-container";
+import "./style.css";
+import QuestionModal from "@/components/question-modal";
 
 export default function Home() {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const autoLogin = async () => {
       try {
-        const { data } = await api.me()
+        const { data } = await api.me();
         if (data) {
-          GAME_STATE.user.value = data
+          GAME_STATE.user.value = data;
         }
       } catch (error) {
-        handleError(error)
+        handleError(error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    autoLogin()
-  }, [])
+    autoLogin();
+  }, []);
 
   return (
     <div className="homepage h-screen overflow-hidden">
+      {needVerifyQuestion.value === true && <QuestionModal />}
       <div className="mx-auto">
         <div className="flex flex-col gap-8">
           {!loading && <LoginForm />}
@@ -53,5 +53,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }
