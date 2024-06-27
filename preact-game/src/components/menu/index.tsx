@@ -38,7 +38,7 @@ export default function Menu() {
       </IconButtons>
       {show && (
         <Modal handleClose={() => setShow(false)}>
-          <BorderContainer className="flex gap-5 p-4 bg-white">
+          <BorderContainer className="flex flex-col gap-5 p-4 bg-white">
             <Button
               onClick={() => {
                 setShow(false);
@@ -56,6 +56,8 @@ export default function Menu() {
               Save Gif
             </Button>
             <CreatePattern closeMenu={() => setShow(false)} />
+
+            <Button onClick={handleLogout}>Logout</Button>
           </BorderContainer>
         </Modal>
       )}
