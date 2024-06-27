@@ -3,7 +3,7 @@ import { Signal, effect, signal } from "@preact/signals";
 import Flower from "./entity/flower";
 import Bug from "./entity/bug";
 import Farm from "./entity/farm";
-import { FARM_BORDER, FARM_HEIGHT, FARM_WIDTH } from "./constants";
+import { FARM_BORDER, FARM_BORDER_SCALE, FARM_HEIGHT, FARM_WIDTH } from "./constants";
 import api, { BASE_URL } from "./axios";
 import { CoroutineCallback } from "./coroutine";
 
@@ -48,10 +48,10 @@ const sketch = (s: p5) => {
     s.clear();
     s.image(
       bg,
-      FARM_BORDER,
-      FARM_BORDER,
-      FARM_WIDTH - FARM_BORDER * 2,
-      FARM_HEIGHT - FARM_BORDER * 2
+      FARM_BORDER / 2,
+      FARM_BORDER / 2,
+      FARM_WIDTH - FARM_BORDER,
+      FARM_HEIGHT - FARM_BORDER
     )
     s.background(border);
     farm.value?.draw(s);
@@ -110,18 +110,22 @@ effect(() => {
       tankId: tank.value?._id,
     });
 
+    const farmX = FARM_BORDER * FARM_BORDER_SCALE
+    const farmY = FARM_BORDER * FARM_BORDER_SCALE
+    const farmW = FARM_WIDTH - FARM_BORDER * FARM_BORDER_SCALE * 2
+    const farmH = FARM_HEIGHT - FARM_BORDER * FARM_BORDER_SCALE * 2
     farm.value = new Farm(
-      FARM_BORDER,
-      FARM_BORDER,
-      FARM_WIDTH - FARM_BORDER * 2,
-      FARM_HEIGHT - FARM_BORDER * 2,
+      farmX,
+      farmY,
+      farmW,
+      farmH,
       "#77dd22",
       selectedObject
     );
 
     listBugs.forEach((x: Bug) => {
-      const _x = Math.random() * (FARM_WIDTH - 100) + 100;
-      const _y = Math.random() * (FARM_HEIGHT - 100) + 100;
+      const _x = Math.random() * (farmW) + farmX;
+      const _y = Math.random() * (farmH) + farmY;
 
       const bug = new Bug({
         ...x,
