@@ -256,6 +256,12 @@ class Bug {
                 }
             }
         }
+
+        //draw the shadow
+        fill(0, 0, 0, 60);
+        noStroke();
+        ellipse(0, 0, this.size * 1.2, this.size * 1.2);
+
         pop();
 
         if (isSelected) {
@@ -265,20 +271,6 @@ class Bug {
             const size = this.size * 1.5 + sin(frameCount * 0.1) * 5;
             ellipse(this.x, this.y, size, size);
         }
-    }
-
-    infoString() {
-        let info = `Hunger rate: ${500 - this.hunger} \nAppearance: ${
-            this.appearance.name
-        } \n\nList of genes: \n--------------\n`;
-        // total score
-        const totalScore = this.genes.reduce((acc, g) => acc + g.score, 0);
-        this.genes.forEach((g) => {
-            info += `${g.name} : $(${Math.round(
-                (g.score / totalScore) * 100
-            )}%) \n`;
-        });
-        return info;
     }
 
     drawIcon(ctx, x, y) {
@@ -300,15 +292,23 @@ class Bug {
         );
         ctx.fill();
 
-        // draw 2 hairs on the head
+        //// draw two antennae on the head end with two dots
         ctx.strokeStyle = "#000";
         ctx.beginPath();
-        ctx.moveTo(-size * 0.2, 2 * size * -0.4);
-        ctx.lineTo(-size * 0.2, 2 * size * -0.4 - 5);
+        ctx.moveTo(-size * 0.0, 2 * size * -0.4);
+        ctx.lineTo(-size * 0.1, 2 * size * -0.8);
         ctx.stroke();
         ctx.beginPath();
-        ctx.moveTo(size * 0.2, 2 * size * -0.4);
-        ctx.lineTo(size * 0.2, 2 * size * -0.4 - 5);
+        ctx.moveTo(size * 0.0, 2 * size * -0.4);
+        ctx.lineTo(size * 0.1, 2 * size * -0.8);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(-size * 0.1, 2 * size * -0.8, 1, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(size * 0.1, 2 * size * -0.8, 1, 0, Math.PI * 2);
+        ctx.fill();
         ctx.stroke();
 
         // draw 2 dots on the head to represent eyes
@@ -365,5 +365,19 @@ class Bug {
                 ctx.fillRect(j * size, i * size, size, size);
             }
         }
+    }
+
+    infoString() {
+        let info = `Hunger rate: ${500 - this.hunger} \nAppearance: ${
+            this.appearance.name
+        } \n\nList of genes: \n--------------\n`;
+        // total score
+        const totalScore = this.genes.reduce((acc, g) => acc + g.score, 0);
+        this.genes.forEach((g) => {
+            info += `${g.name} : $(${Math.round(
+                (g.score / totalScore) * 100
+            )}%) \n`;
+        });
+        return info;
     }
 }
