@@ -194,12 +194,12 @@ export default function SelectedObject() {
         {selectedObject.value instanceof Flower && (
           <>
             <p>
-              Time to spawn:{" "}
+              Nectar spawn in:{" "}
               {Math.max(0, Math.round((staticData.spawningTime || 0) / 1000))} /{" "}
               {SPAWN_DURATION / 1000}s
             </p>
             <p>
-              Num of Nectars left: {staticData.numberOfPollens} / {MAX_POLLENS}
+            # of nectars left: {staticData.numberOfPollens} / {MAX_POLLENS}
             </p>
             <div className="mt-auto flex flex-col gap-2 justify-between">
               {selectedObject.value.numberOfPollens === 0 && (
