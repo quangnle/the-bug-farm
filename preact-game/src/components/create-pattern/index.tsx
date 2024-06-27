@@ -157,7 +157,7 @@ export default function CreatePattern({
 
   return (
     <>
-      <Button onClick={() => setShow(true)}>Customise</Button>
+      <button onClick={() => setShow(true)}>Customise</button>
       {show && (
         <Modal handleClose={handleClose} className="flex gap-2 flex-row">
           <BorderContainer className="p-4 bg-green-200 flex flex-col">

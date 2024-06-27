@@ -1,0 +1,40 @@
+.menu-holder {
+  width: 500px;
+  aspect-ratio: 1854 / 3429;
+  background-image: url('/assets/holders/menu/rope.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  @apply flex flex-col justify-end items-center gap-10;
+}
+
+.menu-holder button {
+  width: 500px;
+  aspect-ratio: 1837 / 416;
+  background-image: url('/assets/holders/menu/button.png');
+  background-size: contain;
+  font-family: "UTM Cookies";
+  font-size: 2rem;
+  transition: 200ms;
+}
+
+.menu-holder button:nth-child(2n) {
+  transform: rotateZ(2deg);
+}
+
+.menu-holder button:nth-child(2n + 1) {
+  transform: rotateZ(-2deg);
+}
+.menu-holder button:hover {
+  transform: rotateZ(0deg);
+}
+
+.menu-bush {
+  width: 560px;
+  aspect-ratio: 1704 / 409;
+  background-image: url('/assets/holders/menu/bush.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: translateY(70px);
+}
