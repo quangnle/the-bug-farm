@@ -70,6 +70,7 @@ export default function SelectedObject() {
         GAME_STATE.farm.value.colony.splice(_find, 1);
         sellBugEffect(bug.x, bug.y);
         GAME_STATE.user.value!.money += 1;
+        selectedObject.value = null;
       }
     } catch (err: any) {
       alert(err?.response?.data.message);
@@ -99,19 +100,9 @@ export default function SelectedObject() {
         const removeFlower = GAME_STATE.farm.value.objects.splice(index, 1);
 
         await api.removeFlower(removeFlower[0]._id);
+        selectedObject.value = null;
       }
     });
-  };
-  const handleRemoveAllFlower = async () => {
-    GAME_STATE.farm.value.objects = GAME_STATE.farm.value.objects.filter(
-      (obj) => {
-        if (obj.numberOfPollens === 0) {
-          api.removeFlower(obj._id);
-          return false;
-        }
-        return true;
-      }
-    );
   };
 
   const total = useMemo(() => {
@@ -145,73 +136,78 @@ export default function SelectedObject() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-center gap-4 mb-4">
-        {selectedObject.value && (
-          <BorderContainer className="border-2 w-24 h-24">
-            <canvas
-              ref={canvasRef}
-              className="object-render-canvas w-full"
-              width={64}
-              height={64}
-            />
-          </BorderContainer>
-        )}
-
-        {selectedObject.value instanceof Bug && (
-          <BorderContainer className="border-2 w-24 h-24 bg-[red]">
-            <BugPattern app={selectedObject.value.appearance} />
-          </BorderContainer>
-        )}
-      </div>
-      <div className="flex flex-col h-full">
-        {selectedObject.value instanceof Bug && (
-          <>
-            {import.meta.env.MODE === "development" && (
-              <p>{selectedObject.value._id}</p>
+      {selectedObject.value ? (
+        <>
+          <div className="flex justify-center gap-4 mb-4">
+            {selectedObject.value && (
+              <BorderContainer className="border-2 w-24 h-24">
+                <canvas
+                  ref={canvasRef}
+                  className="object-render-canvas w-full"
+                  width={64}
+                  height={64}
+                />
+              </BorderContainer>
             )}
-            <p className="border-b border-black border-dashed">
-              List of genes:{" "}
-            </p>
-            {selectedObject.value.genes.map((gene, index) => (
-              <p key={index}>
-                - {gene.name}: {Math.round((gene.score / total!) * 100)}%
-              </p>
-            ))}
-            <div className="mt-auto flex flex-wrap gap-2 justify-between max-w-[252px]">
-              <BringToMarket />
-              <Button onClick={() => setShowSelectTank(true)}>
-                Switch tank
-              </Button>
-              <SelectTank
-                show={showSelectTank}
-                onSelectTank={handleSelectTank}
-                onClose={() => setShowSelectTank(false)}
-              />
-              <Button onClick={handleSellBug}>Sell (+$1)</Button>
-            </div>
-          </>
-        )}
-        {selectedObject.value instanceof Flower && (
-          <>
-            <p>
-              Nectar spawn in:{" "}
-              {Math.max(0, Math.round((staticData.spawningTime || 0) / 1000))} /{" "}
-              {SPAWN_DURATION / 1000}s
-            </p>
-            <p>
-            # of nectars left: {staticData.numberOfPollens} / {MAX_POLLENS}
-            </p>
-            <div className="mt-auto flex flex-col gap-2 justify-between">
-              {selectedObject.value.numberOfPollens === 0 && (
-                <Button onClick={handleRemoveAllFlower}>
-                  Remove All withered Flower
-                </Button>
-              )}
-              <Button onClick={handleRemoveFlower}>Remove flower</Button>
-            </div>
-          </>
-        )}
-      </div>
+
+            {selectedObject.value instanceof Bug && (
+              <BorderContainer className="border-2 w-24 h-24 bg-[red]">
+                <BugPattern app={selectedObject.value.appearance} />
+              </BorderContainer>
+            )}
+          </div>
+          <div className="flex flex-col h-full">
+            {selectedObject.value instanceof Bug && (
+              <>
+                {import.meta.env.MODE === "development" && (
+                  <p>{selectedObject.value._id}</p>
+                )}
+                <p className="border-b border-black border-dashed">
+                  List of genes:{" "}
+                </p>
+                {selectedObject.value.genes.map((gene, index) => (
+                  <p key={index}>
+                    - {gene.name}: {Math.round((gene.score / total!) * 100)}%
+                  </p>
+                ))}
+                <div className="mt-auto flex flex-wrap gap-2 justify-between max-w-[252px]">
+                  <BringToMarket />
+                  <Button onClick={() => setShowSelectTank(true)}>
+                    Switch tank
+                  </Button>
+                  <SelectTank
+                    show={showSelectTank}
+                    onSelectTank={handleSelectTank}
+                    onClose={() => setShowSelectTank(false)}
+                  />
+                  <Button onClick={handleSellBug}>Sell (+$1)</Button>
+                </div>
+              </>
+            )}
+            {selectedObject.value instanceof Flower && (
+              <>
+                <p>
+                  Nectar spawn in:{" "}
+                  {Math.max(
+                    0,
+                    Math.round((staticData.spawningTime || 0) / 1000)
+                  )}{" "}
+                  / {SPAWN_DURATION / 1000}s
+                </p>
+                <p>
+                  # of nectars left: {staticData.numberOfPollens} /{" "}
+                  {MAX_POLLENS}
+                </p>
+                <div className="mt-auto flex flex-col gap-2 justify-between">
+                  <Button onClick={handleRemoveFlower}>Remove flower</Button>
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <p className="text-center">Click a object to see more detail</p>
+      )}
     </div>
   )
 }
