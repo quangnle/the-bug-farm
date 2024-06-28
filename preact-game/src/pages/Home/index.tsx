@@ -18,7 +18,8 @@ export default function Home() {
   useEffect(() => {
     const autoLogin = async () => {
       try {
-        const { data } = await api.me();
+        const data = await api.me(false)
+        console.log({ data })
         if (data) {
           GAME_STATE.user.value = data;
         }

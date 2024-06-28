@@ -239,6 +239,11 @@ class Bug {
       this.angle + this.p5.PI / 2 + this.p5.sin(this.p5.frameCount * 0.1) * 0.1
     )
 
+    //draw the shadow
+    this.p5.fill(0, 0, 0, 60);
+    this.p5.noStroke();
+    this.p5.ellipse(0, 0, this.size * 1.2, this.size * 1.2);
+
     // draw the head
     this.p5.fill(50)
     this.p5.ellipse(0, this.size * -0.4, this.size * 0.5, this.size * 0.5)
@@ -305,6 +310,7 @@ class Bug {
         }
       }
     }
+
     this.p5.pop()
 
     if (isSelected) {
