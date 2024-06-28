@@ -35,9 +35,9 @@ export const setToken = (token) => {
 };
 
 const api = {
-  me: async () => {
+  me: async (hasCancel = true) => {
     const { data } = await axios.get("/auth/me", {
-      signal: controller.signal,
+      signal: hasCancel ? controller.signal : undefined,
     });
     return data as IUser;
   },

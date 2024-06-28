@@ -21,7 +21,8 @@ const appearance: Signal<IAppearance[]> = signal([]);
 export const GAME_ASSET: Record<string, any> = {
   diamond: null,
   cashout: null,
-  bgm: null
+  bgm: null,
+  logo: null
 };
 export const DEV_MODE = signal<boolean>(false)
 
@@ -31,6 +32,7 @@ const sketch = (s: p5) => {
   let border: any;
   s.preload = () => {
     GAME_ASSET.diamond = s.loadImage("/assets/icons/coin.png");
+    GAME_ASSET.logo = s.loadImage("/assets/euro-logo.png");
 
     // Sound
     GAME_ASSET.cashout = new Audio();
@@ -60,6 +62,15 @@ const sketch = (s: p5) => {
       FARM_WIDTH - FARM_BORDER,
       FARM_HEIGHT - FARM_BORDER
     )
+    s.tint(255, 200);
+    s.image(
+      GAME_ASSET.logo,
+      FARM_WIDTH / 2 - 200,
+      FARM_HEIGHT / 2 - 124,
+      400,
+      300
+    )
+    s.tint(255, 255);
     s.background(border);
     farm.value?.draw(s);
     coroutineCallbacks.value.forEach(
@@ -110,7 +121,8 @@ effect(() => {
   const fetchTank = async () => {
     if (!tank.value?._id) return;
 
-    BGM_ENABLE.value = true
+    const isBgm = JSON.parse(localStorage.getItem("bgm") || 'true');
+    BGM_ENABLE.value = isBgm
     const { data: listBugs } = await api.getAllBugs({
       tankId: tank.value?._id,
     });
@@ -171,7 +183,9 @@ effect(() => {
 effect(() => {
   if (BGM_ENABLE.value) {
     GAME_ASSET.bgm?.play()
+    localStorage.setItem("bgm", "true")
   } else {
+    localStorage.setItem("bgm", "false")
     GAME_ASSET.bgm?.pause()
   }
 })
