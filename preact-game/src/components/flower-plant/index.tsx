@@ -79,7 +79,7 @@ export default function FlowerPlant() {
 
   return (
     <div className="flex flex-col h-full">
-      <h1 className="header">Flower Seed</h1>
+      <h1 className="text-3xl">Flower Seed</h1>
       <table className="plant-control">
         <tr className="font-bold">
           <td className="">Pistil</td>

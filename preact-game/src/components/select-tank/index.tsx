@@ -29,7 +29,7 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
     }
 
     const getListAppearance = async () => {
-      const { data } = await api.getAllAppearances()
+      const { data } = await api.getUserAppearances()
       GAME_STATE.appearance.value  = data
     }
 
