@@ -1,14 +1,13 @@
-import BugList from "../bug-list"
-import Market from "../market"
-import { CANVAS_SIZE, CANVAS_WIDTH } from "../create-pattern/useCreatePattern"
-import Menu from "../menu"
-import IconButtons from "../icon-buttons"
-import { BGM_ENABLE, sketchInstance } from "@/core/gameState"
+import BugList from "../bug-list";
+import Market from "../market";
+import { CANVAS_SIZE, CANVAS_WIDTH } from "../create-pattern/useCreatePattern";
+import Menu from "../menu";
+import IconButtons from "../icon-buttons";
+import { BGM_ENABLE, sketchInstance } from "@/core/gameState";
 
 export default function GameBody({ loading }: { loading: boolean }) {
-
   const handleSaveGif = () => {
-    sketchInstance.saveGif("myGif", 6, {});
+    sketchInstance.saveGif("myGif", 2, {});
   };
 
   return (
@@ -23,13 +22,10 @@ export default function GameBody({ loading }: { loading: boolean }) {
             </div>
           )}
           <div className="flex flex-col gap-4 py-4 relative z-10">
-            <IconButtons
-              icon="save-gif"
-              onClick={handleSaveGif}
-            />
+            <IconButtons icon="save-gif" onClick={handleSaveGif} />
             <IconButtons
               onClick={() => {
-                BGM_ENABLE.value = !BGM_ENABLE.value
+                BGM_ENABLE.value = !BGM_ENABLE.value;
               }}
             />
           </div>
@@ -43,5 +39,5 @@ export default function GameBody({ loading }: { loading: boolean }) {
         />
       </div>
     </div>
-  )
+  );
 }

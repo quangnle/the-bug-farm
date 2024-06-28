@@ -191,111 +191,99 @@ export default function Market() {
       <IconButtons icon="market" onClick={() => setShow(true)} />
       {show && (
         <Modal handleClose={() => setShow(false)}>
-          <BorderContainer className="flex flex-col items-center w-[80vw] bg-black/60 p-8 min-h-[1000px]">
+          <BorderContainer className="relative flex flex-col items-center w-[80vw] bg-black/60 p-8 max-h-[80vh] overflow-y-auto">
             <h1 className="text-center font-bold mb-8">
               Market ${GAME_STATE.user.value?.money}
             </h1>
 
-            <div className="w-full flex justify-between mb-8">
-              <Button
-                className={clsx(tab === "market" && "invisible")}
-                onClick={() => setTab("market")}
-              >
-                Market
-              </Button>
-              <Button
-                className={clsx(tab === "logs" && "invisible")}
-                onClick={() => setTab("logs")}
-              >
-                Logs
-              </Button>
+            <div className="w-full flex justify-end mb-8">
+              {tab === "logs" ? (
+                <Button onClick={() => setTab("market")}>Market</Button>
+              ) : (
+                <Button onClick={() => setTab("logs")}>Trade History</Button>
+              )}
             </div>
 
-            <div
-              className={clsx(
-                "items-start gap-8 w-full",
-                tab === "market" ? "flex" : "hidden"
-              )}
-            >
-              <div className="">
-                <div className="border-[burlywood] bg-[lightgreen] rounded-lg border-8 flex items-center justify-center">
-                  <canvas ref={canvasRef} className="aspect-square" />
-                  {loading && <Loading className="absolute " />}
-                </div>
-                <div className="flex justify-between items-center">
-                  <Chevron
-                    className={clsx(pagination?.page === 1 && "invisible")}
-                    direction="left"
-                    onClick={() => handleChangePage(-1)}
-                  />
-                  <span className="text-white">{pagination?.page || 1}</span>
-                  <Chevron
-                    className={clsx(
-                      pagination?.page ===
-                        Math.round(
-                          pagination?.total! / (pagination?.perPage || 10)
-                        ) && "invisible"
-                    )}
-                    direction="right"
-                    onClick={() => handleChangePage(+1)}
-                  />
-                </div>
-              </div>
-              <div className="max-h-[800px] overflow-y-auto text-white grid grid-cols-2 gap-2">
-                {market.map((sale) => (
-                  <div
-                    key={sale._id}
-                    className={clsx(
-                      "border-2 p-2 hover:bg-green-600 gap-4 text-white cursor-pointer flex flex-col",
-                      selected?._id === sale.bug._id && "bg-green-600"
-                    )}
-                    onClick={() => {
-                      setSelected(sale.bug);
-                      selectedObject.value = sale.bug;
-                    }}
-                  >
-                    <div className="flex items gap-4">
-                      <div className="w-16 h-16 bg-red-600">
-                        <BugPattern app={sale.bug.appearance} />
-                      </div>
-                      <div className="py-2 flex-1">
-                        <p>
-                          <b>Gene</b>: {getSaleGenesInfo(sale.bug.genes)}
-                        </p>
-
-                        <p className="text-sm">
-                          Hatch:{" "}
-                          {moment(
-                            (sale.bug as unknown as IBug).createdAt
-                          ).fromNow()}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="pl-2 line-clamp-1">{sale.description}</p>
-                    <div className="mt-auto flex justify-between">
-                      <p className="text-[orange] text-2xl font-bold mt-auto pl-2">
-                        <b>Price:</b> ${sale.price}
-                      </p>
-                      {GAME_STATE.user.value?._id === sale.seller ? (
-                        <Button onClick={(e) => handleUnBuy(e, sale)}>
-                          Cancel
-                        </Button>
-                      ) : (
-                        <Button onClick={(e) => handleBuy(e, sale)}>Buy</Button>
-                      )}
-                    </div>
+            {tab === "market" ? (
+              <div className={clsx("flex items-start gap-8 w-full")}>
+                <div className="sticky top-0 left-0">
+                  <div className="border-[burlywood] bg-[lightgreen] rounded-lg border-8 flex items-center justify-center">
+                    <canvas ref={canvasRef} className="aspect-square" />
+                    {loading && <Loading className="absolute " />}
                   </div>
-                ))}
+                  <div className="flex justify-between items-center">
+                    <Chevron
+                      className={clsx(pagination?.page === 1 && "invisible")}
+                      direction="left"
+                      onClick={() => handleChangePage(-1)}
+                    />
+                    <span className="text-white">{pagination?.page || 1}</span>
+                    <Chevron
+                      className={clsx(
+                        pagination?.page ===
+                          Math.round(
+                            pagination?.total! / (pagination?.perPage || 10)
+                          ) && "invisible"
+                      )}
+                      direction="right"
+                      onClick={() => handleChangePage(+1)}
+                    />
+                  </div>
+                </div>
+                <div className="text-white grid grid-cols-2 gap-2">
+                  {market.map((sale) => (
+                    <div
+                      key={sale._id}
+                      className={clsx(
+                        "border-2 p-2 hover:bg-green-600 gap-4 text-white cursor-pointer flex flex-col",
+                        selected?._id === sale.bug._id && "bg-green-600"
+                      )}
+                      onClick={() => {
+                        setSelected(sale.bug);
+                        selectedObject.value = sale.bug;
+                      }}
+                    >
+                      <div className="flex items gap-4">
+                        <div className="w-16 h-16 bg-red-600">
+                          <BugPattern app={sale.bug.appearance} />
+                        </div>
+                        <div className="py-2 flex-1">
+                          <p>
+                            <b>Gene</b>: {getSaleGenesInfo(sale.bug.genes)}
+                          </p>
+
+                          <p className="text-sm">
+                            Hatch:{" "}
+                            {moment(
+                              (sale.bug as unknown as IBug).createdAt
+                            ).fromNow()}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="pl-2 line-clamp-1">{sale.description}</p>
+                      <div className="mt-auto flex justify-between">
+                        <p className="text-[orange] text-2xl font-bold mt-auto pl-2">
+                          <b>Price:</b> ${sale.price}
+                        </p>
+                        {GAME_STATE.user.value?._id === sale.seller ? (
+                          <Button onClick={(e) => handleUnBuy(e, sale)}>
+                            Cancel
+                          </Button>
+                        ) : (
+                          <Button onClick={(e) => handleBuy(e, sale)}>
+                            Buy
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div
-              className={clsx(
-                "items-start gap-8 w-full",
-                tab === "logs" ? "block" : "hidden"
-              )}
-            >
-              <MarketLog />
-            </div>
+            ) : (
+              <div className={clsx("overflow-auto items-start gap-8 w-full")}>
+                <MarketLog />
+              </div>
+            )}
           </BorderContainer>
         </Modal>
       )}

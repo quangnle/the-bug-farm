@@ -80,7 +80,7 @@ const api = {
   },
   getSalesHistory: async (params?: {} & ICommonGetListParams) => {
     const { data } = await axios.get("/sales/history", { params });
-    return data as IListPagination<ISale>;
+    return data as IListPagination<ITradeHistory>;
   },
   saleListing: async (payload: {
     bugId: string;

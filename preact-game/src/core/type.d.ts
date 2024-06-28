@@ -53,9 +53,25 @@ type ISale = {
   price: number;
   genes: IAppearance[];
   appearance: string;
-
+  createdAt: string;
+  updatedAt: string;
   geneHash: string;
   seller: string;
   description: string;
   status: string;
+};
+
+type ITradeHistory = {
+  _id: string;
+  bug: Bug;
+  price: number;
+  genes: IAppearance[];
+  appearance: string;
+  createdAt: string;
+  updatedAt: string;
+  geneHash: string;
+  seller: IUser;
+  description: string;
+  status: string;
+  buyer: IUser;
 };
