@@ -28,6 +28,7 @@ const QuestionModal: FC<IProp> = () => {
       }
       alert(data.message);
     } catch (err: any) {
+      console.log(err.response.data);
       alert(err?.response?.data.message);
     } finally {
       needVerifyQuestion.value = false;
@@ -41,8 +42,8 @@ const QuestionModal: FC<IProp> = () => {
   return (
     <Modal>
       <BorderContainer className="bg-black/60 p-8 text-white">
-        <h1 className="text-center uppercase mb-8">{question?.description}</h1>
-        <div className="flex justify-center gap-5 mt-5">
+        <img src={question?.description} alt="question" />
+        <div className="flex justify-center gap-5 mt-6">
           {question?.answers.map((answer) => (
             <Button onClick={() => answerQuestion(answer)} key={answer}>
               {answer}
