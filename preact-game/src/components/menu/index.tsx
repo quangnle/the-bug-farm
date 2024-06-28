@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { GAME_STATE } from "@/core/gameState";
+import { useState } from "react";
 import Modal from "../common/modal";
-import IconButtons from "../icon-buttons";
-import { BGM_ENABLE, GAME_STATE, sketchInstance } from "@/core/gameState";
-import SelectTank from "../select-tank";
-import "./style.css"
 import CreatePattern from "../create-pattern";
+import IconButtons from "../icon-buttons";
+import SelectTank from "../select-tank";
+import "./style.css";
 
 export default function Menu() {
   const [show, setShow] = useState(false);
@@ -18,11 +18,11 @@ export default function Menu() {
   };
 
   const handleLogout = () => {
-    GAME_STATE.user.value = null
-    GAME_STATE.tank.value = null
-    localStorage.removeItem("token")
-    localStorage.removeItem("lastTank")
-  }
+    GAME_STATE.user.value = null;
+    GAME_STATE.tank.value = null;
+    localStorage.removeItem("token");
+    localStorage.removeItem("lastTank");
+  };
 
   return (
     <>
@@ -41,18 +41,15 @@ export default function Menu() {
             <div className="menu-bush" />
             <button
               onClick={() => {
-                setShow(false)
-                setShowSelectTank(true)
+                setShow(false);
+                setShowSelectTank(true);
               }}
             >
               Switch Tank
             </button>
             <CreatePattern closeMenu={() => setShow(false)} />
 
-            <button
-            >
-              Setting
-            </button>
+            <button>Setting</button>
 
             <button onClick={handleLogout}>Logout</button>
           </div>
@@ -89,5 +86,5 @@ export default function Menu() {
         onClose={() => setShowSelectTank(false)}
       />
     </>
-  )
+  );
 }
