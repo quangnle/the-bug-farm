@@ -10,7 +10,9 @@ export default function Genes() {
   const [show, setShow] = useState(false)
   return (
     <>
-      <IconButtons onClick={() => setShow(true)}>Genes</IconButtons>
+      <IconButtons onClick={() => setShow(true)}>
+        <img src="/assets/gene.png" className="w-8 hover:w-10 duration-200" />
+      </IconButtons>
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="bg-black/60 p-4">

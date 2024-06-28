@@ -29,7 +29,9 @@ export default function GameBody({ loading }: { loading: boolean }) {
               onClick={() => {
                 BGM_ENABLE.value = !BGM_ENABLE.value
               }}
-            />
+            >
+              <img className="w-10 hover:w-12" src={`/assets/${BGM_ENABLE.value ? 'bgm-mute.png': 'bgm.png'}`} />
+            </IconButtons>
           </div>
         </div>
         <canvas
