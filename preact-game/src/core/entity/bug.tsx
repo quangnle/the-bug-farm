@@ -306,6 +306,7 @@ class Bug {
           } else {
             this.p5.stroke(this.appearance.pattern[j][i])
           }
+          this.p5.strokeWeight(2)
           this.p5.point(i - this.size / 2, j - this.size / 2)
         }
       }

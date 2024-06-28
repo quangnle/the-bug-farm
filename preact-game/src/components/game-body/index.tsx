@@ -22,10 +22,6 @@ export default function GameBody({ loading }: { loading: boolean }) {
               <Menu />
             </div>
           )}
-          <img
-            src="/assets/euro-logo.png"
-            className="absolute bottom-28 left-0 -translate-x-[320px] aspect-[4000/3113] w-[400px]"
-          />
           <div className="flex flex-col gap-4 py-4 relative z-10">
             <IconButtons
               icon="save-gif"

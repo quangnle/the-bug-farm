@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { GAME_STATE } from "../../core/gameState"
+import { GAME_STATE, sketchInstance } from "../../core/gameState"
 import api from "../../core/axios"
 import Modal from "../common/modal"
 import Loading from "../common/loading"
@@ -48,6 +48,17 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
       handleError(error)
     }
   }
+
+  useEffect(() => {
+    if (show) {
+      sketchInstance.noLoop()
+    } else {
+      sketchInstance.loop()
+    }
+    return () => {
+      sketchInstance.loop()
+    }
+  }, [show])
 
   return (
     <>
