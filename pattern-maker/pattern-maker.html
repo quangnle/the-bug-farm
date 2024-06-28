@@ -9,6 +9,10 @@
 <body>
     <h1>Pattern Maker</h1>
     <div name="left-column" style="float: left; width: 450px;">
+        <div>
+            <input type="file" id="imageInput" accept="image/*">
+            <canvas id="imageCanvas" style="display:none;"></canvas>
+        </div>
         <div style="margin-bottom: 10px;">
             <input id="pattern-size" type="number" value="20" min="9" max="20" style="width: 40px;">
             <button onclick="generateDefaultPattern()">Refresh</button> 
@@ -18,6 +22,7 @@
             <!-- color picker -->
             <input type="color" id="color-picker" onchange="updateColor();" value="#000000">
         </div>  
+        
     </div>
     <div name="right-column" style="float: left;">
         <ul style="list-style-type: none; margin-left: 0px; padding-left: 0px;">
@@ -26,15 +31,48 @@
         </ul>    
         <textarea id="code" rows="10" cols="60"></textarea>
         <p><i>Copy this code & paste into 'patterns.js' file of the main project</i></p>
-    </div>
+    </div>    
 
     <script src="sketch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js" integrity="sha512-eu9vkh+EbAsW3fMmPTj/DP5W3UegIdu0Z/OABMocvoofx43MYBkcQ9hRIVxZndV1vcCYQwBg+U1PkWl04TD0Jg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
     <script>
         document.addEventListener('contextmenu', event => event.preventDefault());
 
+        const imageInput = document.getElementById('imageInput');
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d');
         let pattern = [];
-        let selectedColor = document.getElementById("color-picker").value;
+        let selectedColor = "#000000";
+        let patternSize = 20;
+
+        imageInput.addEventListener('change', () => {
+            const file = imageInput.files[0];
+            const img = new Image();
+            patternSize = document.getElementById("pattern-size").value * 1;
+
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0, patternSize, patternSize);
+                const imageData = ctx.getImageData(0, 0, patternSize, patternSize);
+                loadImageIntoPattern(imageData, pattern);
+            };
+            img.src = URL.createObjectURL(file);
+        });
+
+        function loadImageIntoPattern(imageData){
+            generateDefaultPattern();
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4){
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const a = data[i + 3];
+                const x = (i / 4) % patternSize;
+                const y = Math.floor((i / 4) / patternSize);
+                if (pattern[y][x] === 0){
+                    pattern[y][x] = "#" + r.toString(16) + g.toString(16) + b.toString(16);
+                }
+            }
+        }
 
         function updateColor(){
             selectedColor = document.getElementById("color-picker").value;
