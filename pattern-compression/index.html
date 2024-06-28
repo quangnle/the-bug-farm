@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pattern Compression</title>
+</head>
+<body>
+    <div>
+        <textarea id="content" cols="80" rows="12"></textarea>
+        <button onclick="compressContent()">Compress</button>
+    </div>
+    <div>
+        <textarea id="binaryContent" cols="80" rows="12"></textarea> 
+        <button onclick="bin2ascii()">Binarry 2 Ascii</button>
+    </div>
+    <div>
+        <textarea id="hexContent" cols="80" rows="12"></textarea> 
+        <button onclick="ascii2bin()">Ascii 2 Bin</button>
+    </div>
+    <div>
+        <textarea id="decompressContent" cols="80" rows="12"></textarea> 
+        <button onclick="decompressContent()">Decompress</button>
+    </div>
+    <script src="dict.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function compressContent() {
+            const content = document.getElementById("content").value;
+            const binaryContent = compress(content);
+            document.getElementById("binaryContent").value = binaryContent;
+        }
+
+        function bin2ascii(){
+            const binaryContent = document.getElementById("binaryContent").value;
+            const hexContent = binaryString2Hex(binaryContent);
+            document.getElementById("hexContent").value = hexContent;
+        }
+
+        function ascii2bin(){
+            const hexContent = document.getElementById("hexContent").value;
+            const binaryContent = asciiToBinaryString(hexContent);
+            document.getElementById("binaryContent").value = binaryContent;
+        }
+
+        function decompressContent(){
+            const binaryContent = document.getElementById("binaryContent").value;
+            const content = decompress(binaryContent);
+            document.getElementById("decompressContent").value = content;
+        }
+
+    </script>
+</body>
+</html>
