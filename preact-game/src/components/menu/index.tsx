@@ -49,7 +49,7 @@ export default function Menu() {
             </button>
             <CreatePattern closeMenu={() => setShow(false)} />
 
-            <button>Setting</button>
+            <button>Settings</button>
 
             <button onClick={handleLogout}>Logout</button>
           </div>

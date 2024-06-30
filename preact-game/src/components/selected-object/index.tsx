@@ -195,7 +195,7 @@ export default function SelectedObject() {
                   / {SPAWN_DURATION / 1000}s
                 </p>
                 <p>
-                  # of nectars left: {staticData.numberOfPollens} /{" "}
+                  Pollens left: {staticData.numberOfPollens} /{" "}
                   {MAX_POLLENS}
                 </p>
                 <div className="mt-auto flex flex-col gap-2 justify-between">
