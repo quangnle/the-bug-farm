@@ -158,9 +158,9 @@ export default function FlowerPlant() {
           <p className="text-sm">Switch mode</p>
           <PlantSwitch className="ml-auto" />
         </div>
-        <Button className="mt-2" onClick={toggleShow}>
+        {/* <Button className="mt-2" onClick={toggleShow}>
           {marchingShow ? "Stop the Show!!!" : "Start The Marching Show!!!"}
-        </Button>
+        </Button> */}
         <Button onClick={handleRemoveAllFlower} className="mt-2">
           Remove all withered flowers
         </Button>
