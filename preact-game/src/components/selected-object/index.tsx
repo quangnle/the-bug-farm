@@ -187,7 +187,7 @@ export default function SelectedObject() {
             {selectedObject.value instanceof Flower && (
               <>
                 <p>
-                  Nectar spawn in:{" "}
+                  Pollen spawn in:{" "}
                   {Math.max(
                     0,
                     Math.round((staticData.spawningTime || 0) / 1000)
