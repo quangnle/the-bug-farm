@@ -10,6 +10,7 @@ import Button from "../common/button";
 import { sellBugEffect } from "@/core/effect";
 import api from "@/core/axios";
 import SelectTank from "../select-tank";
+import { handleError } from "@/utils/helpers";
 
 export default function SelectedObject() {
   const canvasRef = useRef(null);
@@ -142,16 +143,20 @@ export default function SelectedObject() {
   }
 
   const handleEatPill = async () => {
-    if (selectedObject.value instanceof Bug) {
-      const { data } = await api.bugEatPill(selectedObject.value._id)
-      GAME_STATE.farm.value.colony.forEach((bug) => {
-        if (bug._id === data.bug._id && data.isIncrementScore) {
-          bug.genes = data.bug.genes
-          setStaticData({
-            genes: data.bug.genes
-          })
-        }
-      })
+    try {
+      if (selectedObject.value instanceof Bug) {
+        const { data } = await api.bugEatPill(selectedObject.value._id)
+        GAME_STATE.farm.value.colony.forEach((bug) => {
+          if (bug._id === data.bug._id && data.isIncrementScore) {
+            bug.genes = data.bug.genes
+            setStaticData({
+              genes: data.bug.genes
+            })
+          }
+        })
+      }
+    } catch (error) {
+      handleError(error)
     }
   }
 

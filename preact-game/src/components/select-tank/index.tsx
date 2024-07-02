@@ -16,7 +16,7 @@ export default function SelectTank({
   onClose = () => {},
 }: {
   show: boolean
-  needSlot: number,
+  needSlot?: number,
   onSelectTank?: (x: ITank) => void
   onClose?: () => void
 }) {
