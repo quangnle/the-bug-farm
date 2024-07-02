@@ -132,19 +132,20 @@ class Flower {
         ctx.translate(x, y);
 
         ctx.fillStyle = this.petalColor;
-        const angle = (Math.PI * 2) / this.petalNumber;
+        //draw the petals
+        const angle = Math.PI * 2 / this.petalNumber;
         for (let i = 0; i < this.petalNumber; i++) {
+            const x = Math.cos(angle * i) * this.pistilSize;
+            const y = Math.sin(angle * i) * this.pistilSize;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle * i);
             ctx.beginPath();
-            ctx.arc(
-                2 * pistilSize * Math.cos(angle * i),
-                2 * pistilSize * Math.sin(angle * i),
-                petalSize,
-                0,
-                Math.PI * 2
-            );
+            ctx.ellipse(0, 0, this.petalHeight/2, this.petalWidth/2, 0, 0, Math.PI * 2);
             ctx.fill();
             ctx.stroke();
             ctx.closePath();
+            ctx.restore();
         }
 
         ctx.fillStyle = this.pistilColor;

@@ -266,7 +266,7 @@ class Farm {
             this.objects.forEach((obj, index) => {
                 if (obj instanceof Flower) {
                     const d = dist(mouseX, mouseY, obj.x, obj.y);
-                    if (d < obj.pistilSize + obj.petalSize / 2)
+                    if (d < obj.pistilSize + obj.petalHeight / 2)
                         selectedObj = obj;
                 }
             });
