@@ -1,6 +1,7 @@
 import axios from "axios";
 import { GAME_STATE } from "./gameState";
 import { ICommonGetListParams, IListPagination } from "@/hooks/useList";
+import Bug from "./entity/bug";
 
 export const BASE_URL = "https://api-bug-game.skyglab.tech";
 
@@ -56,6 +57,10 @@ const api = {
   createTank: async (name) => axios.post("/tanks", { name }),
   getAllBugs: async (params) => axios.get("/bugs", { params }),
   getBug: async (id) => axios.get(`/bugs/${id}`),
+  getBugStorage: async (params?: ICommonGetListParams) => {
+    const { data } = await axios.get("/bugs/storage", { params });
+    return data as IListPagination<Bug>;
+  },
   getAllAppearances: async () => axios.get("/appearances/default"),
   getUserAppearances: async () => axios.get("/appearances/default-of-user"),
   createAppearance: async (payload) => axios.post("/appearances", payload),
@@ -71,6 +76,7 @@ const api = {
   sellBugs: async (payload) => axios.delete("/bugs/sell", { data: payload }),
   bugEatFlower: async (id, flowerId) =>
     axios.patch(`/bugs/${id}/eat-flower`, { id, flowerId }),
+  bugEatPill: async (id: string) => axios.patch(`/bugs/${id}/eat-pill`),
   bugChangeTank: async (id, payload: { tankId: string }) =>
     axios.patch(`/bugs/${id}/change-tank`, payload),
 

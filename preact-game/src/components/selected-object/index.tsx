@@ -15,10 +15,12 @@ export default function SelectedObject() {
   const canvasRef = useRef(null);
 
   const [staticData, setStaticData] = useState<{
+    genes?: IAppearance[],
     hungerRate?: number;
     spawningTime?: number;
     numberOfPollens?: number;
   }>({
+    genes: [],
     hungerRate: 0,
     spawningTime: 0,
     numberOfPollens: 0,
@@ -34,6 +36,11 @@ export default function SelectedObject() {
       ctx.fill();
       ctx.stroke();
       selectedObject.value?.drawIcon(ctx, 32, 32);
+      if (selectedObject.value instanceof Bug) {
+        setStaticData({
+          genes: selectedObject.value.genes,
+        });
+      }
       if (selectedObject.value instanceof Flower) {
         setStaticData({
           spawningTime: (selectedObject.value as Flower).spawningTime,
@@ -134,6 +141,20 @@ export default function SelectedObject() {
     }
   }
 
+  const handleEatPill = async () => {
+    if (selectedObject.value instanceof Bug) {
+      const { data } = await api.bugEatPill(selectedObject.value._id)
+      GAME_STATE.farm.value.colony.forEach((bug) => {
+        if (bug._id === data.bug._id && data.isIncrementScore) {
+          bug.genes = data.bug.genes
+          setStaticData({
+            genes: data.bug.genes
+          })
+        }
+      })
+    }
+  }
+
   return (
     <div className="flex flex-col h-full">
       {selectedObject.value ? (
@@ -172,6 +193,7 @@ export default function SelectedObject() {
                 ))}
                 <div className="mt-auto flex flex-wrap gap-2 justify-between max-w-[252px]">
                   <BringToMarket />
+                  <Button onClick={handleEatPill}>Boost</Button>
                   <Button onClick={() => setShowSelectTank(true)}>
                     Switch tank
                   </Button>

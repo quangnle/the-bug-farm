@@ -126,8 +126,7 @@ class Flower {
       // draw the bounding box
       p5.noFill()
       p5.stroke("#000")
-      const size =
-        (this.pistilSize * 6) + p5.sin(p5.frameCount * 0.1) * 5
+      const size = this.pistilSize * 6 + p5.sin(p5.frameCount * 0.1) * 5
       p5.ellipse(this.x, this.y, size, size)
     }
   }
@@ -160,16 +159,6 @@ class Flower {
       }
     }
 
-    ctx.save()
-    ctx.translate(x, y)
-
-    ctx.fillStyle = this.pistilColor
-    ctx.beginPath()
-    ctx.arc(0, 0, pistilSize, 0, Math.PI * 2)
-    ctx.fill()
-    ctx.stroke()
-    ctx.closePath()
-
     ctx.fillStyle = this.petalColor
     const angle = (Math.PI * 2) / this.petalNumber
     for (let i = 0; i < this.petalNumber; i++) {
@@ -185,6 +174,14 @@ class Flower {
       ctx.stroke()
       ctx.closePath()
     }
+
+    ctx.fillStyle = this.pistilColor
+    ctx.beginPath()
+    ctx.arc(0, 0, pistilSize, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.stroke()
+    ctx.closePath()
+
     ctx.restore()
   }
 }

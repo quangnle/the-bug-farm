@@ -29,7 +29,9 @@ export default function FlowerPlant() {
   const handleChangeInput = (event) => {
     const { name} = event.target
     let { value } = event.target
-    if (name === 'petalNumber' || name === 'pistilSize' || name === 'petalSize') {
+    if (
+      ["petalNumber", "pistilSize", "petalWidth", "petalHeight"].includes(name)
+    ) {
       value = Math.min(12, Math.max(3, parseInt(value)))
     }
     setFlower(prev => ({
@@ -81,93 +83,97 @@ export default function FlowerPlant() {
     <div className="flex flex-col h-full">
       <h1 className="text-3xl">Flower Seed</h1>
       <table className="plant-control">
-        <tr className="font-bold">
-          <td className="">Pistil</td>
-          <td></td>
-          <td>Color</td>
-          <td>Size</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
+        <thead>
+          <tr className="font-bold">
+            <td className="">Pistil</td>
+            <td></td>
+            <td>Color</td>
+            <td>Size</td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
 
-          <td>
-            <input
-              type="color"
-              name="pistilColor"
-              value={flower.pistilColor}
-              onChange={handleChangeInput}
-              id="pistil-color"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              name="pistilSize"
-              value={flower.pistilSize}
-              onChange={handleChangeInput}
-              id="pistil-size"
-              min="3"
-              max="10"
-            />
-          </td>
-          <td></td>
-        </tr>
+            <td>
+              <input
+                type="color"
+                name="pistilColor"
+                value={flower.pistilColor}
+                onChange={handleChangeInput}
+                id="pistil-color"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                name="pistilSize"
+                value={flower.pistilSize}
+                onChange={handleChangeInput}
+                id="pistil-size"
+                min="3"
+                max="10"
+              />
+            </td>
+            <td></td>
+          </tr>
 
-        <tr className="font-bold">
-          <td>Petal</td>
-          <td>#</td>
-          <td>Color</td>
-          <td>Width</td>
-          <td>Height</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <input
-              type="number"
-              name="petalNumber"
-              value={flower.petalNumber}
-              onChange={handleChangeInput}
-              id="petal-number"
-              min="3"
-              max="12"
-            />
-          </td>
+          <tr className="font-bold">
+            <td>Petal</td>
+            <td>#</td>
+            <td>Color</td>
+            <td>Width</td>
+            <td>Height</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <input
+                type="number"
+                name="petalNumber"
+                value={flower.petalNumber}
+                onChange={handleChangeInput}
+                id="petal-number"
+                min="3"
+                max="12"
+              />
+            </td>
 
-          <td>
-            <input
-              type="color"
-              name="petalColor"
-              value={flower.petalColor}
-              onChange={handleChangeInput}
-              id="petal-color"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              name="petalWidth"
-              value={flower.petalWidth}
-              onChange={handleChangeInput}
-              id="petal-width"
-              min="3"
-              max="7"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              name="petalHeight"
-              value={flower.petalHeight}
-              onChange={handleChangeInput}
-              id="petal-height"
-              min="3"
-              max="7"
-            />
-          </td>
-        </tr>
+            <td>
+              <input
+                type="color"
+                name="petalColor"
+                value={flower.petalColor}
+                onChange={handleChangeInput}
+                id="petal-color"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                name="petalWidth"
+                value={flower.petalWidth}
+                onChange={handleChangeInput}
+                id="petal-width"
+                min="3"
+                max="7"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                name="petalHeight"
+                value={flower.petalHeight}
+                onChange={handleChangeInput}
+                id="petal-height"
+                min="3"
+                max="7"
+              />
+            </td>
+          </tr>
+        </tbody>
       </table>
       <div className="flex flex-col justify-end mt-auto">
         <div className="flex items-center mt-4 justify-end gap-4">

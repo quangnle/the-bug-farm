@@ -65,8 +65,6 @@ export default function BringToMarket () {
       sketchInstance.loop()
     }
   }, [show])
-  
-  console.log(selectedObject.value)
 
   return (
     <>

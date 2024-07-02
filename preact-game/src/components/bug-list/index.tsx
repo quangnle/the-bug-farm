@@ -3,7 +3,6 @@ import { sellBugEffect } from "@/core/effect";
 import Bug from "@/core/entity/bug";
 import { GAME_STATE, sketchInstance } from "@/core/gameState";
 import clsx from "clsx";
-import moment from "moment";
 import { useEffect, useState } from "react";
 import BorderContainer from "../border-container";
 import BugPattern from "../bug-pattern";
@@ -12,9 +11,11 @@ import Modal from "../common/modal";
 import FilterGeneModal from "../filter-gene-modal";
 import SelectTank from "../select-tank";
 import IconButtons from "../icon-buttons";
+import Inventory from "./inventory";
 
 export default function BugList() {
   const [show, setShow] = useState(false);
+  const [tab, setTab] = useState<"bugs" | "inventory">("bugs")
   const [loading, setLoading] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [bugs, setBugs] = useState<Bug[]>([]);
@@ -181,8 +182,11 @@ export default function BugList() {
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="bg-black/60 w-[80vw]">
-            <div className="h-[70vh] overflow-y-auto overflow-x-hidden p-4">
-              <h1 className="font-bold text-center mb-6">Inventory</h1>
+            {tab === 'bugs' && <div className="h-[70vh] overflow-y-auto overflow-x-hidden p-4">
+              <h1 className="font-bold text-center mb-6">My Bug</h1>
+              <div className="flex justify-between">
+                <Button onClick={() => setTab('inventory')}>Inventory</Button>
+              </div>
               <div className="h-20 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   {/* <Button
@@ -296,7 +300,8 @@ export default function BugList() {
                   );
                 })}
               </div>
-            </div>
+            </div>}
+            {tab === "inventory" && <Inventory changeTab={() => setTab('bugs')} />}
           </BorderContainer>
         </Modal>
       )}

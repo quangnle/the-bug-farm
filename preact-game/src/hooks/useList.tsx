@@ -57,13 +57,12 @@ export default function useList<T, K extends ICommonGetListParams>(
         if (type === 'reload') {
           setData(resData)
         } else {
+          console.log({resData})
           setData([...(prevData || []), ...resData])
         }
         if (resData.length !== 0) {
           setPagination(resPagination)
         }
-      } catch (error) {
-        alert(error.response?.data?.message || error.message)
       } finally {
         setLoading(false)
       }

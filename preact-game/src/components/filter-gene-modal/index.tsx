@@ -1,6 +1,5 @@
 import Bug from "@/core/entity/bug";
 import { Checkbox, Field, Label } from "@headlessui/react";
-import { FC } from "preact/compat";
 import BorderContainer from "../border-container";
 import Button from "../common/button";
 import Modal from "../common/modal";
@@ -13,12 +12,12 @@ interface IProp {
   handleClose?: () => void;
 }
 
-const FilterGeneModal: FC<IProp> = ({
+const FilterGeneModal = ({
   handleClose,
   bugs,
   handleSelectByGenes,
   showFilter,
-}) => {
+}: IProp ) => {
   const [selectedGenes, setSelectedGenes] = useState<IAppearance[]>([]);
   console.log(selectedGenes);
   useEffect(() => {
