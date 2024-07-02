@@ -15,6 +15,7 @@ const APIS_WILL_UPDATE_USER = [
   "post|flowers",
   "post|appearances",
   "post|sales/listing",
+  "patch|eat-pill"
 ];
 
 export const getToken = () => {

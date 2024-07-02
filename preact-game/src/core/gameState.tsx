@@ -117,67 +117,68 @@ export const GAME_STATE = {
   appearance,
 };
 
-effect(() => {
-  const fetchTank = async () => {
-    if (!tank.value?._id) return;
+export const GAME_fetchTank = async () => {
+  if (!tank.value?._id) return;
 
-    const isBgm = JSON.parse(localStorage.getItem("bgm") || 'true');
-    BGM_ENABLE.value = isBgm
-    const { data: listBugs } = await api.getAllBugs({
-      tankId: tank.value?._id,
+  const isBgm = JSON.parse(localStorage.getItem("bgm") || 'true');
+  BGM_ENABLE.value = isBgm
+  const { data: listBugs } = await api.getAllBugs({
+    tankId: tank.value?._id,
+  });
+  const { data: listFlowers } = await api.getAllFlowers({
+    tankId: tank.value?._id,
+  });
+
+  const farmX = FARM_BORDER * FARM_BORDER_SCALE
+  const farmY = FARM_BORDER * FARM_BORDER_SCALE
+  const farmW = FARM_WIDTH - FARM_BORDER * FARM_BORDER_SCALE * 2
+  const farmH = FARM_HEIGHT - FARM_BORDER * FARM_BORDER_SCALE * 2
+  farm.value = new Farm(
+    farmX,
+    farmY,
+    farmW,
+    farmH,
+    "#77dd22",
+    selectedObject
+  );
+
+  listBugs.forEach((x: Bug) => {
+    const _x = Math.random() * (farmW) + farmX;
+    const _y = Math.random() * (farmH) + farmY;
+
+    const bug = new Bug({
+      ...x,
+      x: _x,
+      y: _y,
+      size: 20,
+      color: "#f00",
+      p5: sketchInstance,
     });
-    const { data: listFlowers } = await api.getAllFlowers({
-      tankId: tank.value?._id,
+    farm.value.colony.push(bug);
+  });
+  listFlowers.forEach((flo: Flower) => {
+    const flower = new Flower({
+      ...flo,
     });
+    farm.value.addObject(flower);
+  });
 
-    const farmX = FARM_BORDER * FARM_BORDER_SCALE
-    const farmY = FARM_BORDER * FARM_BORDER_SCALE
-    const farmW = FARM_WIDTH - FARM_BORDER * FARM_BORDER_SCALE * 2
-    const farmH = FARM_HEIGHT - FARM_BORDER * FARM_BORDER_SCALE * 2
-    farm.value = new Farm(
-      farmX,
-      farmY,
-      farmW,
-      farmH,
-      "#77dd22",
-      selectedObject
-    );
-
-    listBugs.forEach((x: Bug) => {
-      const _x = Math.random() * (farmW) + farmX;
-      const _y = Math.random() * (farmH) + farmY;
-
-      const bug = new Bug({
-        ...x,
-        x: _x,
-        y: _y,
-        size: 20,
-        color: "#f00",
-        p5: sketchInstance,
-      });
-      farm.value.colony.push(bug);
-    });
-    listFlowers.forEach((flo: Flower) => {
-      const flower = new Flower({
-        ...flo,
-      });
-      farm.value.addObject(flower);
-    });
-
-    const eventSource = new EventSource(BASE_URL + "/events-flower");
-    eventSource.onmessage = ({ data }) => {
-      const { flower } = JSON.parse(data).data;
-      if (flower._id) {
-        const _flower = farm.value.objects.find((x) => x._id === flower._id);
-        if (_flower) {
-          _flower.hasPollen = flower.hasPollen;
-          _flower.numberOfPollens = flower.numberOfPollens;
-          _flower.spawningTime = flower.spawningTime;
-        }
+  const eventSource = new EventSource(BASE_URL + "/events-flower");
+  eventSource.onmessage = ({ data }) => {
+    const { flower } = JSON.parse(data).data;
+    if (flower._id) {
+      const _flower = farm.value.objects.find((x) => x._id === flower._id);
+      if (_flower) {
+        _flower.hasPollen = flower.hasPollen;
+        _flower.numberOfPollens = flower.numberOfPollens;
+        _flower.spawningTime = flower.spawningTime;
       }
-    };
+    }
   };
-  fetchTank();
+};
+
+effect(() => {
+  GAME_STATE.tank.value?._id && GAME_fetchTank();
 });
 
 effect(() => {

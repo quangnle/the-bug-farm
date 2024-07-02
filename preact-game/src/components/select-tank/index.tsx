@@ -5,10 +5,21 @@ import Modal from "../common/modal"
 import Loading from "../common/loading"
 import { handleError } from "@/utils/helpers"
 import "./style.css"
+import clsx from "clsx"
 
 const MAX_TANK = 5
 
-export default function SelectTank({ show, onSelectTank = () => {}, onClose = () => {} } : { show: boolean, onSelectTank?: (x: ITank) => void, onClose?: () => void}) {
+export default function SelectTank({
+  show,
+  needSlot = 0,
+  onSelectTank = () => {},
+  onClose = () => {},
+}: {
+  show: boolean
+  needSlot: number,
+  onSelectTank?: (x: ITank) => void
+  onClose?: () => void
+}) {
   const [tanks, setTanks] = useState<ITank[]>([])
   const [loading, setLoading] = useState(false)
 
@@ -21,7 +32,7 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
           userId: GAME_STATE.user.value?._id,
         })
         setTanks(data.data)
-      } catch(error) {
+      } catch (error) {
         console.log(error)
       } finally {
         setLoading(false)
@@ -30,7 +41,7 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
 
     const getListAppearance = async () => {
       const { data } = await api.getUserAppearances()
-      GAME_STATE.appearance.value  = data
+      GAME_STATE.appearance.value = data
     }
 
     GAME_STATE.user.value?._id && show && getListTanks()
@@ -39,7 +50,7 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
 
   const handleNewTank = async () => {
     try {
-      let newTank = prompt('Enter tank name', `Tank ${tanks.length + 1}`)
+      let newTank = prompt("Enter tank name", `Tank ${tanks.length + 1}`)
       const { data } = await api.createTank(newTank)
       if (data._id) {
         onSelectTank(data)
@@ -73,7 +84,7 @@ export default function SelectTank({ show, onSelectTank = () => {}, onClose = ()
               <div className="flex flex-wrap items-center justify-center gap-4 max-w-[700px]">
                 {tanks.slice(0, MAX_TANK).map((x) => (
                   <div
-                    className="flex gap-4 p-4 border-4 border-dashed hover:border-[orange]/50 hover:bg-[burlywood]/20 rounded-xl cursor-pointer w-[240px] aspect-[3/2]"
+                    className={clsx("flex gap-4 p-4 border-4 border-dashed rounded-xl w-[240px] aspect-[3/2]", needSlot <= (x.size - (x.noBug || 0)) ? "cursor-pointer hover:border-[orange]/50 hover:bg-[burlywood]/20" : "opacity-30")}
                     onClick={() => onSelectTank(x)}
                   >
                     <div className="text-xl text-left">

@@ -193,9 +193,10 @@ class Farm {
             api
               .bugEatFlower(bug._id, flower._id)
               .then(({ data }) => {
-                if (data._id) {
+                const { bug: __bug } = data
+                if (__bug && __bug._id) {
                   const newBug = new Bug({
-                    ...data,
+                    ...__bug,
                     color: flower.pistilColor,
                     x: bug.x,
                     y: bug.y,

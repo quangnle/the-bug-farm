@@ -11,11 +11,11 @@ import Modal from "../common/modal";
 import FilterGeneModal from "../filter-gene-modal";
 import SelectTank from "../select-tank";
 import IconButtons from "../icon-buttons";
-import Inventory from "./inventory";
+import BugVault from "./bug-vault";
 
 export default function BugList() {
   const [show, setShow] = useState(false);
-  const [tab, setTab] = useState<"bugs" | "inventory">("bugs")
+  const [tab, setTab] = useState<"bugs" | "bug-vault">("bugs")
   const [loading, setLoading] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [bugs, setBugs] = useState<Bug[]>([]);
@@ -185,7 +185,7 @@ export default function BugList() {
             {tab === 'bugs' && <div className="h-[70vh] overflow-y-auto overflow-x-hidden p-4">
               <h1 className="font-bold text-center mb-6">My Bug</h1>
               <div className="flex justify-between">
-                <Button onClick={() => setTab('inventory')}>Inventory</Button>
+                <Button onClick={() => setTab('bug-vault')}>Bug vault</Button>
               </div>
               <div className="h-20 flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -301,7 +301,7 @@ export default function BugList() {
                 })}
               </div>
             </div>}
-            {tab === "inventory" && <Inventory changeTab={() => setTab('bugs')} />}
+            {tab === "bug-vault" && <BugVault changeTab={() => setTab('bugs')} />}
           </BorderContainer>
         </Modal>
       )}
