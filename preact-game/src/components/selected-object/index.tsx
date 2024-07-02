@@ -119,7 +119,7 @@ export default function SelectedObject() {
         0
       );
     }
-  }, [selectedObject.value]);
+  }, [staticData.genes]);
 
   const [showSelectTank, setShowSelectTank] = useState(false)
   const handleSelectTank = async (tankId: ITank) => {
