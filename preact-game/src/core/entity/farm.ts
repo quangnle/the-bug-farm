@@ -195,6 +195,7 @@ class Farm {
               .then(({ data }) => {
                 const { bug: __bug } = data
                 if (__bug && __bug._id) {
+                  console.log({__bug})
                   const newBug = new Bug({
                     ...__bug,
                     color: flower.pistilColor,
