@@ -367,8 +367,21 @@ class Bug {
         }
     }
 
+    rarityScore() {
+        let score = 0;
+        this.genes.forEach((g) => {
+            // find the gene with the name of g in the patterns            
+            const baseScore = patterns.find((p) => p.name === g.name).score;
+            score += (91 - baseScore) ** 2 + (g.score - baseScore) ** 2;
+        });
+
+        const appScore = patterns.find(p => p.name === this.appearance.name).score;
+        score += (91 - appScore)**3;
+        return score;
+    }
+
     infoString() {
-        let info = `Hunger rate: ${500 - this.hunger} \nAppearance: ${
+        let info = `Rarity score: ${this.rarityScore()} \nAppearance: ${
             this.appearance.name
         } \n\nList of genes: \n--------------\n`;
         // total score
