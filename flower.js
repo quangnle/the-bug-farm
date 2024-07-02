@@ -94,7 +94,7 @@ class Flower {
             noFill();
             stroke("#000");
             const size =
-                (this.pistilSize + this.petalSize) * 2 +
+                (this.pistilSize + this.petalHeight) * 2 +
                 sin(frameCount * 0.1) * 5;
             ellipse(this.x, this.y, size, this.size);
         }
