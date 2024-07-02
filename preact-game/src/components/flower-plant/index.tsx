@@ -3,17 +3,16 @@ import PlantSwitch from "./plant-swich"
 import "./style.css"
 import Button from "../common/button"
 import { GAME_STATE, selectedObject } from "@/core/gameState"
-import Flower from "@/core/entity/flower"
 import { useEffect, useState } from "react"
-import Route from "@/core/entity/route"
 import api from "@/core/axios"
 
 export const plantFlower = signal({
-  petalNumber: 5,
   pistilColor: '#ff0000',
   pistilSize: 5,
+  petalNumber: 5,
   petalColor: '#ffffff',
-  petalSize: 5,
+  petalWidth: 5,
+  petalHeight: 5,
 })
 
 export default function FlowerPlant() {
@@ -22,9 +21,10 @@ export default function FlowerPlant() {
     pistilColor: '#ff0000',
     pistilSize: 5,
     petalColor: '#ffffff',
-    petalSize: 5,
+    petalWidth: 5,
+    petalHeight: 5,
   })
-  const [marchingShow, setMarchingShow] = useState(false)
+  // const [marchingShow, setMarchingShow] = useState(false)
 
   const handleChangeInput = (event) => {
     const { name} = event.target
@@ -43,24 +43,24 @@ export default function FlowerPlant() {
   }, [flower])
 
 
-  const toggleShow = () => {
-    const flowers = GAME_STATE.farm.value.objects.filter(
-      (obj) => obj instanceof Flower
-    )
-    if (flowers.length > 1) {
-      if (marchingShow) { // stop the show
-        setMarchingShow(false)
-        GAME_STATE.farm.value.mode = "play";
-        GAME_STATE.farm.value.route?.stop();
-        GAME_STATE.farm.value.route = null;
-      } else { // start the show
-        setMarchingShow(true)
-        GAME_STATE.farm.value.mode = "show";
-        GAME_STATE.farm.value.route = new Route(GAME_STATE.farm.value.colony, flowers);
-        GAME_STATE.farm.value.route?.start();
-      }
-    }
-  }
+  // const toggleShow = () => {
+  //   const flowers = GAME_STATE.farm.value.objects.filter(
+  //     (obj) => obj instanceof Flower
+  //   )
+  //   if (flowers.length > 1) {
+  //     if (marchingShow) { // stop the show
+  //       setMarchingShow(false)
+  //       GAME_STATE.farm.value.mode = "play";
+  //       GAME_STATE.farm.value.route?.stop();
+  //       GAME_STATE.farm.value.route = null;
+  //     } else { // start the show
+  //       setMarchingShow(true)
+  //       GAME_STATE.farm.value.mode = "show";
+  //       GAME_STATE.farm.value.route = new Route(GAME_STATE.farm.value.colony, flowers);
+  //       GAME_STATE.farm.value.route?.start();
+  //     }
+  //   }
+  // }
 
   const handleRemoveAllFlower = async () => {
     GAME_STATE.farm.value.objects = GAME_STATE.farm.value.objects.filter(
@@ -84,12 +84,23 @@ export default function FlowerPlant() {
         <tr className="font-bold">
           <td className="">Pistil</td>
           <td></td>
-          <td>Size</td>
           <td>Color</td>
+          <td>Size</td>
+          <td></td>
         </tr>
         <tr>
           <td></td>
           <td></td>
+
+          <td>
+            <input
+              type="color"
+              name="pistilColor"
+              value={flower.pistilColor}
+              onChange={handleChangeInput}
+              id="pistil-color"
+            />
+          </td>
           <td>
             <input
               type="number"
@@ -101,22 +112,15 @@ export default function FlowerPlant() {
               max="10"
             />
           </td>
-          <td>
-            <input
-              type="color"
-              name="pistilColor"
-              value={flower.pistilColor}
-              onChange={handleChangeInput}
-              id="pistil-color"
-            />
-          </td>
+          <td></td>
         </tr>
 
         <tr className="font-bold">
           <td>Petal</td>
           <td>#</td>
-          <td>Size</td>
           <td>Color</td>
+          <td>Width</td>
+          <td>Height</td>
         </tr>
         <tr>
           <td></td>
@@ -131,17 +135,7 @@ export default function FlowerPlant() {
               max="10"
             />
           </td>
-          <td>
-            <input
-              type="number"
-              name="petalSize"
-              value={flower.petalSize}
-              onChange={handleChangeInput}
-              id="petal-size"
-              min="3"
-              max="10"
-            />
-          </td>
+
           <td>
             <input
               type="color"
@@ -149,6 +143,28 @@ export default function FlowerPlant() {
               value={flower.petalColor}
               onChange={handleChangeInput}
               id="petal-color"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              name="petalWidth"
+              value={flower.petalWidth}
+              onChange={handleChangeInput}
+              id="petal-width"
+              min="3"
+              max="7"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              name="petalHeight"
+              value={flower.petalHeight}
+              onChange={handleChangeInput}
+              id="petal-height"
+              min="3"
+              max="7"
             />
           </td>
         </tr>

@@ -319,7 +319,6 @@ class Farm {
 
     // left click on the bug to select it
     if (mouseButton === "left") {
-      console.log("selected", this.selectedObject);
       // check if mouse position is on a bug
       this.colony.forEach((bug) => {
         const d = sketchInstance.dist(mouseX, mouseY, bug.x, bug.y);
@@ -333,7 +332,7 @@ class Farm {
       this.objects.forEach((obj) => {
         if (obj instanceof Flower) {
           const d = sketchInstance.dist(mouseX, mouseY, obj.x, obj.y);
-          if (d < obj.pistilSize + obj.petalSize / 2 && this.selectedObject)
+          if (d < obj.pistilSize * 3 && this.selectedObject)
             this.selectedObject.value = obj;
         }
       });

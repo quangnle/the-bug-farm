@@ -8,6 +8,8 @@ class Flower {
   pistilSize: number
   pistilColor: string
   petalSize: number
+  petalWidth: number
+  petalHeight: number
   petalColor: string
   petalNumber: number
   hasPollen: boolean
@@ -23,6 +25,8 @@ class Flower {
     pistilSize,
     pistilColor,
     petalSize,
+    petalWidth,
+    petalHeight,
     petalColor,
     petalNumber,
     numberOfPollens,
@@ -35,6 +39,8 @@ class Flower {
     pistilSize: number
     pistilColor: string
     petalSize: number
+    petalWidth: number
+    petalHeight: number
     petalColor: string
     petalNumber: number
     numberOfPollens: number
@@ -47,6 +53,8 @@ class Flower {
     this.pistilSize = pistilSize
     this.pistilColor = pistilColor
     this.petalSize = petalSize
+    this.petalWidth = petalWidth || petalSize
+    this.petalHeight = petalHeight || petalSize
     this.petalColor = petalColor
     this.petalNumber = petalNumber
     this.hasPollen = hasPollen
@@ -87,8 +95,12 @@ class Flower {
     for (let i = 0; i < this.petalNumber; i++) {
       const x = p5.cos(angle * i) * this.pistilSize
       const y = p5.sin(angle * i) * this.pistilSize
+      p5.push()
+      p5.translate(x, y)
+      p5.rotate(angle * i)
       p5.fill(this.petalColor)
-      p5.ellipse(x, y, this.petalSize, this.petalSize)
+      p5.ellipse(0, 0, this.petalHeight, this.petalWidth)
+      p5.pop()
     }
 
     // draw the pistil
@@ -115,8 +127,8 @@ class Flower {
       p5.noFill()
       p5.stroke("#000")
       const size =
-        (this.pistilSize + this.petalSize) * 2 + p5.sin(p5.frameCount * 0.1) * 5
-      p5.ellipse(this.x, this.y, size, this.size)
+        (this.pistilSize * 6) + p5.sin(p5.frameCount * 0.1) * 5
+      p5.ellipse(this.x, this.y, size, size)
     }
   }
 
@@ -130,7 +142,7 @@ class Flower {
     )} / ${MAX_POLLENS}`
   }
 
-  drawIcon(ctx, x, y) {
+  drawIcon(ctx: CanvasRenderingContext2D, x: number, y: number) {
     const pistilSize = this.pistilSize / 2
     const petalSize = this.petalSize / 2
 
