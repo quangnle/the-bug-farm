@@ -147,7 +147,7 @@ class Flower {
 
     if (this.numberOfPollens > 0) {
       const leafSize = this.pistilSize * 1.5
-      const leafAngle = Math.PI / 4
+      const leafAngle = p5.PI / 4
 
       for (let i = 0; i < 8; i++) {
         ctx.save()
@@ -159,20 +159,32 @@ class Flower {
       }
     }
 
+    ctx.save()
+    ctx.translate(x, y)
+
     ctx.fillStyle = this.petalColor
+    //draw the petals
     const angle = (Math.PI * 2) / this.petalNumber
     for (let i = 0; i < this.petalNumber; i++) {
+      const x = Math.cos(angle * i) * this.pistilSize
+      const y = Math.sin(angle * i) * this.pistilSize
+      ctx.save()
+      ctx.translate(x, y)
+      ctx.rotate(angle * i)
       ctx.beginPath()
-      ctx.arc(
-        2 * pistilSize * Math.cos(angle * i),
-        2 * pistilSize * Math.sin(angle * i),
-        petalSize,
+      ctx.ellipse(
+        0,
+        0,
+        this.petalHeight / 2,
+        this.petalWidth / 2,
+        0,
         0,
         Math.PI * 2
       )
       ctx.fill()
       ctx.stroke()
       ctx.closePath()
+      ctx.restore()
     }
 
     ctx.fillStyle = this.pistilColor

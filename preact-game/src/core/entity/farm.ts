@@ -332,8 +332,8 @@ class Farm {
       this.objects.forEach((obj) => {
         if (obj instanceof Flower) {
           const d = sketchInstance.dist(mouseX, mouseY, obj.x, obj.y);
-          if (d < obj.pistilSize * 3 && this.selectedObject)
-            this.selectedObject.value = obj;
+          if (d < obj.pistilSize + obj.petalHeight / 2 && this.selectedObject)
+            this.selectedObject.value = obj
         }
       });
     }
