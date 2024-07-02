@@ -30,7 +30,7 @@ export default function FlowerPlant() {
     const { name} = event.target
     let { value } = event.target
     if (name === 'petalNumber' || name === 'pistilSize' || name === 'petalSize') {
-      value = Math.min(10, Math.max(3, parseInt(value)))
+      value = Math.min(12, Math.max(3, parseInt(value)))
     }
     setFlower(prev => ({
       ...prev,
@@ -132,7 +132,7 @@ export default function FlowerPlant() {
               onChange={handleChangeInput}
               id="petal-number"
               min="3"
-              max="10"
+              max="12"
             />
           </td>
 
