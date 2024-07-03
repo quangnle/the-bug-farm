@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react"
-import { GAME_STATE, sketchInstance } from "../../core/gameState"
-import api from "../../core/axios"
-import Modal from "../common/modal"
-import Loading from "../common/loading"
-import { handleError } from "@/utils/helpers"
-import "./style.css"
-import clsx from "clsx"
+import { useEffect, useState } from "react";
+import { GAME_STATE, sketchInstance } from "../../core/gameState";
+import api from "../../core/axios";
+import Modal from "../common/modal";
+import Loading from "../common/loading";
+import { handleError } from "@/utils/helpers";
+import "./style.css";
+import clsx from "clsx";
 
-const MAX_TANK = 5
+const MAX_TANK = 5;
 
 export default function SelectTank({
   show,
@@ -15,61 +15,50 @@ export default function SelectTank({
   onSelectTank = () => {},
   onClose = () => {},
 }: {
-  show: boolean
-  needSlot?: number,
-  onSelectTank?: (x: ITank) => void
-  onClose?: () => void
+  show: boolean;
+  needSlot?: number;
+  onSelectTank?: (x: ITank) => void;
+  onClose?: () => void;
 }) {
-  const [tanks, setTanks] = useState<ITank[]>([])
-  const [loading, setLoading] = useState(false)
+  const [tanks, setTanks] = useState<ITank[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getListTanks = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
 
         const { data } = await api.getAllTanks({
           userId: GAME_STATE.user.value?._id,
-        })
-        setTanks(data.data)
+        });
+        setTanks(data.data);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
     const getListAppearance = async () => {
-      const { data } = await api.getUserAppearances()
-      GAME_STATE.appearance.value = data
-    }
+      const { data } = await api.getUserAppearances();
+      GAME_STATE.appearance.value = data;
+    };
 
-    GAME_STATE.user.value?._id && show && getListTanks()
-    GAME_STATE.user.value?._id && getListAppearance()
-  }, [GAME_STATE.user.value, show])
+    GAME_STATE.user.value?._id && show && getListTanks();
+    GAME_STATE.user.value?._id && getListAppearance();
+  }, [GAME_STATE.user.value, show]);
 
   const handleNewTank = async () => {
     try {
-      let newTank = prompt("Enter tank name", `Tank ${tanks.length + 1}`)
-      const { data } = await api.createTank(newTank)
+      let newTank = prompt("Enter tank name", `Tank ${tanks.length + 1}`);
+      const { data } = await api.createTank(newTank);
       if (data._id) {
-        onSelectTank(data)
+        onSelectTank(data);
       }
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
-  }
-
-  useEffect(() => {
-    if (show) {
-      sketchInstance.noLoop()
-    } else {
-      sketchInstance.loop()
-    }
-    return () => {
-      sketchInstance.loop()
-    }
-  }, [show])
+  };
 
   return (
     <>
@@ -84,7 +73,12 @@ export default function SelectTank({
               <div className="flex flex-wrap items-center justify-center gap-4 max-w-[700px]">
                 {tanks.slice(0, MAX_TANK).map((x) => (
                   <div
-                    className={clsx("flex gap-4 p-4 border-4 border-dashed rounded-xl w-[240px] aspect-[3/2]", needSlot <= (x.size - (x.noBug || 0)) ? "cursor-pointer hover:border-[orange]/50 hover:bg-[burlywood]/20" : "opacity-30")}
+                    className={clsx(
+                      "flex gap-4 p-4 border-4 border-dashed rounded-xl w-[240px] aspect-[3/2]",
+                      needSlot <= x.size - (x.noBug || 0)
+                        ? "cursor-pointer hover:border-[orange]/50 hover:bg-[burlywood]/20"
+                        : "opacity-30"
+                    )}
                     onClick={() => onSelectTank(x)}
                   >
                     <div className="text-xl text-left">
@@ -116,5 +110,5 @@ export default function SelectTank({
         </Modal>
       )}
     </>
-  )
+  );
 }

@@ -30,42 +30,38 @@ export default function BugList() {
     order: 1,
   });
 
+  const handleShowSortedBug = () =>
+    setBugs(
+      [...GAME_STATE.farm.value.colony].sort((a, b) => {
+        const rarityA = a.genes.reduce(
+          (acc, gene) =>
+            acc +
+            Math.pow(100 - gene.score, 2) +
+            Math.pow(90 - a.appearance.score, 3),
+          0
+        );
+        const rarityB = b.genes.reduce(
+          (acc, gene) =>
+            acc +
+            Math.pow(100 - gene.score, 2) +
+            Math.pow(90 - b.appearance.score, 3),
+          0
+        );
+        return (rarityA - rarityB) * filter.order;
+      })
+    );
+
+  useEffect(() => {
+    handleShowSortedBug();
+  }, [filter, GAME_STATE.farm.value]);
+
   useEffect(() => {
     if (show) {
       sketchInstance.noLoop();
-      setBugs(
-        [...GAME_STATE.farm.value.colony].sort((a, b) => {
-          if (filter.type === "createdAt") {
-            return (
-              (new Date(a.createdAt).getTime() -
-                new Date(b.createdAt).getTime()) *
-              filter.order
-            );
-          }
-          if (filter.type === "rarity") {
-            const rarityA = a.genes.reduce(
-              (acc, gene) =>
-                acc +
-                Math.pow(100 - gene.score, 2) +
-                Math.pow(90 - a.appearance.score, 3),
-              0
-            );
-            const rarityB = b.genes.reduce(
-              (acc, gene) =>
-                acc +
-                Math.pow(100 - gene.score, 2) +
-                Math.pow(90 - b.appearance.score, 3),
-              0
-            );
-            return (rarityA - rarityB) * filter.order;
-          }
-          return 0;
-        })
-      );
     } else {
       sketchInstance.loop();
     }
-  }, [show, filter]);
+  }, [show]);
 
   const handleSelectByGenes = (genes: IAppearance[]) => {
     setSelectedBugs([]);
@@ -105,35 +101,7 @@ export default function BugList() {
         (bug) => !selectedBugs.includes(bug)
       );
       setSelectedBugs([]);
-      setBugs(GAME_STATE.farm.value.colony);
-      sellBugEffect(0, 0);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSellAllDefault = async () => {
-    try {
-      setLoading(true);
-      const _selectedBugs = bugs
-        .filter(
-          (bug) => bug.appearance.name === "default" && bug.genes.length === 1
-        )
-        .map((bug) => bug._id);
-      console.log(_selectedBugs);
-      if (_selectedBugs.length === 0) {
-        alert("No bug selected");
-      }
-      await api.sellBugs({
-        tankId: GAME_STATE.tank.value?._id,
-        bugIds: _selectedBugs,
-      });
-      GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
-        (bug) => !_selectedBugs.includes(bug._id)
-      );
-      setBugs(GAME_STATE.farm.value.colony);
+      handleShowSortedBug();
       sellBugEffect(0, 0);
     } catch (error) {
       console.error(error);
@@ -163,7 +131,7 @@ export default function BugList() {
         (bug) => !selectedBugs.includes(bug)
       );
       setSelectedBugs([]);
-      setBugs(GAME_STATE.farm.value.colony);
+      handleShowSortedBug();
       sellBugEffect(0, 0);
     } catch (error) {
       console.error(error);
@@ -190,17 +158,6 @@ export default function BugList() {
                 </div>
                 <div className="h-20 flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    {/* <Button
-                    className="w-[200px]"
-                    onClick={() => {
-                      setFilter((prev) => ({
-                        ...prev,
-                        type: prev.type === "rarity" ? "createdAt" : "rarity",
-                      }));
-                    }}
-                  >
-                    Sort by: {filter.type}
-                  </Button> */}
                     <Button
                       onClick={() => {
                         setFilter((prev) => ({
@@ -209,7 +166,7 @@ export default function BugList() {
                         }));
                       }}
                     >
-                      {filter.order === 1
+                      {filter.order === -1
                         ? "Ascending rarity"
                         : "Descending rarity"}
                     </Button>
@@ -232,14 +189,8 @@ export default function BugList() {
                         <Button onClick={() => setSelectedBugs([])}>
                           Unselect
                         </Button>
-                        {/* <Button onClick={() => !loading && handleSellAll()}>
-                        Sell
-                      </Button> */}
                       </>
                     )}
-                    {/* <Button onClick={handleSellAllDefault}>
-                    Sell all Default
-                  </Button> */}
                   </div>
                 </div>
 
@@ -294,10 +245,6 @@ export default function BugList() {
                             </ul>
                           </div>
                         </div>
-                        {/* <p className="text-right">
-                        Hatch:{" "}
-                        {moment((bug as unknown as IBug).createdAt).fromNow()}
-                      </p> */}
                       </BorderContainer>
                     );
                   })}
