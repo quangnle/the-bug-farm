@@ -19,8 +19,8 @@ export default function GameBody({ loading }: { loading: boolean }) {
             <div className="flex flex-col gap-4 py-4">
               <BugList />
               <Market />
-              <Menu />
               <Genes />
+              <Menu />
             </div>
           )}
           <div className="flex flex-col gap-4 py-4 relative z-10">

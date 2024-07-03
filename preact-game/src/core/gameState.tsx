@@ -22,7 +22,9 @@ export const GAME_ASSET: Record<string, any> = {
   diamond: null,
   cashout: null,
   bgm: null,
-  logo: null
+  SOUND_success: null,
+  SOUND_failure: null,
+  logo: null,
 };
 export const DEV_MODE = signal<boolean>(false)
 
@@ -32,16 +34,22 @@ const sketch = (s: p5) => {
   let border: any;
   s.preload = () => {
     GAME_ASSET.diamond = s.loadImage("/assets/icons/coin.png");
+    GAME_ASSET.IMG_boost = s.loadImage("/assets/icons/boost.png");
+    GAME_ASSET.IMG_failure = s.loadImage("/assets/icons/failure.png");
     GAME_ASSET.logo = s.loadImage("/assets/euro-logo.png");
 
     // Sound
-    GAME_ASSET.cashout = new Audio();
-    GAME_ASSET.cashout.src = "/sounds/cash.mp3";
-    GAME_ASSET.cashout.preload = "auto";
+    GAME_ASSET.cashout = new Audio()
+    GAME_ASSET.cashout.src = "/sounds/cash.mp3"
+    GAME_ASSET.cashout.preload = "auto"
 
-    GAME_ASSET.bgm = new Audio();
-    GAME_ASSET.bgm.src = "/sounds/bgm-2.mp3";
-    GAME_ASSET.bgm.preload = "auto";
+    GAME_ASSET.bgm = new Audio()
+    GAME_ASSET.bgm.src = "/sounds/bgm-2.mp3"
+    GAME_ASSET.bgm.preload = "auto"
+
+    GAME_ASSET.SOUND_success = new Audio()
+    GAME_ASSET.SOUND_success.src = "/sounds/success.mp3"
+    GAME_ASSET.SOUND_success.preload = "auto"
   };
   s.setup = () => {
     const canvas = document.getElementById("main-canvas");

@@ -7,7 +7,7 @@ import { MAX_POLLENS, SPAWN_DURATION } from "@/core/constants";
 import BugPattern from "../bug-pattern";
 import BringToMarket from "../bring-to-market";
 import Button from "../common/button";
-import { sellBugEffect } from "@/core/effect";
+import { boostBugEffect, sellBugEffect } from "@/core/effect";
 import api from "@/core/axios";
 import SelectTank from "../select-tank";
 import { handleError } from "@/utils/helpers";
@@ -148,11 +148,14 @@ export default function SelectedObject() {
       if (selectedObject.value instanceof Bug) {
         const { data } = await api.bugEatPill(selectedObject.value._id)
         GAME_STATE.farm.value.colony.forEach((bug) => {
-          if (bug._id === data.bug._id && data.isIncrementScore) {
-            bug.genes = data.bug.genes
-            setStaticData({
-              genes: data.bug.genes
-            })
+          if (bug._id === data.bug._id) {
+            boostBugEffect(bug.x, bug.y, data.isIncrementScore)
+            if (data.isIncrementScore) {
+              bug.genes = data.bug.genes
+              setStaticData({
+                genes: data.bug.genes,
+              })
+            }
           }
         })
       }
