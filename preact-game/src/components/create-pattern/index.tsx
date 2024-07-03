@@ -211,8 +211,8 @@ export default function CreatePattern({
                 {/* {(GAME_STATE.user.value?._id === "6672c34d6823ebd43c8ea8a9" ||
                   GAME_STATE.user.value?._id ===
                     "66540a69de9028f574c478fb") && ( */}
-                <label className="mt-4">
-                  <span className="font-bold">Pattern name: </span>
+                {/* <label className="mt-4">
+                  <span className="font-bold">Select pattern: </span>
                   <select
                     onChange={(e) => setCurrentEditPattern(e.target.value)}
                     value={currentEditPattern}
@@ -232,18 +232,18 @@ export default function CreatePattern({
                           </option>
                         ))}
                   </select>
-                </label>
+                </label> */}
                 {/* )} */}
                 <div className="flex flex-col gap-4 mt-auto">
                   <div className="flex items-center gap-4">
                     <Button onClick={handleSubmit}>Create Pattern</Button>
                     <p className="text-md">It cost $200</p>
                   </div>
-                  {currentEditPattern && (
+                  {/* {currentEditPattern && (
                     <Button onClick={() => handleUpdatePattern()}>
                       Update Pattern
                     </Button>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
