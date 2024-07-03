@@ -15,7 +15,7 @@ import BugVault from "./bug-vault";
 
 export default function BugList() {
   const [show, setShow] = useState(false);
-  const [tab, setTab] = useState<"bugs" | "bug-vault">("bugs")
+  const [tab, setTab] = useState<"bugs" | "bug-vault">("bugs");
   const [loading, setLoading] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [bugs, setBugs] = useState<Bug[]>([]);
@@ -182,14 +182,15 @@ export default function BugList() {
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="bg-black/60 w-[80vw]">
-            {tab === 'bugs' && <div className="h-[70vh] overflow-y-auto overflow-x-hidden p-4">
-              <h1 className="font-bold text-center mb-6">My Bug</h1>
-              <div className="flex justify-between">
-                <Button onClick={() => setTab('bug-vault')}>Bug vault</Button>
-              </div>
-              <div className="h-20 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  {/* <Button
+            {tab === "bugs" && (
+              <div className="h-[70vh] overflow-y-auto overflow-x-hidden p-4">
+                <h1 className="font-bold text-center mb-6">My Bug</h1>
+                <div className="flex justify-between">
+                  <Button onClick={() => setTab("bug-vault")}>Bug vault</Button>
+                </div>
+                <div className="h-20 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    {/* <Button
                     className="w-[200px]"
                     onClick={() => {
                       setFilter((prev) => ({
@@ -200,108 +201,112 @@ export default function BugList() {
                   >
                     Sort by: {filter.type}
                   </Button> */}
-                  <Button
-                    onClick={() => {
-                      setFilter((prev) => ({
-                        ...prev,
-                        order: prev.order * -1,
-                      }));
-                    }}
-                  >
-                    {filter.order === 1
-                      ? "Ascending rarity"
-                      : "Descending rarit"}
-                  </Button>
-                </div>
-                <div className="flex gap-2">
-                  <Button onClick={() => setShowFilter(true)}>Filter</Button>
-                  {selectedBugs.length > 0 && (
-                    <>
-                      <SelectTank
-                        show={showSelectTank}
-                        onSelectTank={handleSelectTank}
-                        onClose={() => setShowSelectTank(false)}
-                      />
-                      <Button onClick={() => setShowSelectTank(true)}>
-                        Switch Tank
-                      </Button>
-                      <Button onClick={() => !loading && handleSellAll()}>
-                        Sell all selected
-                      </Button>
-                      <Button onClick={() => setSelectedBugs([])}>
-                        Unselect
-                      </Button>
-                      {/* <Button onClick={() => !loading && handleSellAll()}>
-                        Sell
-                      </Button> */}
-                    </>
-                  )}
-                  {/* <Button onClick={handleSellAllDefault}>
-                    Sell all Default
-                  </Button> */}
-                </div>
-              </div>
-
-              <div
-                className="grid gap-4"
-                style={{
-                  gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                }}
-              >
-                {bugs.map((bug) => {
-                  const total = bug.genes.reduce(
-                    (acc, gene) => acc + gene.score,
-                    0
-                  );
-
-                  return (
-                    <BorderContainer
-                      key={bug._id}
-                      className={clsx(
-                        "border-2 p-2 hover:bg-green-600 gap-4 text-white cursor-pointer",
-                        selectedBugs.includes(bug) && "bg-green-600"
-                      )}
+                    <Button
                       onClick={() => {
-                        setSelectedBugs((prev) => {
-                          if (prev.includes(bug)) {
-                            return prev.filter((b) => b !== bug);
-                          } else {
-                            return [...prev, bug];
-                          }
-                        });
+                        setFilter((prev) => ({
+                          ...prev,
+                          order: prev.order * -1,
+                        }));
                       }}
                     >
-                      <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-red-600">
-                          <BugPattern app={bug.appearance} />
+                      {filter.order === 1
+                        ? "Ascending rarity"
+                        : "Descending rarity"}
+                    </Button>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={() => setShowFilter(true)}>Filter</Button>
+                    {selectedBugs.length > 0 && (
+                      <>
+                        <SelectTank
+                          show={showSelectTank}
+                          onSelectTank={handleSelectTank}
+                          onClose={() => setShowSelectTank(false)}
+                        />
+                        <Button onClick={() => setShowSelectTank(true)}>
+                          Switch Tank
+                        </Button>
+                        <Button onClick={() => !loading && handleSellAll()}>
+                          Sell all selected
+                        </Button>
+                        <Button onClick={() => setSelectedBugs([])}>
+                          Unselect
+                        </Button>
+                        {/* <Button onClick={() => !loading && handleSellAll()}>
+                        Sell
+                      </Button> */}
+                      </>
+                    )}
+                    {/* <Button onClick={handleSellAllDefault}>
+                    Sell all Default
+                  </Button> */}
+                  </div>
+                </div>
+
+                <div
+                  className="grid gap-4"
+                  style={{
+                    gridTemplateColumns:
+                      "repeat(auto-fill, minmax(300px, 1fr))",
+                  }}
+                >
+                  {bugs.map((bug) => {
+                    const total = bug.genes.reduce(
+                      (acc, gene) => acc + gene.score,
+                      0
+                    );
+
+                    return (
+                      <BorderContainer
+                        key={bug._id}
+                        className={clsx(
+                          "border-2 p-2 hover:bg-green-600 gap-4 text-white cursor-pointer",
+                          selectedBugs.includes(bug) && "bg-green-600"
+                        )}
+                        onClick={() => {
+                          setSelectedBugs((prev) => {
+                            if (prev.includes(bug)) {
+                              return prev.filter((b) => b !== bug);
+                            } else {
+                              return [...prev, bug];
+                            }
+                          });
+                        }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-16 bg-red-600">
+                            <BugPattern app={bug.appearance} />
+                          </div>
+                          <div className="py-2">
+                            <p>
+                              <b>Pattern</b>: {bug.appearance.name}
+                            </p>
+                            <p>
+                              <b>Genes</b>:
+                            </p>
+                            <ul>
+                              {bug.genes.map((gene) => (
+                                <li>
+                                  &middot; {gene.name} -{" "}
+                                  {Math.round((gene.score / total) * 100)}%
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
-                        <div className="py-2">
-                          <p>
-                            <b>Pattern</b>: {bug.appearance.name}
-                          </p>
-                          <p>
-                            <b>Genes</b>:
-                          </p>
-                          <ul>
-                            {bug.genes.map((gene) => (
-                              <li>
-                                &middot; {gene.name} -{" "}
-                                {Math.round((gene.score / total) * 100)}%
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      {/* <p className="text-right">
+                        {/* <p className="text-right">
                         Hatch:{" "}
                         {moment((bug as unknown as IBug).createdAt).fromNow()}
                       </p> */}
-                    </BorderContainer>
-                  );
-                })}
+                      </BorderContainer>
+                    );
+                  })}
+                </div>
               </div>
-            </div>}
-            {tab === "bug-vault" && <BugVault changeTab={() => setTab('bugs')} />}
+            )}
+            {tab === "bug-vault" && (
+              <BugVault changeTab={() => setTab("bugs")} />
+            )}
           </BorderContainer>
         </Modal>
       )}

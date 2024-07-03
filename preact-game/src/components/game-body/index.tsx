@@ -8,7 +8,7 @@ import Genes from "../genes";
 
 export default function GameBody({ loading }: { loading: boolean }) {
   const handleSaveGif = () => {
-    sketchInstance.saveGif("myGif", 2, {});
+    sketchInstance.saveGif("myGif", 2, { notificationDuration: 3 });
   };
 
   return (
@@ -27,10 +27,13 @@ export default function GameBody({ loading }: { loading: boolean }) {
             <IconButtons icon="save-gif" onClick={handleSaveGif} />
             <IconButtons
               onClick={() => {
-                BGM_ENABLE.value = !BGM_ENABLE.value
+                BGM_ENABLE.value = !BGM_ENABLE.value;
               }}
             >
-              <img className="w-10 hover:w-12" src={`/assets/${BGM_ENABLE.value ? 'bgm-mute.png': 'bgm.png'}`} />
+              <img
+                className="w-10 hover:w-12"
+                src={`/assets/${BGM_ENABLE.value ? "bgm-mute.png" : "bgm.png"}`}
+              />
             </IconButtons>
           </div>
         </div>
@@ -43,5 +46,5 @@ export default function GameBody({ loading }: { loading: boolean }) {
         />
       </div>
     </div>
-  )
+  );
 }
