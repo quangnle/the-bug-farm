@@ -53,7 +53,7 @@ export default function BugList() {
 
   useEffect(() => {
     handleShowSortedBug();
-  }, [filter, GAME_STATE.farm.value]);
+  }, [filter, GAME_STATE.farm.value, show]);
 
   useEffect(() => {
     if (show) {
