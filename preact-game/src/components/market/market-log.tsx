@@ -47,7 +47,7 @@ export default function MarketLog({
 
   const handleStatus = useCallback(
     (history: ITradeHistory) => {
-      if (history.status !== "Completed") return history.status;
+      if (history.type !== "Completed") return history.type;
       if (GAME_STATE.user.value?._id === history.seller._id) return "Sold";
       if (GAME_STATE.user.value?._id === history.buyer._id) return "Bought";
     },

@@ -73,6 +73,6 @@ type ITradeHistory = {
   geneHash: string;
   seller: IUser;
   description: string;
-  status: string;
+  type: string;
   buyer: IUser;
 };

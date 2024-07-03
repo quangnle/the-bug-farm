@@ -15,7 +15,7 @@ const APIS_WILL_UPDATE_USER = [
   "post|flowers",
   "post|appearances",
   "post|sales/listing",
-  "patch|eat-pill"
+  "patch|eat-pill",
 ];
 
 export const getToken = () => {
@@ -86,7 +86,7 @@ const api = {
     return data as IListPagination<ISale>;
   },
   getSalesHistory: async (params?: {} & ICommonGetListParams) => {
-    const { data } = await axios.get("/sales/history", { params });
+    const { data } = await axios.get("/sale-logs", { params });
     return data as IListPagination<ITradeHistory>;
   },
   saleListing: async (payload: {
