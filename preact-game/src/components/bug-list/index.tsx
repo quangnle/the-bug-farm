@@ -183,7 +183,7 @@ export default function BugList() {
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="bg-black/60 w-[80vw]">
             {tab === 'bugs' && <div className="h-[70vh] overflow-y-auto overflow-x-hidden p-4">
-              <h1 className="font-bold text-center mb-6">My Bug</h1>
+              <h1 className="font-bold text-center mb-6">My Bugs</h1>
               <div className="flex justify-between">
                 <Button onClick={() => setTab('bug-vault')}>Bug vault</Button>
               </div>

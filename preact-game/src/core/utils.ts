@@ -45,6 +45,6 @@ export const getSaleGenesInfo = (genes: IAppearance[] | string[]): string[] => {
   return _genes.map(x => {
     const baseScore = Math.round(x.score / total * 100)
     const boostScore = Math.round(x.boostScore / total * 100)
-    return `${x.name} (${baseScore}%) ${boostScore > 0 ? `(+${boostScore}%)` : ''}`
+    return `${x.name} (${baseScore}%) ${boostScore > 0 ? `(+${boostScore}%${x.boostScore === 20 ? ' MAX': ''})` : ''}`
   })
 }
