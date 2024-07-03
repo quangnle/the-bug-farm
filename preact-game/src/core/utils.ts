@@ -30,8 +30,8 @@ export const drawSvg = (tag: SVGElement, rows: number[][]) => {
   path?.setAttribute("d", data)
 }
 
-export const getSaleGenesInfo = (genes: IAppearance[] | string[]) => {
-  if (genes.length === 0) return ''
+export const getSaleGenesInfo = (genes: IAppearance[] | string[]): string[] => {
+  if (genes.length === 0) return ['']
   let _genes: IAppearance[]
   if (typeof genes[0] === 'string') {
     _genes = (genes as unknown as string[]).map((x: string) => {
@@ -41,6 +41,10 @@ export const getSaleGenesInfo = (genes: IAppearance[] | string[]) => {
   } else {
     _genes = genes as IAppearance[]
   }
-  const total = _genes.reduce((sum, gene) => sum + gene.score, 0)
-  return _genes.map(x => `- ${x.name} (${Math.round(x.score / total * 100)}%)`).join("\n")
+  const total = _genes.reduce((sum, gene) => sum + gene.score + gene.boostScore, 0)
+  return _genes.map(x => {
+    const baseScore = Math.round(x.score / total * 100)
+    const boostScore = Math.round(x.boostScore / total * 100)
+    return `${x.name} (${baseScore}%) ${boostScore > 0 ? `(+${boostScore}%)` : ''}`
+  })
 }

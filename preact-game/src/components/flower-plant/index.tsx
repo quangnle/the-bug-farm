@@ -37,7 +37,7 @@ export default function FlowerPlant() {
     if (
       ["petalWidth", "petalHeight"].includes(name)
     ) {
-      value = Math.min(20, Math.max(3, parseInt(value)))
+      value = Math.min(12, Math.max(3, parseInt(value)))
     }
     setFlower(prev => ({
       ...prev,

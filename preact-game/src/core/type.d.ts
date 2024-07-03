@@ -17,6 +17,7 @@ type IAppearance = {
   _id?: string;
   name: string;
   pattern: Array<Array<number | string>>;
+  boostScore: number;
   score: number;
 };
 

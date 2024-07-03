@@ -11,6 +11,7 @@ import { sellBugEffect } from "@/core/effect";
 import api from "@/core/axios";
 import SelectTank from "../select-tank";
 import { handleError } from "@/utils/helpers";
+import { getSaleGenesInfo } from "@/core/utils";
 
 export default function SelectedObject() {
   const canvasRef = useRef(null);
@@ -191,11 +192,7 @@ export default function SelectedObject() {
                 <p className="border-b border-black border-dashed">
                   List of genes:{" "}
                 </p>
-                {selectedObject.value.genes.map((gene, index) => (
-                  <p key={index}>
-                    - {gene.name}: {Math.round((gene.score / total!) * 100)}%
-                  </p>
-                ))}
+                {getSaleGenesInfo(staticData.genes || []).map(x => <p>- {x}</p>)}
                 <div className="mt-auto flex flex-wrap gap-2 justify-between max-w-[252px]">
                   <BringToMarket />
                   <Button onClick={handleEatPill}>Boost</Button>
