@@ -76,8 +76,9 @@ export default function MarketLog({
               </td>
               <td className="p-2">
                 <p className="text-xl">
-                  Genes: {getSaleGenesInfo(x.bug.genes)}
+                  Genes:
                 </p>
+                {getSaleGenesInfo(x.bug.genes).map(x => <p>- {x}</p>)}
               </td>
               <td className="p-2 text-center">${x.price}</td>
               <td className="p-2 text-center">{handleStatus(x)}</td>

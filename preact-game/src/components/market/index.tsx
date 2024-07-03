@@ -220,17 +220,19 @@ export default function Market() {
                     <span className="text-white">{pagination?.page || 1}</span>
                     <Chevron
                       className={clsx(
-                        pagination?.page ===
-                          Math.round(
-                            pagination?.total! / (pagination?.perPage || 10)
-                          ) && "invisible"
+                        pagination?.page &&
+                          pagination?.page >
+                            Math.round(
+                              pagination?.total! / (pagination?.perPage || 10)
+                            ) &&
+                          "invisible"
                       )}
                       direction="right"
                       onClick={() => handleChangePage(+1)}
                     />
                   </div>
                 </div>
-                <div className="text-white grid grid-cols-2 gap-2">
+                <div className="text-white grid grid-cols-2 gap-2 flex-1">
                   {market.map((sale) => (
                     <div
                       key={sale._id}
@@ -239,18 +241,22 @@ export default function Market() {
                         selected?._id === sale.bug._id && "bg-green-600"
                       )}
                       onClick={() => {
-                        setSelected(sale.bug);
-                        selectedObject.value = sale.bug;
+                        setSelected(sale.bug)
+                        selectedObject.value = sale.bug
                       }}
                     >
                       <div className="flex items gap-4">
-                        <div className="w-16 h-16 bg-red-600">
+                        <div className="w-32 h-32 bg-red-600">
                           <BugPattern app={sale.bug.appearance} />
                         </div>
                         <div className="py-2 flex-1">
                           <p>
-                            <b>Gene</b>: {getSaleGenesInfo(sale.bug.genes)}
+                            <b>Gene</b>:
                           </p>
+
+                          {getSaleGenesInfo(sale.bug.genes).map((x) => (
+                            <p>- {x}</p>
+                          ))}
 
                           <p className="text-sm">
                             Hatch:{" "}
@@ -288,5 +294,5 @@ export default function Market() {
         </Modal>
       )}
     </>
-  );
+  )
 }
