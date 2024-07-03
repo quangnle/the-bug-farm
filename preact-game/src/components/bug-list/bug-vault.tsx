@@ -1,28 +1,29 @@
-import useList from "@/hooks/useList"
-import Button from "../common/button"
-import api from "@/core/axios"
-import { useMemo, useState } from "react"
-import BorderContainer from "../border-container"
-import clsx from "clsx"
-import BugPattern from "../bug-pattern"
-import Bug from "@/core/entity/bug"
-import SelectTank from "../select-tank"
-import { GAME_STATE, GAME_fetchTank } from "@/core/gameState"
+import useList from "@/hooks/useList";
+import Button from "../common/button";
+import api from "@/core/axios";
+import { useMemo, useState } from "react";
+import BorderContainer from "../border-container";
+import clsx from "clsx";
+import BugPattern from "../bug-pattern";
+import Bug from "@/core/entity/bug";
+import SelectTank from "../select-tank";
+import { GAME_STATE, GAME_fetchTank } from "@/core/gameState";
+import { getSaleGenesInfo } from "@/core/utils";
 
 export default function BugVault({
   changeTab = () => {},
 }: {
-  changeTab?: () => void
+  changeTab?: () => void;
 }) {
   const fetchBugVault = useMemo(
     () => ({
       perPage: 100,
     }),
     []
-  )
+  );
   const { data: bugVault, refresh } = useList(api.getBugStorage, {
     params: fetchBugVault,
-  })
+  });
 
   const [selectedBugs, setSelectedBugs] = useState<Bug[]>([]);
   const [showSelectTank, setShowSelectTank] = useState(false);
@@ -48,10 +49,10 @@ export default function BugVault({
         (bug) => !selectedBugs.includes(bug)
       );
       if (tankId === GAME_STATE.tank.value?._id) {
-        GAME_fetchTank()
+        GAME_fetchTank();
       }
       setSelectedBugs([]);
-      refresh()
+      refresh();
     } catch (error) {
       console.error(error);
     }
@@ -70,9 +71,7 @@ export default function BugVault({
               onClose={() => setShowSelectTank(false)}
               needSlot={selectedBugs.length}
             />
-            <Button onClick={() => setShowSelectTank(true)}>
-              Switch Tank
-            </Button>
+            <Button onClick={() => setShowSelectTank(true)}>Switch Tank</Button>
           </div>
         )}
       </div>
@@ -85,7 +84,7 @@ export default function BugVault({
           }}
         >
           {bugVault.map((bug) => {
-            const total = bug.genes.reduce((acc, gene) => acc + gene.score, 0)
+            const total = bug.genes.reduce((acc, gene) => acc + gene.score, 0);
 
             return (
               <BorderContainer
@@ -97,11 +96,11 @@ export default function BugVault({
                 onClick={() => {
                   setSelectedBugs((prev) => {
                     if (prev.includes(bug)) {
-                      return prev.filter((b) => b !== bug)
+                      return prev.filter((b) => b !== bug);
                     } else {
-                      return [...prev, bug]
+                      return [...prev, bug];
                     }
-                  })
+                  });
                 }}
               >
                 <div className="flex items-center gap-4">
@@ -116,20 +115,17 @@ export default function BugVault({
                       <b>Genes</b>:
                     </p>
                     <ul>
-                      {bug.genes.map((gene) => (
-                        <li>
-                          &middot; {gene.name} -{" "}
-                          {Math.round((gene.score / total) * 100)}%
-                        </li>
+                      {getSaleGenesInfo(bug.genes || []).map((x) => (
+                        <p>- {x}</p>
                       ))}
                     </ul>
                   </div>
                 </div>
               </BorderContainer>
-            )
+            );
           })}
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -12,6 +12,7 @@ import FilterGeneModal from "../filter-gene-modal";
 import SelectTank from "../select-tank";
 import IconButtons from "../icon-buttons";
 import BugVault from "./bug-vault";
+import { getSaleGenesInfo } from "@/core/utils";
 
 export default function BugList() {
   const [show, setShow] = useState(false);
@@ -236,11 +237,8 @@ export default function BugList() {
                               <b>Genes</b>:
                             </p>
                             <ul>
-                              {bug.genes.map((gene) => (
-                                <li>
-                                  &middot; {gene.name} -{" "}
-                                  {Math.round((gene.score / total) * 100)}%
-                                </li>
+                              {getSaleGenesInfo(bug.genes || []).map((x) => (
+                                <p>- {x}</p>
                               ))}
                             </ul>
                           </div>

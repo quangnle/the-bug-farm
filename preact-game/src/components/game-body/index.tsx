@@ -3,12 +3,14 @@ import Market from "../market";
 import { CANVAS_SIZE, CANVAS_WIDTH } from "../create-pattern/useCreatePattern";
 import Menu from "../menu";
 import IconButtons from "../icon-buttons";
-import { BGM_ENABLE, sketchInstance } from "@/core/gameState";
+import { BGM_ENABLE, GAME_STATE, sketchInstance } from "@/core/gameState";
 import Genes from "../genes";
 
 export default function GameBody({ loading }: { loading: boolean }) {
   const handleSaveGif = () => {
-    sketchInstance.saveGif("myGif", 2, { notificationDuration: 3 });
+    sketchInstance.saveGif(GAME_STATE.user.value?.username! + "-tank", 2, {
+      notificationDuration: 3,
+    });
   };
 
   return (
