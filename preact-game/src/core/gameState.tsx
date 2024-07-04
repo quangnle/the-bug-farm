@@ -58,7 +58,6 @@ const sketch = (s: p5) => {
       border = s.loadImage("/assets/holders/game-holder.png");
 
       s.createCanvas(FARM_WIDTH, FARM_HEIGHT, canvas);
-      s.pixelDensity(2);
     }
   };
   s.draw = () => {
