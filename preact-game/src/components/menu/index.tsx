@@ -5,10 +5,11 @@ import CreatePattern from "../create-pattern";
 import IconButtons from "../icon-buttons";
 import SelectTank from "../select-tank";
 import "./style.css";
+import SettingModal from "../setting-modal";
 
 export default function Menu() {
   const [show, setShow] = useState(false);
-
+  const [showSetting, setShowSetting] = useState(false);
   const [showSelectTank, setShowSelectTank] = useState(false);
 
   const handleSelectTank = (x: ITank) => {
@@ -32,6 +33,9 @@ export default function Menu() {
           className="-mt-2 w-10 group-hover:w-12 duration-200"
         />
       </IconButtons>
+      {showSetting && (
+        <SettingModal handleClose={() => setShowSetting(false)} />
+      )}
       {show && (
         <Modal
           handleClose={() => setShow(false)}
@@ -49,31 +53,10 @@ export default function Menu() {
             </button>
             <CreatePattern closeMenu={() => setShow(false)} />
 
-            <button>Settings</button>
+            <button onClick={() => setShowSetting(true)}>Settings</button>
 
             <button onClick={handleLogout}>Logout</button>
           </div>
-          {/* <BorderContainer className="flex flex-col gap-5 p-4 bg-white">
-            <Button
-              onClick={() => {
-                setShow(false);
-                setShowSelectTank(true);
-              }}
-            >
-              Switch Tank
-            </Button>
-            <Button
-              onClick={() => {
-                setShow(false);
-                handleSaveGif();
-              }}
-            >
-              Save Gif
-            </Button>
-            <CreatePattern closeMenu={() => setShow(false)} />
-
-            <Button onClick={handleLogout}>Logout</Button>
-          </BorderContainer> */}
         </Modal>
       )}
 

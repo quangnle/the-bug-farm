@@ -1,17 +1,17 @@
+import { BGM_ENABLE } from "@/core/gameState";
 import BugList from "../bug-list";
-import Market from "../market";
 import { CANVAS_SIZE, CANVAS_WIDTH } from "../create-pattern/useCreatePattern";
-import Menu from "../menu";
-import IconButtons from "../icon-buttons";
-import { BGM_ENABLE, GAME_STATE, sketchInstance } from "@/core/gameState";
 import Genes from "../genes";
+import IconButtons from "../icon-buttons";
+import Market from "../market";
+import Menu from "../menu";
 
 export default function GameBody({ loading }: { loading: boolean }) {
-  const handleSaveGif = () => {
-    sketchInstance.saveGif(GAME_STATE.user.value?.username! + "-tank", 2, {
-      notificationDuration: 3,
-    });
-  };
+  // const handleSaveGif = () => {
+  //   sketchInstance.saveGif(GAME_STATE.user.value?.username! + "-tank", 2, {
+  //     notificationDuration: 3,
+  //   });
+  // };
 
   return (
     <div className="game-body relative">
@@ -25,7 +25,7 @@ export default function GameBody({ loading }: { loading: boolean }) {
               <Menu />
             </div>
           )}
-          <div className="flex flex-col gap-4 py-4 relative z-10">
+          {/* <div className="flex flex-col gap-4 py-4 relative z-10">
             <IconButtons icon="save-gif" onClick={handleSaveGif} />
             <IconButtons
               onClick={() => {
@@ -37,7 +37,7 @@ export default function GameBody({ loading }: { loading: boolean }) {
                 src={`/assets/${BGM_ENABLE.value ? "bgm-mute.png" : "bgm.png"}`}
               />
             </IconButtons>
-          </div>
+          </div> */}
         </div>
         <canvas
           id="main-canvas"
