@@ -39,9 +39,9 @@ export default function Menu() {
       {show && (
         <Modal
           handleClose={() => setShow(false)}
-          className="absolute top-0 p-0"
+          className="absolute -top-48 2xl:top-0 p-0"
         >
-          <div className="menu-holder">
+          <div className="menu-holder scale-75 2xl:scale-100">
             <div className="menu-bush" />
             <button
               onClick={() => {

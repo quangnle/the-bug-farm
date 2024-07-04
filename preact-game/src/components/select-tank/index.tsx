@@ -63,8 +63,8 @@ export default function SelectTank({
   return (
     <>
       {show && (
-        <Modal handleClose={onClose}>
-          <div className="tank-holder">
+        <Modal handleClose={onClose} className="absolute -top-20 2xl:top-40">
+          <div className="tank-holder scale-75 2xl:scale-100">
             {loading ? (
               <div className="h-40 flex items-center">
                 <Loading className="scale-150" />

@@ -30,7 +30,7 @@ export default function GameHeader() {
       <img
         src="/assets/PrettyBugs.png"
         width={240}
-        className="absolute left-0 -top-12"
+        className="absolute left-0 -top-6 2xl:-top-12 w-[160px] 2xl:w-[240px]"
       />
       <h1 className="h1">{GAME_STATE.user.value?.username}</h1>
       <div className="flex gap-8">

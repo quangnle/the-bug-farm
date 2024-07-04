@@ -2,5 +2,5 @@
   @apply p-1 text-center;
 }
 .plant-control input {
-  @apply flex-1 rounded-md p-1 px-3 text-center bg-white;
+  @apply flex-1 rounded-md 2xl:p-1 px-3 text-center bg-white;
 }

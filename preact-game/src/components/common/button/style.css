@@ -41,3 +41,10 @@ button.btn:active .btn--top {
   /* Push the button downwards when pressed */
   transform: translateY(0);
 }
+
+@media screen and (max-height: 768px) {
+  button.btn {
+    --button_padding: 0.3rem 0.6rem;
+    --button_font_size: 0.75rem;
+  }
+}

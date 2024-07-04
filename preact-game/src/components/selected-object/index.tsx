@@ -165,76 +165,77 @@ export default function SelectedObject() {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      {selectedObject.value ? (
-        <>
-          <div className="flex justify-center gap-4 mb-4">
-            {selectedObject.value && (
-              <BorderContainer className="border-2 w-24 h-24">
-                <canvas
-                  ref={canvasRef}
-                  className="object-render-canvas w-full"
-                  width={64}
-                  height={64}
-                />
-              </BorderContainer>
-            )}
-
-            {selectedObject.value instanceof Bug && (
-              <BorderContainer className="border-2 w-24 h-24 bg-[red]">
-                <BugPattern app={selectedObject.value.appearance} />
-              </BorderContainer>
-            )}
-          </div>
-          <div className="flex flex-col h-full">
-            {selectedObject.value instanceof Bug && (
-              <>
-                {import.meta.env.MODE === "development" && (
-                  <p>{selectedObject.value._id}</p>
-                )}
-                <p className="border-b border-black border-dashed">
-                  List of genes:{" "}
-                </p>
-                {getSaleGenesInfo(staticData.genes || []).map(x => <p>- {x}</p>)}
-                <div className="mt-auto flex flex-wrap gap-2 justify-between max-w-[252px]">
-                  <BringToMarket />
-                  <Button onClick={handleEatPill}>Boost</Button>
-                  <Button onClick={() => setShowSelectTank(true)}>
-                    Switch tank
-                  </Button>
-                  <SelectTank
-                    show={showSelectTank}
-                    onSelectTank={handleSelectTank}
-                    onClose={() => setShowSelectTank(false)}
+    <div className="flex flex-col justify-between h-full w-[300px]">
+      <div className="flex flex-row h-full gap-4">
+        {selectedObject.value ? (
+          <>
+            <div className="flex flex-col gap-4">
+              {selectedObject.value && (
+                <BorderContainer className="border-2 w-24 h-24">
+                  <canvas
+                    ref={canvasRef}
+                    className="object-render-canvas w-full"
+                    width={64}
+                    height={64}
                   />
-                  <Button onClick={handleSellBug}>Sell (+$1)</Button>
-                </div>
-              </>
-            )}
-            {selectedObject.value instanceof Flower && (
-              <>
-                <p>
-                  Pollen spawn in:{" "}
-                  {Math.max(
-                    0,
-                    Math.round((staticData.spawningTime || 0) / 1000)
-                  )}{" "}
-                  / {SPAWN_DURATION / 1000}s
-                </p>
-                <p>
-                  Pollens left: {staticData.numberOfPollens} /{" "}
-                  {MAX_POLLENS}
-                </p>
-                <div className="mt-auto flex flex-col gap-2 justify-between">
-                  <Button onClick={handleRemoveFlower}>Remove flower</Button>
-                </div>
-              </>
-            )}
-          </div>
-        </>
-      ) : (
-        <p className="text-center">Click a object to see more detail</p>
-      )}
+                </BorderContainer>
+              )}
+
+              {selectedObject.value instanceof Bug && (
+                <BorderContainer className="border-2 w-24 h-24 bg-[red]">
+                  <BugPattern app={selectedObject.value.appearance} />
+                </BorderContainer>
+              )}
+            </div>
+            <div className="flex flex-col h-full">
+              {selectedObject.value instanceof Bug && (
+                <>
+                  {import.meta.env.MODE === "development" && (
+                    <p>{selectedObject.value._id}</p>
+                  )}
+                  <p className="border-b border-black border-dashed">
+                    List of genes:{" "}
+                  </p>
+                  {getSaleGenesInfo(staticData.genes || []).map((x) => (
+                    <p>- {x}</p>
+                  ))}
+                  <div className="mt-auto flex items-center flex-wrap gap-2 justify-between">
+                    <BringToMarket />
+                    <Button onClick={handleEatPill}>Boost</Button>
+                    <Button onClick={() => setShowSelectTank(true)}>Switch tank</Button>
+                    <SelectTank
+                      show={showSelectTank}
+                      onSelectTank={handleSelectTank}
+                      onClose={() => setShowSelectTank(false)}
+                    />
+                    <Button onClick={handleSellBug}>Sell (+$1)</Button>
+                  </div>
+                </>
+              )}
+              {selectedObject.value instanceof Flower && (
+                <>
+                  <p>
+                    Pollen spawn in:{" "}
+                    {Math.max(
+                      0,
+                      Math.round((staticData.spawningTime || 0) / 1000)
+                    )}{" "}
+                    / {SPAWN_DURATION / 1000}s
+                  </p>
+                  <p>
+                    Pollens left: {staticData.numberOfPollens} / {MAX_POLLENS}
+                  </p>
+        <div className="mt-auto flex flex-wrap gap-2 justify-between">
+          <Button onClick={handleRemoveFlower}>Remove flower</Button>
+        </div>
+                </>
+              )}
+            </div>
+          </>
+        ) : (
+          <p className="text-center">Click a object to see more detail</p>
+        )}
+      </div>
     </div>
   )
 }

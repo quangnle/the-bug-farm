@@ -1,6 +1,6 @@
-
-export const FARM_WIDTH = 800;
-export const FARM_HEIGHT = 800;
+export const SCALE = window.innerHeight > 1000 ? 1 : 0.75
+export const FARM_WIDTH = 800 * SCALE;
+export const FARM_HEIGHT = 800 * SCALE;
 export const FARM_BORDER = 48
 export const FARM_BORDER_SCALE = 1.5
 

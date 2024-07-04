@@ -1,9 +1,8 @@
 .holder {
-  width: 200px;
+  @apply w-[160px] 2xl:w-[200px] 2xl:pl-[60px];
   aspect-ratio: 285 / 112;
   background-repeat: no-repeat;
   background-position: bottom;
-  padding-left: 60px;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
@@ -11,9 +10,8 @@
 }
 
 .holder p {
+  @apply text-lg 2xl:text-2xl pl-[40px] 2xl:pl-0 pb-[14px] 2xl:pb-[18px];
   flex: 1;
-  font-size: 1.5rem;
-  padding-bottom: 18px;
   text-align: center;
   font-weight: bold;
   @apply italic;
@@ -27,4 +25,10 @@
 }
 .flower-holder {
   background-image: url('/assets/holders/flower-holder.png');
+}
+
+@media screen and (max-height: 768px) {
+  .holder {
+    background-size: 160px;;
+  }
 }

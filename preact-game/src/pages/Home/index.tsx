@@ -37,12 +37,12 @@ export default function Home() {
     <div className="homepage h-screen overflow-hidden">
       {needVerifyQuestion.value === true && <QuestionModal />}
       <div className="mx-auto">
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4 2xl:gap-8">
           {!loading && <LoginForm />}
           <GameHeader />
-          <div className="flex gap-8">
+          <div className="flex gap-4 xxl:gap-8">
             <GameBody loading={loading} />
-            <div className="flex flex-col gap-8 flex-1 min-w-[300px]">
+            <div className="flex flex-col gap-4 xxl:gap-8 flex-1 min-w-[300px]">
               <BorderContainer className="flex-1 p-4 bg-green-200">
                 <SelectedObject />
               </BorderContainer>

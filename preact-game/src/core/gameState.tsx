@@ -3,7 +3,7 @@ import { Signal, effect, signal } from "@preact/signals";
 import Flower from "./entity/flower";
 import Bug from "./entity/bug";
 import Farm from "./entity/farm";
-import { FARM_BORDER, FARM_BORDER_SCALE, FARM_HEIGHT, FARM_WIDTH } from "./constants";
+import { FARM_BORDER, FARM_BORDER_SCALE, FARM_HEIGHT, FARM_WIDTH, SCALE } from "./constants";
 import api, { BASE_URL } from "./axios";
 import { CoroutineCallback } from "./coroutine";
 
@@ -166,6 +166,8 @@ export const GAME_fetchTank = async () => {
   listFlowers.forEach((flo: Flower) => {
     const flower = new Flower({
       ...flo,
+      x: flo.x * SCALE,
+      y: flo.y * SCALE,
     });
     farm.value.addObject(flower);
   });
