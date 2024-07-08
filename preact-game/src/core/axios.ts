@@ -51,6 +51,10 @@ const api = {
     axios.get("/tanks", {
       params: { userId, sortField: "createdAt", sortOrder: "asc" },
     }),
+  getUsers: async (params?: {} & ICommonGetListParams) => {
+    const { data } = await axios.get("/users", { params });
+    return data as IListPagination<IUser>;
+  },
   getQuestions: async () => axios.get("/questions/my-question"),
   answerQuestion: async (id: string, payload: { answer: string }) =>
     axios.patch(`/questions/${id}`, payload),

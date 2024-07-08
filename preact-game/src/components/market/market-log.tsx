@@ -26,7 +26,6 @@ export default function MarketLog({
     lock: !GAME_STATE.user.value?._id,
     params,
   });
-
   const handleChangePage = (value: number) => {
     if (!pagination?.total) return;
     const nextPage = (pagination?.page || 1) + value;
@@ -75,10 +74,10 @@ export default function MarketLog({
                 </div>
               </td>
               <td className="p-2">
-                <p className="text-xl">
-                  Genes:
-                </p>
-                {getSaleGenesInfo(x.bug.genes).map(x => <p>- {x}</p>)}
+                <p className="text-xl">Genes:</p>
+                {getSaleGenesInfo(x.bug.genes).map((x) => (
+                  <p>- {x}</p>
+                ))}
               </td>
               <td className="p-2 text-center">${x.price}</td>
               <td className="p-2 text-center">{handleStatus(x)}</td>

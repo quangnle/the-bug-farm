@@ -2,6 +2,8 @@ type IUser = {
   _id: string;
   username: string;
   money: number;
+  status?: string;
+  createdAt?: string;
 };
 
 type ITank = {

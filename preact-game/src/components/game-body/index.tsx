@@ -1,17 +1,25 @@
-import { BGM_ENABLE } from "@/core/gameState";
+import { GAME_STATE } from "@/core/gameState";
 import BugList from "../bug-list";
 import { CANVAS_SIZE, CANVAS_WIDTH } from "../create-pattern/useCreatePattern";
 import Genes from "../genes";
-import IconButtons from "../icon-buttons";
 import Market from "../market";
 import Menu from "../menu";
+import UserModal from "../user-modal";
+import IconButtons from "../icon-buttons";
+import api from "@/core/axios";
 
 export default function GameBody({ loading }: { loading: boolean }) {
-  // const handleSaveGif = () => {
-  //   sketchInstance.saveGif(GAME_STATE.user.value?.username! + "-tank", 2, {
-  //     notificationDuration: 3,
-  //   });
-  // };
+  const handleGoHome = async () => {
+    try {
+      const { data } = await api.getAllTanks({
+        userId: GAME_STATE.user.value?._id,
+      });
+      GAME_STATE.tank.value = data.data[0];
+      GAME_STATE.isVisiting.value = false;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="game-body relative">
@@ -19,25 +27,16 @@ export default function GameBody({ loading }: { loading: boolean }) {
         <div className="flex flex-col justify-between">
           {!loading && (
             <div className="flex flex-col gap-4 py-4">
-              <BugList />
+              {GAME_STATE.isVisiting.value === true && (
+                <IconButtons onClick={handleGoHome}>Home</IconButtons>
+              )}
+              {GAME_STATE.isVisiting.value === false && <BugList />}
               <Market />
               <Genes />
-              <Menu />
+              <UserModal />
+              {GAME_STATE.isVisiting.value === false && <Menu />}
             </div>
           )}
-          {/* <div className="flex flex-col gap-4 py-4 relative z-10">
-            <IconButtons icon="save-gif" onClick={handleSaveGif} />
-            <IconButtons
-              onClick={() => {
-                BGM_ENABLE.value = !BGM_ENABLE.value;
-              }}
-            >
-              <img
-                className="w-10 hover:w-12"
-                src={`/assets/${BGM_ENABLE.value ? "bgm-mute.png" : "bgm.png"}`}
-              />
-            </IconButtons>
-          </div> */}
         </div>
         <canvas
           id="main-canvas"

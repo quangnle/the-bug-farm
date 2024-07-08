@@ -186,6 +186,19 @@ export default function Market() {
     pagination?.onChange && pagination?.onChange(nextPage);
   };
 
+  const getListTanks = async (userId: string) => {
+    try {
+      const { data } = await api.getAllTanks({
+        userId,
+      });
+      GAME_STATE.tank.value = data.data[0];
+      GAME_STATE.isVisiting.value = true;
+      setShow(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <IconButtons icon="market" onClick={() => setShow(true)} />
@@ -241,8 +254,8 @@ export default function Market() {
                         selected?._id === sale.bug._id && "bg-green-600"
                       )}
                       onClick={() => {
-                        setSelected(sale.bug)
-                        selectedObject.value = sale.bug
+                        setSelected(sale.bug);
+                        selectedObject.value = sale.bug;
                       }}
                     >
                       <div className="flex items gap-4">
@@ -276,9 +289,14 @@ export default function Market() {
                             Cancel
                           </Button>
                         ) : (
-                          <Button onClick={(e) => handleBuy(e, sale)}>
-                            Buy
-                          </Button>
+                          <div className="flex items-center gap-3">
+                            <Button onClick={() => getListTanks(sale.seller)}>
+                              Visit
+                            </Button>
+                            <Button onClick={(e) => handleBuy(e, sale)}>
+                              Buy
+                            </Button>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -294,5 +312,5 @@ export default function Market() {
         </Modal>
       )}
     </>
-  )
+  );
 }

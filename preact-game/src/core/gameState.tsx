@@ -3,7 +3,13 @@ import { Signal, effect, signal } from "@preact/signals";
 import Flower from "./entity/flower";
 import Bug from "./entity/bug";
 import Farm from "./entity/farm";
-import { FARM_BORDER, FARM_BORDER_SCALE, FARM_HEIGHT, FARM_WIDTH, SCALE } from "./constants";
+import {
+  FARM_BORDER,
+  FARM_BORDER_SCALE,
+  FARM_HEIGHT,
+  FARM_WIDTH,
+  SCALE,
+} from "./constants";
 import api, { BASE_URL } from "./axios";
 import { CoroutineCallback } from "./coroutine";
 
@@ -14,6 +20,7 @@ export const BGM_ENABLE = signal<boolean>(false);
 export const coroutineCallbacks = signal<Array<CoroutineCallback>>([]);
 const user: Signal<IUser | null> = signal(null);
 const tank: Signal<ITank | null> = signal(null);
+const isVisiting: Signal<boolean> = signal(false);
 const farm: Signal<Farm> = signal(
   new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22", selectedObject)
 );
@@ -26,7 +33,7 @@ export const GAME_ASSET: Record<string, any> = {
   SOUND_failure: null,
   logo: null,
 };
-export const DEV_MODE = signal<boolean>(false)
+export const DEV_MODE = signal<boolean>(false);
 
 const sketch = (s: p5) => {
   console.log("init p5");
@@ -39,17 +46,17 @@ const sketch = (s: p5) => {
     GAME_ASSET.logo = s.loadImage("/assets/euro-logo.png");
 
     // Sound
-    GAME_ASSET.cashout = new Audio()
-    GAME_ASSET.cashout.src = "/sounds/cash.mp3"
-    GAME_ASSET.cashout.preload = "auto"
+    GAME_ASSET.cashout = new Audio();
+    GAME_ASSET.cashout.src = "/sounds/cash.mp3";
+    GAME_ASSET.cashout.preload = "auto";
 
-    GAME_ASSET.bgm = new Audio()
-    GAME_ASSET.bgm.src = "/sounds/bgm-2.mp3"
-    GAME_ASSET.bgm.preload = "auto"
+    GAME_ASSET.bgm = new Audio();
+    GAME_ASSET.bgm.src = "/sounds/bgm-2.mp3";
+    GAME_ASSET.bgm.preload = "auto";
 
-    GAME_ASSET.SOUND_success = new Audio()
-    GAME_ASSET.SOUND_success.src = "/sounds/success.mp3"
-    GAME_ASSET.SOUND_success.preload = "auto"
+    GAME_ASSET.SOUND_success = new Audio();
+    GAME_ASSET.SOUND_success.src = "/sounds/success.mp3";
+    GAME_ASSET.SOUND_success.preload = "auto";
   };
   s.setup = () => {
     const canvas = document.getElementById("main-canvas");
@@ -68,7 +75,7 @@ const sketch = (s: p5) => {
       FARM_BORDER / 2,
       FARM_WIDTH - FARM_BORDER,
       FARM_HEIGHT - FARM_BORDER
-    )
+    );
     s.tint(255, 200);
     s.image(
       GAME_ASSET.logo,
@@ -76,7 +83,7 @@ const sketch = (s: p5) => {
       FARM_HEIGHT / 2 - 124,
       400,
       300
-    )
+    );
     s.tint(255, 255);
     s.background(border);
     farm.value?.draw(s);
@@ -122,13 +129,14 @@ export const GAME_STATE = {
   tank,
   farm,
   appearance,
+  isVisiting,
 };
 
 export const GAME_fetchTank = async () => {
   if (!tank.value?._id) return;
 
-  const isBgm = JSON.parse(localStorage.getItem("bgm") || 'true');
-  BGM_ENABLE.value = isBgm
+  const isBgm = JSON.parse(localStorage.getItem("bgm") || "true");
+  BGM_ENABLE.value = isBgm;
   const { data: listBugs } = await api.getAllBugs({
     tankId: tank.value?._id,
   });
@@ -136,22 +144,15 @@ export const GAME_fetchTank = async () => {
     tankId: tank.value?._id,
   });
 
-  const farmX = FARM_BORDER * FARM_BORDER_SCALE
-  const farmY = FARM_BORDER * FARM_BORDER_SCALE
-  const farmW = FARM_WIDTH - FARM_BORDER * FARM_BORDER_SCALE * 2
-  const farmH = FARM_HEIGHT - FARM_BORDER * FARM_BORDER_SCALE * 2
-  farm.value = new Farm(
-    farmX,
-    farmY,
-    farmW,
-    farmH,
-    "#77dd22",
-    selectedObject
-  );
+  const farmX = FARM_BORDER * FARM_BORDER_SCALE;
+  const farmY = FARM_BORDER * FARM_BORDER_SCALE;
+  const farmW = FARM_WIDTH - FARM_BORDER * FARM_BORDER_SCALE * 2;
+  const farmH = FARM_HEIGHT - FARM_BORDER * FARM_BORDER_SCALE * 2;
+  farm.value = new Farm(farmX, farmY, farmW, farmH, "#77dd22", selectedObject);
 
   listBugs.forEach((x: Bug) => {
-    const _x = Math.random() * (farmW) + farmX;
-    const _y = Math.random() * (farmH) + farmY;
+    const _x = Math.random() * farmW + farmX;
+    const _y = Math.random() * farmH + farmY;
 
     const bug = new Bug({
       ...x,
@@ -192,20 +193,20 @@ effect(() => {
 
 effect(() => {
   if (BGM_ENABLE.value) {
-    GAME_ASSET.bgm?.play()
-    localStorage.setItem("bgm", "true")
+    GAME_ASSET.bgm?.play();
+    localStorage.setItem("bgm", "true");
   } else {
-    localStorage.setItem("bgm", "false")
-    GAME_ASSET.bgm?.pause()
+    localStorage.setItem("bgm", "false");
+    GAME_ASSET.bgm?.pause();
   }
-})
+});
 
 const toggleDevmode = (e) => {
   if (e.key === "z" && farm.value) {
-    console.log('enable dev mode')
-    DEV_MODE.value = !DEV_MODE.value
+    console.log("enable dev mode");
+    DEV_MODE.value = !DEV_MODE.value;
   }
-}
+};
 
-document.removeEventListener("keydown", toggleDevmode)
-document.addEventListener("keydown", toggleDevmode)
+document.removeEventListener("keydown", toggleDevmode);
+document.addEventListener("keydown", toggleDevmode);
