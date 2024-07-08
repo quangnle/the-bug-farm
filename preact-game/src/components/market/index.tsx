@@ -18,6 +18,7 @@ import { getSaleGenesInfo } from "@/core/utils";
 import { CANVAS_SIZE } from "../create-pattern/useCreatePattern";
 import MarketLog from "./market-log";
 import IconButtons from "../icon-buttons";
+import VisitTankModal from "./visitTankModal";
 
 const selectedObject = signal<Bug | null>(null);
 const MARKET_SIZE = 400;
@@ -32,7 +33,7 @@ export default function Market() {
   const [selected, setSelected] = useState<Bug | null>(null);
   const [market, setMarket] = useState<ISale[]>([]);
   const [tab, setTab] = useState<"market" | "logs">("market");
-
+  const [selectedUser, setSelectedUser] = useState<string>("");
   const {
     data: list,
     loading,
@@ -201,6 +202,12 @@ export default function Market() {
 
   return (
     <>
+      {selectedUser && (
+        <VisitTankModal
+          handleClose={() => setSelectedUser("")}
+          selectedUser={selectedUser}
+        />
+      )}
       <IconButtons icon="market" onClick={() => setShow(true)} />
       {show && (
         <Modal handleClose={() => setShow(false)}>
@@ -290,7 +297,9 @@ export default function Market() {
                           </Button>
                         ) : (
                           <div className="flex items-center gap-3">
-                            <Button onClick={() => getListTanks(sale.seller)}>
+                            <Button
+                              onClick={() => setSelectedUser(sale.seller)}
+                            >
                               Visit
                             </Button>
                             <Button onClick={(e) => handleBuy(e, sale)}>

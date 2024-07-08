@@ -47,9 +47,7 @@ const UserModal: FC<IProp> = () => {
 
   return (
     <>
-      <IconButtons onClick={() => setShow(true)} icon="menu" className="group">
-        Leaderboard
-      </IconButtons>
+      <IconButtons onClick={() => setShow(true)} icon="leaderboard" />
       {show && (
         <Modal handleClose={() => setShow(false)}>
           <BorderContainer className="bg-black/60 p-5">
