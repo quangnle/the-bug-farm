@@ -1,18 +1,17 @@
-import { FC, useEffect, useRef, useState } from "react";
-import Modal from "../common/modal";
-import { signal, Signal } from "@preact/signals";
-import Farm from "@/core/entity/farm";
-import Bug from "@/core/entity/bug";
-import p5 from "p5";
 import api from "@/core/axios";
-import BorderContainer from "../border-container";
-import { handleError } from "@/utils/helpers";
-import { sketchInstance } from "@/core/gameState";
 import { FARM_BORDER, FARM_HEIGHT, FARM_WIDTH, SCALE } from "@/core/constants";
-import SelectedObject from "../selected-object";
-import BugPattern from "../bug-pattern";
-import { getSaleGenesInfo } from "@/core/utils";
+import Bug from "@/core/entity/bug";
+import Farm from "@/core/entity/farm";
 import Flower from "@/core/entity/flower";
+import { sketchInstance } from "@/core/gameState";
+import { getSaleGenesInfo } from "@/core/utils";
+import { handleError } from "@/utils/helpers";
+import { signal, Signal } from "@preact/signals";
+import p5 from "p5";
+import { FC, useEffect, useRef, useState } from "react";
+import BorderContainer from "../border-container";
+import BugPattern from "../bug-pattern";
+import Modal from "../common/modal";
 
 interface IProp {
   selectedUser: string;
@@ -28,8 +27,6 @@ const marketFarm: Signal<Farm> = signal(
 const VisitTankModal: FC<IProp> = ({ selectedUser, handleClose }) => {
   const canvasRef = useRef(null);
   const p5Ref = useRef<p5 | null>();
-  const [farm, setFarm] = useState(null);
-  const [bugs, setBugs] = useState<Bug[]>([]);
   const [selected, setSelected] = useState<Bug | null>(null);
 
   const getTankInfo = async () => {
