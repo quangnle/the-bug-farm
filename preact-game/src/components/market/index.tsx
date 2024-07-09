@@ -33,7 +33,7 @@ export default function Market() {
   const [selected, setSelected] = useState<Bug | null>(null);
   const [market, setMarket] = useState<ISale[]>([]);
   const [tab, setTab] = useState<"market" | "logs">("market");
-  const [selectedUser, setSelectedUser] = useState<string>("");
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const {
     data: list,
     loading,
@@ -187,24 +187,12 @@ export default function Market() {
     pagination?.onChange && pagination?.onChange(nextPage);
   };
 
-  // const getListTanks = async (userId: string) => {
-  //   try {
-  //     const { data } = await api.getAllTanks({
-  //       userId,
-  //     });
-  //     GAME_STATE.tank.value = data.data[0];
-  //     GAME_STATE.isVisiting.value = true;
-  //     setShow(false);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   return (
     <>
-      {selectedUser && (
+      {selectedUser !== null && (
         <VisitTankModal
-          handleClose={() => setSelectedUser("")}
+          marketP5={p5Ref.current}
+          handleClose={() => setSelectedUser(null)}
           selectedUser={selectedUser}
         />
       )}
@@ -266,10 +254,19 @@ export default function Market() {
                       }}
                     >
                       <div className="flex items gap-4">
-                        <div className="w-32 h-32 bg-red-600">
-                          <BugPattern app={sale.bug.appearance} />
+                        <div className="flex flex-col gap-4">
+                          <div className="w-32 h-32 bg-red-200">
+                            <BugPattern app={sale.bug.appearance} />
+                          </div>
+
+                          <Button onClick={() => setSelectedUser(sale.seller)}>
+                            Visit Owner
+                          </Button>
                         </div>
                         <div className="py-2 flex-1">
+                          <p>
+                            <b>Owner</b>: {sale.seller.username}
+                          </p>
                           <p>
                             <b>Gene</b>:
                           </p>
@@ -291,17 +288,12 @@ export default function Market() {
                         <p className="text-[orange] text-2xl font-bold mt-auto pl-2">
                           <b>Price:</b> ${sale.price}
                         </p>
-                        {GAME_STATE.user.value?._id === sale.seller ? (
+                        {GAME_STATE.user.value?._id === sale.seller._id ? (
                           <Button onClick={(e) => handleUnBuy(e, sale)}>
                             Cancel
                           </Button>
                         ) : (
                           <div className="flex items-center gap-3">
-                            <Button
-                              onClick={() => setSelectedUser(sale.seller)}
-                            >
-                              Visit
-                            </Button>
                             <Button onClick={(e) => handleBuy(e, sale)}>
                               Buy
                             </Button>

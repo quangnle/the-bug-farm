@@ -5,7 +5,6 @@ import LoginForm from "@/components/login-form";
 import SelectedObject from "@/components/selected-object";
 import api from "@/core/axios";
 import { GAME_STATE, needVerifyQuestion } from "@/core/gameState";
-// import { needVerifyQuestion } from "@/core/entity/farm";
 import { handleError } from "@/utils/helpers";
 import { useEffect, useState } from "react";
 import BorderContainer from "../../components/border-container";
@@ -18,8 +17,8 @@ export default function Home() {
   useEffect(() => {
     const autoLogin = async () => {
       try {
-        const data = await api.me(false)
-        console.log({ data })
+        const data = await api.me(false);
+        console.log({ data });
         if (data) {
           GAME_STATE.user.value = data;
         }

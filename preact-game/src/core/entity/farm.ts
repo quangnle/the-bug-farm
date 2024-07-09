@@ -249,6 +249,7 @@ class Farm {
             y,
             ...res.data,
             hasPollen: false,
+            p5: sketchInstance,
           });
           this.addObject(flower);
         }

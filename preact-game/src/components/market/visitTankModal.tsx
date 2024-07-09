@@ -14,8 +14,9 @@ import BugPattern from "../bug-pattern";
 import Modal from "../common/modal";
 
 interface IProp {
-  selectedUser: string;
+  selectedUser: IUser | null;
   handleClose?: () => void;
+  marketP5?: p5 | null;
 }
 
 const selectedObject = signal<Bug | null>(null);
@@ -24,7 +25,7 @@ const marketFarm: Signal<Farm> = signal(
   new Farm(0, 0, MARKET_SIZE, MARKET_SIZE, "#77dd22", selectedObject, false)
 );
 
-const VisitTankModal: FC<IProp> = ({ selectedUser, handleClose }) => {
+const VisitTankModal: FC<IProp> = ({ selectedUser, handleClose, marketP5 }) => {
   const canvasRef = useRef(null);
   const p5Ref = useRef<p5 | null>();
   const [selected, setSelected] = useState<Bug | null>(null);
@@ -32,7 +33,7 @@ const VisitTankModal: FC<IProp> = ({ selectedUser, handleClose }) => {
   const getTankInfo = async () => {
     try {
       const { data: tankData } = await api.getAllTanks({
-        userId: selectedUser,
+        userId: selectedUser?._id,
       });
       const [{ data: bugData }, { data: flowerData }] = [
         await api.getAllBugs({
@@ -77,8 +78,8 @@ const VisitTankModal: FC<IProp> = ({ selectedUser, handleClose }) => {
   }, [selectedUser]);
 
   useEffect(() => {
-    if (selectedUser !== "") {
-      sketchInstance.noLoop();
+    marketP5?.noLoop();
+    if (selectedUser !== null) {
       let bg: any;
       let border: any;
       p5Ref.current = new p5((s) => {
@@ -117,33 +118,35 @@ const VisitTankModal: FC<IProp> = ({ selectedUser, handleClose }) => {
           }
         };
       });
-    } else {
-      sketchInstance.loop();
     }
 
     return () => {
       console.log("destroy p5");
       p5Ref.current?.remove();
+      marketP5?.loop();
     };
   }, [selectedUser]);
 
   return (
     <Modal handleClose={handleClose}>
-      <div className="flex gap-4">
-        <canvas ref={canvasRef} className="aspect-square" />
-        <BorderContainer className="p-4 bg-green-200">
-          {selected?.appearance && <BugPattern app={selected?.appearance!} />}
-          <div className="mt-4">
-            <p className="border-b border-black border-dashed">
-              List of genes:{" "}
-            </p>
-            <div className="flex flex-col gap-2 mt-3">
-              {getSaleGenesInfo(selected?.genes || []).map((x) => (
-                <p>- {x}</p>
-              ))}
+      <div>
+        <h1 className="h1">{selectedUser?.username}</h1>
+        <div className="flex gap-4">
+          <canvas ref={canvasRef} className="aspect-square" />
+          <BorderContainer className="p-4 bg-green-200 w-[200px]">
+            {selected?.appearance && <BugPattern app={selected?.appearance!} />}
+            <div className="mt-4">
+              <p className="border-b border-black border-dashed">
+                List of genes:{" "}
+              </p>
+              <div className="flex flex-col gap-2 mt-3">
+                {getSaleGenesInfo(selected?.genes || []).map((x) => (
+                  <p>- {x}</p>
+                ))}
+              </div>
             </div>
-          </div>
-        </BorderContainer>
+          </BorderContainer>
+        </div>
       </div>
     </Modal>
   );

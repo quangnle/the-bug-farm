@@ -54,12 +54,13 @@ type ISale = {
   _id: string;
   bug: Bug;
   price: number;
+  buyer: IUser;
   genes: IAppearance[];
   appearance: string;
   createdAt: string;
   updatedAt: string;
   geneHash: string;
-  seller: string;
+  seller: IUser;
   description: string;
   status: string;
 };

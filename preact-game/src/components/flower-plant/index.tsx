@@ -1,54 +1,49 @@
-import { signal } from "@preact/signals"
-import PlantSwitch from "./plant-swich"
-import "./style.css"
-import Button from "../common/button"
-import { GAME_STATE, selectedObject } from "@/core/gameState"
-import { useEffect, useState } from "react"
-import api from "@/core/axios"
+import { signal } from "@preact/signals";
+import PlantSwitch from "./plant-swich";
+import "./style.css";
+import Button from "../common/button";
+import { GAME_STATE, selectedObject, sketchInstance } from "@/core/gameState";
+import { useEffect, useState } from "react";
+import api from "@/core/axios";
 
 export const plantFlower = signal({
-  pistilColor: '#ff0000',
+  pistilColor: "#ff0000",
   pistilSize: 5,
   petalNumber: 5,
-  petalColor: '#ffffff',
+  petalColor: "#ffffff",
   petalWidth: 5,
   petalHeight: 5,
-})
+});
 
 export default function FlowerPlant() {
   const [flower, setFlower] = useState({
     petalNumber: 5,
-    pistilColor: '#ff0000',
+    pistilColor: "#ff0000",
     pistilSize: 5,
-    petalColor: '#ffffff',
+    petalColor: "#ffffff",
     petalWidth: 5,
     petalHeight: 5,
-  })
+  });
   // const [marchingShow, setMarchingShow] = useState(false)
 
   const handleChangeInput = (event) => {
-    const { name} = event.target
-    let { value } = event.target
-    if (
-      ["petalNumber", "pistilSize"].includes(name)
-    ) {
-      value = Math.min(12, Math.max(3, parseInt(value)))
+    const { name } = event.target;
+    let { value } = event.target;
+    if (["petalNumber", "pistilSize"].includes(name)) {
+      value = Math.min(12, Math.max(3, parseInt(value)));
     }
-    if (
-      ["petalWidth", "petalHeight"].includes(name)
-    ) {
-      value = Math.min(12, Math.max(3, parseInt(value)))
+    if (["petalWidth", "petalHeight"].includes(name)) {
+      value = Math.min(12, Math.max(3, parseInt(value)));
     }
-    setFlower(prev => ({
+    setFlower((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   useEffect(() => {
-    plantFlower.value = flower
-  }, [flower])
-
+    plantFlower.value = flower;
+  }, [flower]);
 
   // const toggleShow = () => {
   //   const flowers = GAME_STATE.farm.value.objects.filter(
@@ -193,5 +188,5 @@ export default function FlowerPlant() {
         </Button>
       </div>
     </div>
-  )
+  );
 }
