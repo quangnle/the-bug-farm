@@ -29,6 +29,7 @@ class Farm {
   mode: string;
   route: Route | null;
   selectedObject: Signal<Bug | Flower | null>;
+  isBugAvailableToEat?: boolean;
 
   constructor(
     x: number,
@@ -36,7 +37,8 @@ class Farm {
     width: number,
     height: number,
     color: string,
-    selectedObject: Signal<Bug | Flower | null>
+    selectedObject: Signal<Bug | Flower | null>,
+    isBugAvailableToEat?: boolean
   ) {
     this.x = x;
     this.y = y;
@@ -49,6 +51,7 @@ class Farm {
     this.mode = "play";
     this.route = null;
     this.selectedObject = selectedObject;
+    this.isBugAvailableToEat = isBugAvailableToEat || true;
   }
 
   addObject(obj: Flower) {
@@ -189,13 +192,18 @@ class Farm {
 
           // else, evolution to make a new bug
           // const newBug = Evolution.evolute(bug, flower.pistilColor)
-          if (bug._id && flower._id && flower.numberOfPollens > 0) {
+          if (
+            bug._id &&
+            flower._id &&
+            flower.numberOfPollens > 0 &&
+            this.isBugAvailableToEat
+          ) {
             api
               .bugEatFlower(bug._id, flower._id)
               .then(({ data }) => {
-                const { bug: __bug } = data
+                const { bug: __bug } = data;
                 if (__bug && __bug._id) {
-                  console.log({__bug})
+                  console.log({ __bug });
                   const newBug = new Bug({
                     ...__bug,
                     color: flower.pistilColor,
@@ -335,7 +343,7 @@ class Farm {
         if (obj instanceof Flower) {
           const d = sketchInstance.dist(mouseX, mouseY, obj.x, obj.y);
           if (d < obj.pistilSize + obj.petalHeight / 2 && this.selectedObject)
-            this.selectedObject.value = obj
+            this.selectedObject.value = obj;
         }
       });
     }

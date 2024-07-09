@@ -187,18 +187,18 @@ export default function Market() {
     pagination?.onChange && pagination?.onChange(nextPage);
   };
 
-  const getListTanks = async (userId: string) => {
-    try {
-      const { data } = await api.getAllTanks({
-        userId,
-      });
-      GAME_STATE.tank.value = data.data[0];
-      GAME_STATE.isVisiting.value = true;
-      setShow(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getListTanks = async (userId: string) => {
+  //   try {
+  //     const { data } = await api.getAllTanks({
+  //       userId,
+  //     });
+  //     GAME_STATE.tank.value = data.data[0];
+  //     GAME_STATE.isVisiting.value = true;
+  //     setShow(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>

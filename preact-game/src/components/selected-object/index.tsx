@@ -17,7 +17,7 @@ export default function SelectedObject() {
   const canvasRef = useRef(null);
 
   const [staticData, setStaticData] = useState<{
-    genes?: IAppearance[],
+    genes?: IAppearance[];
     hungerRate?: number;
     spawningTime?: number;
     numberOfPollens?: number;
@@ -123,46 +123,46 @@ export default function SelectedObject() {
     }
   }, [staticData.genes]);
 
-  const [showSelectTank, setShowSelectTank] = useState(false)
+  const [showSelectTank, setShowSelectTank] = useState(false);
   const handleSelectTank = async (tankId: ITank) => {
-    await handleChangeTank(selectedObject.value?._id as string, tankId._id)
-    setShowSelectTank(false)
-  }
+    await handleChangeTank(selectedObject.value?._id as string, tankId._id);
+    setShowSelectTank(false);
+  };
 
   const handleChangeTank = async (bug: string, tankId: string) => {
     try {
       await api.bugChangeTank(bug, {
-        tankId
-      })
+        tankId,
+      });
       GAME_STATE.farm.value.colony = GAME_STATE.farm.value.colony.filter(
         (_bug) => _bug._id !== bug
       );
-      selectedObject.value = null
+      selectedObject.value = null;
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const handleEatPill = async () => {
     try {
       if (selectedObject.value instanceof Bug) {
-        const { data } = await api.bugEatPill(selectedObject.value._id)
+        const { data } = await api.bugEatPill(selectedObject.value._id);
         GAME_STATE.farm.value.colony.forEach((bug) => {
           if (bug._id === data.bug._id) {
-            boostBugEffect(bug.x, bug.y, data.isIncrementScore)
+            boostBugEffect(bug.x, bug.y, data.isIncrementScore);
             if (data.isIncrementScore) {
-              bug.genes = data.bug.genes
+              bug.genes = data.bug.genes;
               setStaticData({
                 genes: data.bug.genes,
-              })
+              });
             }
           }
-        })
+        });
       }
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col justify-between h-full w-[300px]">
@@ -202,7 +202,9 @@ export default function SelectedObject() {
                   <div className="mt-auto flex items-center flex-wrap gap-2 justify-between">
                     <BringToMarket />
                     <Button onClick={handleEatPill}>Boost</Button>
-                    <Button onClick={() => setShowSelectTank(true)}>Switch tank</Button>
+                    <Button onClick={() => setShowSelectTank(true)}>
+                      Switch tank
+                    </Button>
                     <SelectTank
                       show={showSelectTank}
                       onSelectTank={handleSelectTank}
@@ -225,9 +227,9 @@ export default function SelectedObject() {
                   <p>
                     Pollens left: {staticData.numberOfPollens} / {MAX_POLLENS}
                   </p>
-        <div className="mt-auto flex flex-wrap gap-2 justify-between">
-          <Button onClick={handleRemoveFlower}>Remove flower</Button>
-        </div>
+                  <div className="mt-auto flex flex-wrap gap-2 justify-between">
+                    <Button onClick={handleRemoveFlower}>Remove flower</Button>
+                  </div>
                 </>
               )}
             </div>
@@ -237,5 +239,5 @@ export default function SelectedObject() {
         )}
       </div>
     </div>
-  )
+  );
 }

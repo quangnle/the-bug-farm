@@ -137,12 +137,14 @@ export const GAME_fetchTank = async () => {
 
   const isBgm = JSON.parse(localStorage.getItem("bgm") || "true");
   BGM_ENABLE.value = isBgm;
-  const { data: listBugs } = await api.getAllBugs({
-    tankId: tank.value?._id,
-  });
-  const { data: listFlowers } = await api.getAllFlowers({
-    tankId: tank.value?._id,
-  });
+  const [{ data: listBugs }, { data: listFlowers }] = [
+    await api.getAllBugs({
+      tankId: tank.value?._id,
+    }),
+    await api.getAllFlowers({
+      tankId: tank.value?._id,
+    }),
+  ];
 
   const farmX = FARM_BORDER * FARM_BORDER_SCALE;
   const farmY = FARM_BORDER * FARM_BORDER_SCALE;
@@ -169,6 +171,7 @@ export const GAME_fetchTank = async () => {
       ...flo,
       x: flo.x * SCALE,
       y: flo.y * SCALE,
+      p5: sketchInstance,
     });
     farm.value.addObject(flower);
   });
