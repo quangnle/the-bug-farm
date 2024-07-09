@@ -81,7 +81,7 @@ export default function FlowerPlant() {
 
   return (
     <div className="flower-plant flex flex-col h-full">
-      <h1 className="text-3xl">Flower Seed</h1>
+      <h1 className="text-3xl">Design your flower</h1>
       <table className="plant-control">
         <thead>
           <tr className="font-bold">

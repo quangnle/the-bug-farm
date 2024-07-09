@@ -66,7 +66,11 @@ const api = {
     const { data } = await axios.get("/bugs/storage", { params });
     return data as IListPagination<Bug>;
   },
-  getAllAppearances: async () => axios.get("/appearances/default"),
+  getAllAppearances: async (params) => {
+    const { data } = await axios.get("/appearances", { params });
+    return data as IListPagination<IAppearance>;
+  },
+  getSystemAppearances: async () => axios.get("/appearances/default-of-system"),
   getUserAppearances: async () => axios.get("/appearances/default-of-user"),
   createAppearance: async (payload) => axios.post("/appearances", payload),
   updateAppearance: async (
