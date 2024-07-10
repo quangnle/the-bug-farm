@@ -70,6 +70,7 @@ const api = {
     const { data } = await axios.get("/appearances", { params });
     return data as IListPagination<IAppearance>;
   },
+  getInventory: async () => await axios.get("/storages/my-storage"),
   getSystemAppearances: async () => axios.get("/appearances/default-of-system"),
   getUserAppearances: async () => axios.get("/appearances/default-of-user"),
   createAppearance: async (payload) => axios.post("/appearances", payload),

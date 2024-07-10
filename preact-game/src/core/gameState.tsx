@@ -37,6 +37,7 @@ export const DEV_MODE = signal<boolean>(false);
 
 const sketch = (s: p5) => {
   console.log("init p5");
+  s.disableFriendlyErrors = true;
   let bg: any;
   let border: any;
   s.preload = () => {

@@ -1,6 +1,7 @@
 import BugList from "../bug-list";
 import { CANVAS_SIZE, CANVAS_WIDTH } from "../create-pattern/useCreatePattern";
 import Genes from "../genes";
+import Inventory from "../inventory";
 import Market from "../market";
 import Menu from "../menu";
 import UserModal from "../user-modal";
@@ -13,6 +14,7 @@ export default function GameBody({ loading }: { loading: boolean }) {
           {!loading && (
             <div className="flex flex-col gap-4 py-4">
               <BugList />
+              <Inventory />
               <Market />
               <Genes />
               <UserModal />

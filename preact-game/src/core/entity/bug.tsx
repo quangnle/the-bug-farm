@@ -60,7 +60,6 @@ class Bug {
     // acceleratoion
     this.ax = 0;
     this.ay = 0;
-
     this.hunger = 500;
     this.mutationRate = 0.1;
     this.p5 = p5;

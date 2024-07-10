@@ -50,6 +50,16 @@ type IBug = {
   updatedAt: Moment | string;
 };
 
+type IInventory = {
+  _id: string;
+  user: string;
+  createdAt: string;
+  updatedAt: string;
+  dewdrop: number;
+  oil: number;
+  gem: number;
+};
+
 type ISale = {
   _id: string;
   bug: Bug;
