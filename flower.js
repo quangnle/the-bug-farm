@@ -1,5 +1,5 @@
 const maxPollens = 10;
-const spawnningDuration = 300;
+const spawnningDuration = 100;
 
 class Flower {
     constructor(
@@ -95,7 +95,7 @@ class Flower {
             stroke("#000");
             const size =
                 (this.pistilSize + this.petalHeight) * 2 +
-                sin(frameCount * 0.1) * 5;
+                sinValues[Math.floor(frameCount * 0.1) % 360] * 5;
             ellipse(this.x, this.y, size, this.size);
         }
     }

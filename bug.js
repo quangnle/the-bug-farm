@@ -14,7 +14,7 @@ class Bug {
         // acceleration
         this.ax = 0;
         this.ay = 0;
-        this.hunger = 500;
+        this.hunger = 100;
         this.mutationRate = 0.1;
         this.appearance = {
             name: "default",
@@ -97,9 +97,9 @@ class Bug {
         const x = random(selectedRegion.x1, selectedRegion.x2);
         const y = random(selectedRegion.y1, selectedRegion.y2);
 
-        const d = min(dist(this.x, this.y, x, y), this.size * 10);
-        const angle = atan2(y - this.y, x - this.x);
-        return { x: this.x + cos(angle) * d, y: this.y + sin(angle) * d };
+        //const d = min(dist(this.x, this.y, x, y), this.size * 10);
+        //const angle = atan2(y - this.y, x - this.x);
+        return { x, y };
     }
 
     findAvailableFood(foods) {
@@ -139,9 +139,6 @@ class Bug {
             }
         }
 
-        // this.angle = atan2(this.target.y - this.y, this.target.x - this.x);
-        // this.dx = cos(this.angle);
-        // this.dy = sin(this.angle);
         this.seek(this.target);
     }
 
@@ -188,7 +185,7 @@ class Bug {
         push();
         // draw the bug
         translate(this.x, this.y);
-        rotate(this.angle + PI / 2 + 0.1 * sin(frameCount * 0.1));
+        rotate(this.angle + PI / 2 + 0.1 * sinValues[Math.floor(frameCount * 0.1) % 360]);
 
         // draw the head
         fill(50);
@@ -245,12 +242,14 @@ class Bug {
                         );
 
                         stroke(
-                            Math.floor(red * sin(this.hunger * 0.1)),
-                            Math.floor(green * sin(this.hunger * 0.1)),
-                            Math.floor(blue * sin(this.hunger * 0.1))
+                            Math.floor(red * sinValues[Math.floor(frameCount * 0.1) % 360]),
+                            Math.floor(green * sinValues[Math.floor(frameCount * 0.1) % 360]),
+                            Math.floor(blue * sinValues[Math.floor(frameCount * 0.1) % 360])
                         );
                     } else {
-                        stroke(this.appearance.pattern[j][i]);
+                        if (pallete[this.appearance.pattern[j][i]]) {
+                            stroke(pallete[this.appearance.pattern[j][i]]);
+                        }
                     }
                     point(i - this.size / 2, j - this.size / 2);
                 }
@@ -268,7 +267,7 @@ class Bug {
             // draw the bounding box
             noFill();
             stroke("#000");
-            const size = this.size * 1.5 + sin(frameCount * 0.1) * 5;
+            const size = this.size * 1.5 + sinValues[Math.floor(frameCount * 0.1) % 360] * 5;
             ellipse(this.x, this.y, size, size);
         }
     }

@@ -1,4 +1,4 @@
-const maxPopulation = 50;
+const maxPopulation = 40;
 const distanceToReachFood = 10;
 
 class Farm {
@@ -14,6 +14,35 @@ class Farm {
         this.mode = "play";
         this.route = null;
         this.boundingBox = false;
+    }
+
+    addBug(bug) {
+        //read through the bug's appearance and add the colors to the pallete
+        const pattern = bug.appearance.pattern;
+        for (let i = 0; i < pattern.length; i++) {
+            for (let j = 0; j < pattern[i].length; j++) {
+                const c = pattern[i][j];
+                if (c === -1 || c === 0 || c === 1) continue;
+                if (!pallete[c]) {
+                    if (c.length === 7) {
+                        let red = parseInt(c.substring(1, 3), 16);
+                        let green = parseInt(c.substring(3, 5), 16);
+                        let blue = parseInt(c.substring(5, 7), 16);                                            
+                        pallete[c] = color(red, green, blue);
+                    } else {                        
+                        let red = parseInt(c.substring(1, 2), 16);
+                        red = (red << 4) + red;
+                        let green = parseInt(c.substring(2, 3), 16);
+                        green = (green << 4) + green;
+                        let blue = parseInt(c.substring(3, 4), 16);
+                        blue = (blue << 4) + blue;
+                        pallete[c] = color(red, green, blue);
+                    }
+                }
+            }
+        }        
+
+        this.colony.push(bug);    
     }
 
     addObject(obj) {
@@ -147,7 +176,7 @@ class Farm {
 
                     // else, evolution to make a new bug
                     const newBug = Evolution.evolute(bug, flower.pistilColor);
-                    colony.push(newBug);
+                    this.addBug(newBug);
                 }
             });
         });

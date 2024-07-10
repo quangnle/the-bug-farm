@@ -19,9 +19,16 @@ let selectedObj = null;
 const farm = new Farm(0, 0, farmWidth, farmHeight, "#77dd22");
 const controlPanel = new ControlPanel(0, farmHeight, farmWidth, 30, "#ffffff");
 
+// a key, value pair to store the color code and the color object
+const pallete = { };
+const sinValues = [];
+
 function setup() {
     createCanvas(width, height, mainCanvas);
-    farm.colony.push(firstBug);
+    farm.addBug(firstBug);
+    for (let i = 0; i < 360; i++) {
+        sinValues.push(sin(i / 100 * TWO_PI));
+    }
 }
 
 function draw() {
