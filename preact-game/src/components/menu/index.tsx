@@ -6,10 +6,12 @@ import IconButtons from "../icon-buttons";
 import SelectTank from "../select-tank";
 import "./style.css";
 import SettingModal from "../setting-modal";
+import ChangePasswordModal from "../change-password";
 
 export default function Menu() {
   const [show, setShow] = useState(false);
   const [showSetting, setShowSetting] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
   const [showSelectTank, setShowSelectTank] = useState(false);
 
   const handleSelectTank = (x: ITank) => {
@@ -36,6 +38,11 @@ export default function Menu() {
       {showSetting && (
         <SettingModal handleClose={() => setShowSetting(false)} />
       )}
+
+      {showChangePassword && (
+        <ChangePasswordModal handleClose={() => setShowChangePassword(false)} />
+      )}
+
       {show && (
         <Modal
           handleClose={() => setShow(false)}
@@ -54,6 +61,9 @@ export default function Menu() {
             <CreatePattern closeMenu={() => setShow(false)} />
 
             <button onClick={() => setShowSetting(true)}>Settings</button>
+            <button onClick={() => setShowChangePassword(true)}>
+              Change Password
+            </button>
 
             <button onClick={handleLogout}>Logout</button>
           </div>
