@@ -21,7 +21,6 @@ const APIS_WILL_UPDATE_USER = [
 export const getToken = () => {
   try {
     const cache = JSON.parse(localStorage.getItem("token") || "{}");
-
     if (cache && typeof cache === "object") {
       return cache;
     }
@@ -34,6 +33,15 @@ export const getToken = () => {
 export const setToken = (token) => {
   console.log("setToken", token);
   localStorage.setItem("token", JSON.stringify(token));
+};
+
+export const logout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("lastTank");
+  GAME_STATE.token.value = "";
+  GAME_STATE.user.value = null;
+  GAME_STATE.tank.value = null;
+  GAME_STATE.farm.value = null;
 };
 
 const api = {
@@ -160,8 +168,8 @@ axios.interceptors.response.use(
   },
   async (error) => {
     const status = error.response ? error.response.status : null;
-    if (status === 401) {
-      const user = getToken();
+    const user = getToken();
+    if (status === 401 && user?.accessToken) {
       try {
         const response = await axios.post("/auth/token", {
           refreshToken: user.refreshToken,

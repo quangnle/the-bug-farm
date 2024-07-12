@@ -33,7 +33,7 @@ export default function BugList() {
 
   const handleShowSortedBug = () =>
     setBugs(
-      [...GAME_STATE.farm.value.colony].sort((a, b) => {
+      [...GAME_STATE.farm.value?.colony!].sort((a, b) => {
         const rarityA = a.genes.reduce(
           (acc, gene) =>
             acc +

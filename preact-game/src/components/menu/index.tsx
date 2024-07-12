@@ -1,12 +1,13 @@
+import { logout } from "@/core/axios";
 import { GAME_STATE } from "@/core/gameState";
 import { useState } from "react";
+import ChangePasswordModal from "../change-password";
 import Modal from "../common/modal";
 import CreatePattern from "../create-pattern";
 import IconButtons from "../icon-buttons";
 import SelectTank from "../select-tank";
-import "./style.css";
 import SettingModal from "../setting-modal";
-import ChangePasswordModal from "../change-password";
+import "./style.css";
 
 export default function Menu() {
   const [show, setShow] = useState(false);
@@ -18,13 +19,6 @@ export default function Menu() {
     GAME_STATE.tank.value = x;
     setShowSelectTank(false);
     localStorage.setItem("lastTank", x._id);
-  };
-
-  const handleLogout = () => {
-    GAME_STATE.user.value = null;
-    GAME_STATE.tank.value = null;
-    localStorage.removeItem("token");
-    localStorage.removeItem("lastTank");
   };
 
   return (
@@ -65,7 +59,7 @@ export default function Menu() {
               Change Password
             </button>
 
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={logout}>Logout</button>
           </div>
         </Modal>
       )}

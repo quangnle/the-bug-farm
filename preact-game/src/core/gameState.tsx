@@ -20,8 +20,9 @@ export const BGM_ENABLE = signal<boolean>(false);
 export const coroutineCallbacks = signal<Array<CoroutineCallback>>([]);
 const user: Signal<IUser | null> = signal(null);
 const tank: Signal<ITank | null> = signal(null);
+const token: Signal<string> = signal("");
 const isVisiting: Signal<boolean> = signal(false);
-const farm: Signal<Farm> = signal(
+const farm: Signal<Farm | null> = signal(
   new Farm(0, 0, FARM_WIDTH, FARM_HEIGHT, "#77dd22", selectedObject)
 );
 const appearance: Signal<IAppearance[]> = signal([]);
@@ -128,6 +129,7 @@ export const sketchInstance = new p5(sketch);
 export const GAME_STATE = {
   user,
   tank,
+  token,
   farm,
   appearance,
   isVisiting,
