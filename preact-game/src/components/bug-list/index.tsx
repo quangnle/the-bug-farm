@@ -141,7 +141,7 @@ export default function BugList() {
 
   return (
     <>
-      <IconButtons onClick={() => setShow(true)} icon="inventory" />
+      <IconButtons onClick={() => setShow(true)} icon="buglist" />
       <FilterGeneModal
         showFilter={showFilter}
         handleSelectByGenes={handleSelectByGenes}

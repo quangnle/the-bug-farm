@@ -78,6 +78,7 @@ const api = {
     const { data } = await axios.get("/appearances", { params });
     return data as IListPagination<IAppearance>;
   },
+  craftGem: async (payload) => axios.post("/storages/craft-gem", payload),
   changePassword: async (payload) =>
     await axios.patch("/auth/change-password", payload),
   getInventory: async () => await axios.get("/storages/my-storage"),
