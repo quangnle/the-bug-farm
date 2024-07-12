@@ -138,7 +138,7 @@ const CraftGem: FC<IProp> = ({ inventory, fetchInventory }) => {
             <span
               className={`${
                 inventory?.dewdrop! < findBundleByQuantity?.dewdrop!
-                  ? "text-red-200"
+                  ? "text-red-500"
                   : ""
               }`}
             >
@@ -180,7 +180,7 @@ const CraftGem: FC<IProp> = ({ inventory, fetchInventory }) => {
             <span
               className={`${
                 inventory?.dewdrop! < findBundleByQuantity?.dewdrop!
-                  ? "text-red-200"
+                  ? "text-red-500"
                   : ""
               }`}
             >
