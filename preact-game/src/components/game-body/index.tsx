@@ -23,13 +23,18 @@ export default function GameBody() {
             </div>
           )}
         </div>
-        <canvas
-          id="main-canvas"
-          style={{
-            width: CANVAS_WIDTH,
-            height: CANVAS_SIZE,
-          }}
-        />
+        <div>
+          <canvas
+            id="main-canvas"
+            style={{
+              width: CANVAS_WIDTH,
+              height: CANVAS_SIZE,
+            }}
+          />
+          <p className="text-center text-lg">
+            Pretty Bugs v1.0 - Powered by the skyglab.tech Jul 2024.
+          </p>
+        </div>
       </div>
     </div>
   );
