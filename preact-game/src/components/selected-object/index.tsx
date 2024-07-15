@@ -235,7 +235,7 @@ export default function SelectedObject() {
             </div>
           </>
         ) : (
-          <p className="text-center">Click a object to see more detail</p>
+          <p className="text-center">Click an object to see more detail</p>
         )}
       </div>
     </div>
