@@ -1,5 +1,5 @@
-class Bug {
-    constructor(color, x, y, size = 20, angle = 0) {
+class LeaderBug {
+    constructor(color, x, y, size = 30, angle = 0) {
         this.color = color;
         this.x = x;
         this.y = y;

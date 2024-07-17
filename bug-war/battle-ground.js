@@ -17,6 +17,8 @@ class BattleGround {
 
         this.team1 = [];
         this.team2 = [];
+
+        this.collideEffects = [];
     }
 
     addBug(bug, team = 1) {
@@ -55,7 +57,8 @@ class BattleGround {
         for (let i = 0; i < allBugs.length; i++) {
             for (let j = i + 1; j < allBugs.length; j++) {
                 const d = dist(allBugs[i].x, allBugs[i].y, allBugs[j].x, allBugs[j].y);
-                if (d < bugSize) {
+                const collideDist = allBugs[i].size / 2 + allBugs[j].size / 2;
+                if (d < collideDist) {
                     if (allBugs[i].color !== allBugs[j].color) {
                         battles.push([allBugs[i], allBugs[j]]);
                     }
@@ -74,17 +77,17 @@ class BattleGround {
             const bug1 = battles[i][0];
             const bug2 = battles[i][1];
             if (bug1.target === bug2) {
-                bug2.hp -= random(10);
-                //bug1.bounce(bug2, 3);
+                bug2.hpLeft -= random(10);
+                this.collideEffects.push(new CollideEffect(bug2.x, bug2.y, bugSize/2, bug2.color));
             }
             if (bug2.target === bug1) {
-                bug1.hp -= random(10);
-                //bug2.bounce(bug1, 3);
+                bug1.hpLeft -= random(10);
+                this.collideEffects.push(new CollideEffect(bug1.x, bug1.y, bugSize/2, bug1.color));
             }
         }
 
-        this.team1 = this.team1.filter(bug => bug.hp > 0);
-        this.team2 = this.team2.filter(bug => bug.hp > 0);
+        this.team1 = this.team1.filter(bug => bug.hpLeft > 0);
+        this.team2 = this.team2.filter(bug => bug.hpLeft > 0);
     }
 
     draw(){
@@ -110,7 +113,7 @@ class BattleGround {
             });
         } else {
             this.team1.forEach(bug => {
-                if (bug.target === null || bug.target.hp <= 0) {
+                if (bug.target === null || bug.target.hpLeft <= 0) {
                     bug.target = this.team2[floor(random(this.team2.length))];
                 }
                 bug.seek(bug.target);
@@ -119,7 +122,7 @@ class BattleGround {
             });
 
             this.team2.forEach(bug => {
-                if (bug.target === null || bug.target.hp <= 0) {
+                if (bug.target === null || bug.target.hpLeft <= 0) {
                     bug.target = this.team1[floor(random(this.team1.length))];
                 }
                 bug.seek(bug.target);
@@ -129,5 +132,13 @@ class BattleGround {
         }
 
         pop();
+
+        // draw collide effects
+        this.collideEffects.forEach(effect => {
+            effect.update();
+            effect.draw();
+        });
+
+        this.collideEffects = this.collideEffects.filter(effect => effect.alpha > 0);
     }
 }
