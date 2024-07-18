@@ -10,14 +10,27 @@ class Bug {
         this.acceleration = createVector(0, 0);
         this.target = null;
 
-        this.hp = 100;
-        this.hpLeft = 100;
+        // equipments and attributes
         this.horn = null;
-        this.armor = null;
-    }
+        this.armor = null;        
+        this.level = -1;
+        this.levelUp();
+    }    
 
     addHorn(horn) {
         this.horn = horn;
+    }
+
+    addArmor(armor) {
+        this.armor = armor;
+    }
+
+    levelUp() {
+        this.level++;
+        this.hp = TroopLevels[this.level].hp;
+        this.hpLeft = TroopLevels[this.level].hp;
+        this.atk = TroopLevels[this.level].atk;
+        this.def = TroopLevels[this.level].def;
     }
 
     update() {

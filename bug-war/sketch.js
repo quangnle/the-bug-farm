@@ -1,7 +1,7 @@
 const width = 600;
 const height = 600;
 const bugSize = 20;
-const leaderBugSize = 30;
+const leaderBugSize = 25;
 const nTroops = 10;
 
 let battleGround = null; 

@@ -77,11 +77,11 @@ class BattleGround {
             const bug1 = battles[i][0];
             const bug2 = battles[i][1];
             if (bug1.target === bug2) {
-                bug2.hpLeft -= random(10);
+                bug2.hpLeft -= (0.5 + Math.random()) * (bug1.atk/(bug2.def + 1));
                 this.collideEffects.push(new CollideEffect(bug2.x, bug2.y, bugSize/2, bug2.color));
             }
             if (bug2.target === bug1) {
-                bug1.hpLeft -= random(10);
+                bug1.hpLeft -= (0.5 + Math.random()) * (bug2.atk/(bug1.def + 1));                
                 this.collideEffects.push(new CollideEffect(bug1.x, bug1.y, bugSize/2, bug1.color));
             }
         }

@@ -9,11 +9,12 @@ class LeaderBug {
         this.velocity = createVector(cos(this.angle) * this.speed, sin(this.angle) * this.speed);
         this.acceleration = createVector(0, 0);
         this.target = null;
-
-        this.hp = 100;
-        this.hpLeft = 100;
+        
         this.horn = null;
         this.armor = null;
+        this.exp = 0;
+        this.level = -1;
+        this.levelUp();
     }
 
     addHorn(horn) {
@@ -28,6 +29,16 @@ class LeaderBug {
         this.angle = this.velocity.heading();
         this.acceleration.mult(0);
     } 
+
+    levelUp() {
+        if (this.exp >= LeaderLevels[this.level + 1].exp) {
+            this.level++;
+            this.hp = LeaderLevels[this.level].hp;
+            this.hpLeft = LeaderLevels[this.level].hp;
+            this.atk = LeaderLevels[this.level].atk;
+            this.def = LeaderLevels[this.level].def;            
+        }
+    }
 
     addForce(force) {
         this.acceleration.add(force);
