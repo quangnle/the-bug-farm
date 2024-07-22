@@ -4,6 +4,8 @@ const bugSize = 20;
 const leaderBugSize = 25;
 const nTroops = 10;
 
+const MTRNG = new MTRandom(282828);
+
 let battleGround = null; 
 
 function setupTeam(team, teamColor, nTroops) {
