@@ -180,6 +180,7 @@ axios.interceptors.response.use(
         return axios(error.response.config);
       } catch (err) {
         console.log(err);
+        localStorage.clear();
       }
     } else if (status === 403) {
     }
