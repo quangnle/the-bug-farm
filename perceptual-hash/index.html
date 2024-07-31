@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perceptual Hash</title>
+</head>
+<body>
+    <!-- upload image 1 -->
+    <input type="file" id="imageUpload" accept="image/*">
+    <canvas id="imageCanvas"></canvas> 
+    <!-- pHash library -->
+    <script src="phash.js"></script>
+    <script>
+        const imageUpload = document.getElementById('imageUpload');
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d'); 
+        const phash = new PHash(64);
+
+        const scores = [];
+
+        imageUpload.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.addEventListener('load', function() {
+                    const img = new Image();
+                    img.onload = function() {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0);
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+                        const hash = phash.hash({data: imageData, width: canvas.width, height: canvas.height});
+                        scores.push(hash);
+                        if (scores.length === 2) {
+                            const distance = phash.distance(scores[0], scores[1]);
+                            console.log('Calculating similarity...' + distance);
+                            const similarity = 100 - 100*distance;
+                            console.log(`Similarity = ${similarity} %`);
+                            
+                            // remove all elements from the scores array
+                            scores.splice(0, scores.length);
+                        }
+                        // convert byte array to hex string
+                        //const hex = Array.from(hash).map(b => b.toString(16).padStart(2, '0')).join('');                        
+                        //document.getElementById('hash1').innerText = hex;                        
+                    };
+                    img.src = reader.result;
+                });
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+    </script>
+
+</body>
+</html>
